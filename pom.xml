@@ -18,6 +18,7 @@
         <junit.platform.version>1.8.0-RC1</junit.platform.version>
         <junit.jupiter.version>5.8.0-M1</junit.jupiter.version>
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+        <mysql.connector.version>8.0.19</mysql.connector.version>
     </properties>
 
     <dependencyManagement>
@@ -46,6 +47,12 @@
                 <artifactId>junit-platform-runner</artifactId>
                 <version>${junit.platform.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
