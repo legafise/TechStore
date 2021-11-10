@@ -2,14 +2,20 @@ package by.lashkevich.logic.entity;
 
 import java.util.Objects;
 
-public class Review {
-    private int id;
+public class Review implements Entity {
+    private long id;
     private float grade;
     private String content;
     private User author;
 
-    public Review(int id, float grade, String content, User author) {
+    public Review(long id, float grade, String content, User author) {
         this.id = id;
+        this.grade = grade;
+        this.content = content;
+        this.author = author;
+    }
+
+    public Review(float grade, String content, User author) {
         this.grade = grade;
         this.content = content;
         this.author = author;
@@ -18,11 +24,11 @@ public class Review {
     public Review() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

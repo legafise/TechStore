@@ -2,11 +2,9 @@ package by.lashkevich.logic.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class User {
+public class User implements Entity {
     private long id;
     private String name;
     private String surname;
@@ -17,11 +15,9 @@ public class User {
     private String profilePicture;
     private BigDecimal balance;
     private Role role;
-    private Basket basket;
-    private List<Order> orders;
 
     public User(long id, String name, String surname, String login, String password, String email, LocalDate birthDate,
-                String profilePicture, BigDecimal balance, Role role, Basket basket, List<Order> orders) {
+                String profilePicture, BigDecimal balance, Role role) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -32,12 +28,22 @@ public class User {
         this.profilePicture = profilePicture;
         this.balance = balance;
         this.role = role;
-        this.basket = basket;
-        this.orders = orders;
+    }
+
+    public User(String name, String surname, String login, String password, String email, LocalDate birthDate,
+                String profilePicture, BigDecimal balance, Role role) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.profilePicture = profilePicture;
+        this.balance = balance;
+        this.role = role;
     }
 
     public User() {
-        orders = new ArrayList<>();
     }
 
     public long getId() {
@@ -120,22 +126,6 @@ public class User {
         this.role = role;
     }
 
-    public Basket getBasket() {
-        return basket;
-    }
-
-    public void setBasket(Basket basket) {
-        this.basket = basket;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -150,15 +140,13 @@ public class User {
                 Objects.equals(birthDate, user.birthDate) &&
                 Objects.equals(profilePicture, user.profilePicture) &&
                 Objects.equals(balance, user.balance) &&
-                Objects.equals(role, user.role) &&
-                Objects.equals(basket, user.basket) &&
-                Objects.equals(orders, user.orders);
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, surname, login, password, email, birthDate,
-                profilePicture, balance, role, basket, orders);
+                profilePicture, balance, role);
     }
 
     @Override
@@ -174,8 +162,6 @@ public class User {
                 ", profilePicture='" + profilePicture + '\'' +
                 ", balance=" + balance +
                 ", role=" + role +
-                ", basket=" + basket +
-                ", orders=" + orders +
                 '}';
     }
 }

@@ -1,10 +1,11 @@
 package by.lashkevich.logic.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Good {
+public class Good implements Entity {
     private long id;
     private String name;
     private BigDecimal price;
@@ -14,17 +15,27 @@ public class Good {
     private List<Review> reviews;
 
     public Good(long id, String name, BigDecimal price, String description,
-                String type, String imgURL, List<Review> reviews) {
+                String type, String imgURL) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.type = type;
         this.imgURL = imgURL;
-        this.reviews = reviews;
+    }
+
+    public Good(String name, BigDecimal price, String description,
+                String type, String imgURL) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.type = type;
+        this.imgURL = imgURL;
+        this.reviews = new ArrayList<>();
     }
 
     public Good() {
+        reviews = new ArrayList<>();
     }
 
     public long getId() {
@@ -104,7 +115,7 @@ public class Good {
 
     @Override
     public String toString() {
-        return "Good{" +
+        return "\nGood{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
