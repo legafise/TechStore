@@ -45,8 +45,7 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public List<Review> findAll() throws DaoException {
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement();) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_REVIEWS_SQL);
             List<Review> reviews = new ArrayList<>();
 
@@ -62,8 +61,7 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public Optional<Review> findById(Long id) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(FIND_REVIEW_BY_ID_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(FIND_REVIEW_BY_ID_SQL)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Review review = new Review();
@@ -80,8 +78,7 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public boolean add(Review review) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(CREATE_REVIEW_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(CREATE_REVIEW_SQL)) {
             fillReviewData(review, statement);
 
             return statement.executeUpdate() == 1;
@@ -92,8 +89,7 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public boolean removeById(Long id) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(REMOVE_REVIEW_BY_ID_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(REMOVE_REVIEW_BY_ID_SQL)) {
             statement.setLong(1, id);
 
             return statement.executeUpdate() == 1;
@@ -104,8 +100,7 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public boolean update(Review review) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_REVIEW_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_REVIEW_SQL)) {
             statement.setLong(4, review.getId());
             fillReviewData(review, statement);
 

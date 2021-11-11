@@ -4,6 +4,7 @@ import by.lashkevich.logic.entity.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class DaoMapper {
     private static final String GOOD_ID = "good_id";
@@ -114,22 +115,37 @@ public class DaoMapper {
                 return good;
             }
 
-            if (resultSet.getInt(GOOD_ID) != good.getId() && good.getId() != 0) {
-                resultSet.previous();
+            Optional<Good> goodOptional = fillGoodData(resultSet, good);
+            if (goodOptional.isPresent()) {
                 return good;
-            }
-
-            if (good.getId() == 0) {
-                fillGoodData(good, resultSet);
-            }
-
-            if (resultSet.getInt(GOOD_ID) == good.getId()) {
-                good.getReviews().add(mapReview(resultSet));
-                resultSet.next();
             }
         }
 
         return good;
+    }
+
+    private Good mapGoodInBasket(ResultSet resultSet) throws SQLException {
+        Good good = new Good();
+
+        while (!resultSet.isAfterLast()) {
+            Optional<Good> goodOptional = fillGoodData(resultSet, good);
+            if (goodOptional.isPresent()) {
+                return good;
+            }
+        }
+
+        resultSet.previous();
+        return good;
+    }
+
+    public Basket mapBasket(ResultSet resultSet) throws SQLException {
+        Basket basket = new Basket();
+
+        while (resultSet.next()) {
+            basket.getGoods().put(mapGoodInBasket(resultSet), resultSet.getInt(GOOD_QUANTITY));
+        }
+
+        return basket;
     }
 
     private void fillGoodData(Good good, ResultSet resultSet) throws SQLException {
@@ -165,5 +181,23 @@ public class DaoMapper {
         user.setBalance(resultSet.getBigDecimal(balanceColumn));
         user.setRole(Role.findRole(resultSet.getInt(roleColumn)));
         return user;
+    }
+
+    private Optional<Good> fillGoodData(ResultSet resultSet, Good good) throws SQLException {
+        if (resultSet.getInt(GOOD_ID) != good.getId() && good.getId() != 0) {
+            resultSet.previous();
+            return Optional.of(good);
+        }
+
+        if (good.getId() == 0) {
+            fillGoodData(good, resultSet);
+        }
+
+        if (resultSet.getInt(GOOD_ID) == good.getId()) {
+            good.getReviews().add(mapReview(resultSet));
+            resultSet.next();
+        }
+
+        return Optional.empty();
     }
 }

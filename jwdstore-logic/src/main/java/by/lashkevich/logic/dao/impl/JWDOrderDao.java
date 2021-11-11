@@ -79,8 +79,7 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public List<Order> findAll() throws DaoException {
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_ORDERS_SQL);
             List<Order> orders = new ArrayList<>();
 
@@ -96,8 +95,7 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public Optional<Order> findById(Long id) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(FIND_ORDER_BY_ID_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ORDER_BY_ID_SQL);) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Order order = daoMapper.mapOrder(resultSet);
@@ -110,8 +108,7 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public boolean add(Order order) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(CREATE_ORDER_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(CREATE_ORDER_SQL)) {
             fillOrderData(order, statement);
 
             return statement.executeUpdate() == 1;
@@ -122,8 +119,7 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public boolean removeById(Long id) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(REMOVE_ORDER_BY_ID_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(REMOVE_ORDER_BY_ID_SQL)) {
             statement.setLong(1, id);
 
             return statement.executeUpdate() == 1;
@@ -134,8 +130,7 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public List<Order> findOrdersByUserId(Long userId) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_BY_USER_ID_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_BY_USER_ID_SQL)) {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
             List<Order> orders = new ArrayList<>();
@@ -152,8 +147,7 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public boolean update(Order order) throws DaoException {
-        try {
-            PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SQL);
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SQL)) {
             statement.setLong(6, order.getId());
             fillOrderData(order, statement);
 
