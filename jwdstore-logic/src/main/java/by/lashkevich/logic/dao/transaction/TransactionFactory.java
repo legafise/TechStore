@@ -2,6 +2,7 @@ package by.lashkevich.logic.dao.transaction;
 
 import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.pool.ConnectionPool;
+import by.lashkevich.logic.dao.pool.ConnectionPoolException;
 import by.lashkevich.logic.dao.transaction.impl.JWDTransaction;
 
 import java.sql.Connection;
@@ -16,7 +17,7 @@ public class TransactionFactory {
             connection = ConnectionPool.getInstance().acquireConnection();
             connection.setAutoCommit(false);
             isAutoCommitActive = false;
-        } catch (SQLException e) {
+        } catch (SQLException | ConnectionPoolException e) {
             throw new DaoException(e.getMessage());
         }
     }

@@ -2,6 +2,7 @@ package by.lashkevich.logic.dao.pool;
 
 import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.reader.DataBasePropertiesReader;
+import by.lashkevich.logic.dao.reader.PropertiesReaderException;
 import by.lashkevich.logic.dao.reader.impl.ProdDataBasePropertiesReader;
 
 import java.sql.Connection;
@@ -61,7 +62,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    public void initializeConnectionPool(int connectionsNumber) throws DaoException {
+    public void initializeConnectionPool(int connectionsNumber) throws ConnectionPoolException {
         try {
             closeConnections();
             CONNECTION_LOCK.lock();
@@ -71,14 +72,14 @@ public class ConnectionPool {
                 freeConnections.push(new ProxyConnection(DriverManager.getConnection(propertiesReader.readUrl(),
                         propertiesReader.readProperties())));
             }
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new DaoException(e);
+        } catch (ClassNotFoundException | SQLException | PropertiesReaderException e) {
+            throw new ConnectionPoolException(e.getMessage());
         } finally {
             CONNECTION_LOCK.unlock();
         }
     }
 
-    public Connection acquireConnection() throws DaoException {
+    public Connection acquireConnection() throws ConnectionPoolException {
         try {
             CONNECTION_LOCK.lock();
             if (!freeConnections.isEmpty() || !busyConnections.isEmpty()) {
@@ -89,18 +90,18 @@ public class ConnectionPool {
                 busyConnections.push(connection);
                 return connection;
             } else {
-                throw new DaoException(CONNECTIONS_NOT_CREATED_ENTER_MESSAGE);
+                throw new ConnectionPoolException(CONNECTIONS_NOT_CREATED_ENTER_MESSAGE);
             }
         } catch (InterruptedException e) {
-            throw new DaoException(e);
+            throw new ConnectionPoolException(e.getMessage());
         } finally {
             CONNECTION_LOCK.unlock();
         }
     }
 
-    public void putBackConnection(Connection connection) throws DaoException {
+    public void putBackConnection(Connection connection) throws ConnectionPoolException {
         if (connection == null) {
-            throw new DaoException(CONNECTION_IS_NULL_ENTER_MESSAGE);
+            throw new ConnectionPoolException(CONNECTION_IS_NULL_ENTER_MESSAGE);
         }
 
         try {
@@ -111,14 +112,14 @@ public class ConnectionPool {
                     CONNECTION_CONDITION.signal();
                 }
             } else {
-                throw new DaoException(INCORRECT_CONNECTION_ENTER_MESSAGE);
+                throw new ConnectionPoolException(INCORRECT_CONNECTION_ENTER_MESSAGE);
             }
         } finally {
             CONNECTION_LOCK.unlock();
         }
     }
 
-    public void closeConnections() throws DaoException {
+    public void closeConnections() throws ConnectionPoolException {
         try {
             CONNECTION_LOCK.lock();
             TimeUnit.SECONDS.sleep(1);
@@ -130,7 +131,7 @@ public class ConnectionPool {
                 busyConnections = new ArrayDeque<>();
             }
         } catch (InterruptedException | SQLException e) {
-            throw new DaoException(e);
+            throw new ConnectionPoolException(e.getMessage());
         } finally {
             CONNECTION_LOCK.unlock();
         }

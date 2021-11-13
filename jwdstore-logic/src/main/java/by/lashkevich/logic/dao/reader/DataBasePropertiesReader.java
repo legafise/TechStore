@@ -8,11 +8,11 @@ public interface DataBasePropertiesReader extends PropertiesReader {
     String URL_KEY = "url";
     String DRIVER_KEY = "driverName";
 
-    default String readUrl() throws DaoException {
+    default String readUrl() throws PropertiesReaderException {
      return readProperties().getProperty(URL_KEY);
     }
 
-    default String readDriverName() throws DaoException {
+    default String readDriverName() throws PropertiesReaderException {
         return readProperties().getProperty(DRIVER_KEY);
     }
 }
