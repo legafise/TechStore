@@ -1,7 +1,5 @@
 package by.lashkevich.logic.dao.pool;
 
-import by.lashkevich.logic.dao.DaoException;
-
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -24,11 +22,7 @@ public class ProxyConnection implements Connection {
 
     @Override
     public void close() {
-        try {
-            ConnectionPool.getInstance().putBackConnection(this);
-        } catch (DaoException e) {
-            e.printStackTrace();
-        }
+        ConnectionPool.getInstance().putBackConnection(this);
     }
 
     @Override

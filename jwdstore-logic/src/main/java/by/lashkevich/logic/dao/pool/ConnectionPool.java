@@ -1,6 +1,5 @@
 package by.lashkevich.logic.dao.pool;
 
-import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.reader.DataBasePropertiesReader;
 import by.lashkevich.logic.dao.reader.PropertiesReaderException;
 import by.lashkevich.logic.dao.reader.impl.ProdDataBasePropertiesReader;
@@ -9,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
@@ -24,8 +24,8 @@ public class ConnectionPool {
     private static final Lock CONNECTION_LOCK = new ReentrantLock();
     private static final Condition CONNECTION_CONDITION = CONNECTION_LOCK.newCondition();
     private static ConnectionPool instance;
-    private ArrayDeque<Connection> freeConnections;
-    private ArrayDeque<Connection> busyConnections;
+    private Deque<Connection> freeConnections;
+    private Deque<Connection> busyConnections;
     private DataBasePropertiesReader propertiesReader;
 
     private ConnectionPool() {
