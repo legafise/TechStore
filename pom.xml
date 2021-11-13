@@ -11,6 +11,7 @@
 
     <modules>
         <module>jwdstore-logic</module>
+        <module>jwdstore-web</module>
     </modules>
 
     <properties>
