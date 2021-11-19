@@ -1,26 +1,17 @@
 package by.lashkevich.logic.service;
 
-import by.lashkevich.logic.dao.DaoException;
-import by.lashkevich.logic.dao.transaction.TransactionFactory;
 import by.lashkevich.logic.service.impl.JWDGoodService;
 
 public enum ServiceFactory {
-    GOOD_SERVICE() {
-        @Override
-        public Service<?> createService() throws ServiceException {
-            try {
-                GoodService goodService = new JWDGoodService();
-                TransactionFactory factory = new TransactionFactory();
-                goodService.setTransaction(factory.createTransaction());
-                goodService.setTransactionFactory(factory);
-                return goodService;
-            } catch (DaoException e) {
-                throw new ServiceException(e.getMessage());
-            }
-        }
-    };
+    GOOD_SERVICE(new JWDGoodService());
 
-    private TransactionFactory factory;
+    private final Service<?> service;
 
-    public abstract Service<?> createService() throws ServiceException;
+    ServiceFactory(Service<?> service) {
+        this.service = service;
+    }
+
+    public Service<?> getService() {
+        return service;
+    }
 }

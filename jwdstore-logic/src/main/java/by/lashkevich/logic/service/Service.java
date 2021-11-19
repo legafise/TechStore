@@ -7,12 +7,9 @@ import by.lashkevich.logic.entity.Entity;
 import java.util.List;
 
 public interface Service<T extends Entity> {
-    void setTransaction(Transaction transaction);
-    void setTransactionFactory(TransactionFactory factory);
-    void closeTransaction() throws ServiceException;
     List<T> findAll() throws ServiceException;
-    T findById(String id);
+    T findById(String id) throws ServiceException;
     boolean add(T entity) throws ServiceException;
-    boolean removeById(String id);
-    boolean update(T entity);
+    boolean removeById(String id) throws ServiceException;
+    boolean update(T entity) throws ServiceException;
 }
