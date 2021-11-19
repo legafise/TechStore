@@ -61,7 +61,7 @@ public class DaoMapper {
                 fillGoodData(good, resultSet);
             }
 
-            if (resultSet.getInt(GOOD_ID) == good.getId()) {
+            if (resultSet.getInt(GOOD_ID) == good.getId() && resultSet.getLong(REVIEW_ID) != 0) {
                 good.getReviews().add(mapReview(resultSet));
             }
         }
@@ -177,7 +177,7 @@ public class DaoMapper {
         user.setPassword(resultSet.getString(passwordColumn));
         user.setEmail(resultSet.getString(emailColumn));
         user.setBirthDate(resultSet.getDate(birthDateColumn).toLocalDate());
-        user.setProfilePicture(resultSet.getString(pictureColumn));
+        user.setProfilePictureName(resultSet.getString(pictureColumn));
         user.setBalance(resultSet.getBigDecimal(balanceColumn));
         user.setRole(Role.findRole(resultSet.getInt(roleColumn)));
         return user;

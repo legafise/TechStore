@@ -12,12 +12,15 @@ public class User implements Entity {
     private String password;
     private String email;
     private LocalDate birthDate;
-    private String profilePicture;
+    private String profilePictureName;
     private BigDecimal balance;
     private Role role;
 
+    public User() {
+    }
+
     public User(long id, String name, String surname, String login, String password, String email, LocalDate birthDate,
-                String profilePicture, BigDecimal balance, Role role) {
+                String profilePictureName, BigDecimal balance, Role role) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -25,25 +28,22 @@ public class User implements Entity {
         this.password = password;
         this.email = email;
         this.birthDate = birthDate;
-        this.profilePicture = profilePicture;
+        this.profilePictureName = profilePictureName;
         this.balance = balance;
         this.role = role;
     }
 
     public User(String name, String surname, String login, String password, String email, LocalDate birthDate,
-                String profilePicture, BigDecimal balance, Role role) {
+                String profilePictureName, BigDecimal balance, Role role) {
         this.name = name;
         this.surname = surname;
         this.login = login;
         this.password = password;
         this.email = email;
         this.birthDate = birthDate;
-        this.profilePicture = profilePicture;
+        this.profilePictureName = profilePictureName;
         this.balance = balance;
         this.role = role;
-    }
-
-    public User() {
     }
 
     public long getId() {
@@ -102,12 +102,12 @@ public class User implements Entity {
         this.birthDate = birthDate;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public String getProfilePictureName() {
+        return profilePictureName;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePictureName(String profilePictureName) {
+        this.profilePictureName = profilePictureName;
     }
 
     public BigDecimal getBalance() {
@@ -138,7 +138,7 @@ public class User implements Entity {
                 Objects.equals(password, user.password) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(birthDate, user.birthDate) &&
-                Objects.equals(profilePicture, user.profilePicture) &&
+                Objects.equals(profilePictureName, user.profilePictureName) &&
                 Objects.equals(balance, user.balance) &&
                 Objects.equals(role, user.role);
     }
@@ -146,7 +146,7 @@ public class User implements Entity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, surname, login, password, email, birthDate,
-                profilePicture, balance, role);
+                profilePictureName, balance, role);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class User implements Entity {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
-                ", profilePicture='" + profilePicture + '\'' +
+                ", profilePicture='" + profilePictureName + '\'' +
                 ", balance=" + balance +
                 ", role=" + role +
                 '}';

@@ -7,7 +7,7 @@ public enum Role {
     MODER(2),
     USER(3);
 
-    private int roleNumber;
+    private final int roleNumber;
 
     Role(int roleNumber) {
         this.roleNumber = roleNumber;

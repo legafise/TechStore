@@ -46,11 +46,6 @@ public class JWDUserDao implements UserDao {
     private final DaoMapper daoMapper;
     private Connection connection;
 
-    @Override
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
     public JWDUserDao() {
         daoMapper = new DaoMapper();
     }
@@ -128,7 +123,7 @@ public class JWDUserDao implements UserDao {
         statement.setString(3, user.getLogin());
         statement.setString(4, user.getPassword());
         statement.setString(5, user.getEmail());
-        statement.setString(6, user.getProfilePicture());
+        statement.setString(6, user.getProfilePictureName());
         statement.setDate(7, Date.valueOf(user.getBirthDate()));
         statement.setBigDecimal(8, user.getBalance());
         statement.setInt(9, user.getRole().getRoleNumber());
@@ -173,7 +168,6 @@ public class JWDUserDao implements UserDao {
             preparedStatement.setLong(1, goodId);
             preparedStatement.setLong(2, userId);
             preparedStatement.setInt(3, quantity + findGoodQuantity(userId, goodId));
-            clearGoodFromBasket(userId, goodId);
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new DaoException(e.getMessage());
@@ -185,6 +179,8 @@ public class JWDUserDao implements UserDao {
         return false;
     }
 
+    // TODO: 18.11.2021 Сделать метод для поиска всех твоаров корзины юзера + метод апдейта карзины а все остальное сервис 
+    
     private int findGoodQuantity(Long userId, Long goodId) throws SQLException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_GOOD_QUANTITY)) {
             preparedStatement.setLong(1, userId);

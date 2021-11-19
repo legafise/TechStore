@@ -3,6 +3,7 @@ package by.lashkevich.logic.dao.impl;
 import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.OrderDao;
 import by.lashkevich.logic.dao.mapper.DaoMapper;
+import by.lashkevich.logic.dao.pool.ConnectionPool;
 import by.lashkevich.logic.entity.Order;
 import by.lashkevich.logic.entity.OrderStatusException;
 
@@ -66,20 +67,15 @@ public class JWDOrderDao implements OrderDao {
     private static final String UPDATE_ORDER_SQL = "UPDATE orders SET status = ?, price = ?, user_id = ?," +
             " address = ?, date = ? WHERE id = ?";
     private final DaoMapper daoMapper;
-    private Connection connection;
 
     public JWDOrderDao() {
         daoMapper = new DaoMapper();
     }
 
     @Override
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    @Override
     public List<Order> findAll() throws DaoException {
-        try (Statement statement = connection.createStatement()) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_ORDERS_SQL);
             List<Order> orders = new ArrayList<>();
 
@@ -95,7 +91,8 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public Optional<Order> findById(Long id) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ORDER_BY_ID_SQL);) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ORDER_BY_ID_SQL);) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Order order = daoMapper.mapOrder(resultSet);
@@ -108,7 +105,8 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public boolean add(Order order) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_ORDER_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_ORDER_SQL)) {
             fillOrderData(order, statement);
 
             return statement.executeUpdate() == 1;
@@ -119,7 +117,8 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public boolean removeById(Long id) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(REMOVE_ORDER_BY_ID_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(REMOVE_ORDER_BY_ID_SQL)) {
             statement.setLong(1, id);
 
             return statement.executeUpdate() == 1;
@@ -130,7 +129,8 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public List<Order> findOrdersByUserId(Long userId) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_BY_USER_ID_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_BY_USER_ID_SQL)) {
             statement.setLong(1, userId);
             ResultSet resultSet = statement.executeQuery();
             List<Order> orders = new ArrayList<>();
@@ -147,7 +147,8 @@ public class JWDOrderDao implements OrderDao {
 
     @Override
     public boolean update(Order order) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SQL)) {
             statement.setLong(6, order.getId());
             fillOrderData(order, statement);
 

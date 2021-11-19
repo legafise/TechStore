@@ -8,14 +8,14 @@ public enum OrderStatus {
     COMPLETED("The order is completed");
 
     private static final String UNKNOWN_STATUS_MESSAGE = "Unknown order status";
-    private final String status;
+    private final String statusContent;
 
-    OrderStatus(String status) {
-        this.status = status;
+    OrderStatus(String statusContent) {
+        this.statusContent = statusContent;
     }
 
     public String getStatusContent() {
-        return status;
+        return statusContent;
     }
 
     public static OrderStatus findStatus(String statusContent) throws OrderStatusException {

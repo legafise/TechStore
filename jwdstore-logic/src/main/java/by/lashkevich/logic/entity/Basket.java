@@ -8,13 +8,13 @@ public class Basket implements Entity {
     private Map<Good, Integer> goods;
     private User owner;
 
+    public Basket() {
+        goods = new HashMap<>();
+    }
+
     public Basket(Map<Good, Integer> goods, User owner) {
         this.goods = goods;
         this.owner = owner;
-    }
-
-    public Basket() {
-        goods = new HashMap<>();
     }
 
     public Map<Good, Integer> getGoods() {

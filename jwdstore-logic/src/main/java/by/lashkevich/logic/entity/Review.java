@@ -8,6 +8,9 @@ public class Review implements Entity {
     private String content;
     private User author;
 
+    public Review() {
+    }
+
     public Review(long id, float rate, String content, User author) {
         this.id = id;
         this.rate = rate;
@@ -19,9 +22,6 @@ public class Review implements Entity {
         this.rate = rate;
         this.content = content;
         this.author = author;
-    }
-
-    public Review() {
     }
 
     public long getId() {

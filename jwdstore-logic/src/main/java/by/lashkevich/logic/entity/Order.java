@@ -10,10 +10,14 @@ public class Order implements Entity {
     private long id;
     private OrderStatus status;
     private String address;
-    private Map<Good, Integer> goods;
     private BigDecimal price;
     private LocalDate date;
     private User customer;
+    private Map<Good, Integer> goods;
+
+    public Order() {
+        goods = new HashMap<>();
+    }
 
     public Order(long id, OrderStatus status, String address, Map<Good, Integer> goods,
                  BigDecimal price, LocalDate date, User customer) {
@@ -52,10 +56,6 @@ public class Order implements Entity {
         this.price = price;
         this.date = date;
         this.customer = customer;
-        goods = new HashMap<>();
-    }
-
-    public Order() {
         goods = new HashMap<>();
     }
 

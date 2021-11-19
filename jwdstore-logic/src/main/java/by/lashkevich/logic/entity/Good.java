@@ -14,6 +14,10 @@ public class Good implements Entity {
     private String imgURL;
     private List<Review> reviews;
 
+    public Good() {
+        reviews = new ArrayList<>();
+    }
+
     public Good(long id, String name, BigDecimal price, String description,
                 String type, String imgURL) {
         this.id = id;
@@ -32,10 +36,6 @@ public class Good implements Entity {
         this.type = type;
         this.imgURL = imgURL;
         this.reviews = new ArrayList<>();
-    }
-
-    public Good() {
-        reviews = new ArrayList<>();
     }
 
     public long getId() {

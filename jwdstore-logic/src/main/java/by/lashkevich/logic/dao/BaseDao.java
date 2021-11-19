@@ -12,5 +12,4 @@ public interface BaseDao<K, T extends Entity> {
     boolean add(T entity) throws DaoException;
     boolean removeById(K id) throws DaoException;
     boolean update(T entity) throws DaoException;
-    void setConnection(Connection connection);
 }

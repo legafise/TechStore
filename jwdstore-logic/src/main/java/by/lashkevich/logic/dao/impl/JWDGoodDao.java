@@ -3,6 +3,7 @@ package by.lashkevich.logic.dao.impl;
 import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.GoodDao;
 import by.lashkevich.logic.dao.mapper.DaoMapper;
+import by.lashkevich.logic.dao.pool.ConnectionPool;
 import by.lashkevich.logic.entity.Good;
 
 import java.sql.*;
@@ -39,20 +40,15 @@ public class JWDGoodDao implements GoodDao {
             "picture = ? WHERE id = ?";
     private static final String GOOD_TYPE_ID = "good_type_id";
     private final DaoMapper daoMapper;
-    private Connection connection;
 
     public JWDGoodDao() {
         daoMapper = new DaoMapper();
     }
 
     @Override
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    @Override
     public List<Good> findAll() throws DaoException {
-        try (Statement statement = connection.createStatement()) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_GOODS_SQL);
             List<Good> goods = new ArrayList<>();
 
@@ -68,7 +64,8 @@ public class JWDGoodDao implements GoodDao {
 
     @Override
     public Optional<Good> findById(Long id) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_GOOD_BY_ID_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_GOOD_BY_ID_SQL)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Good good = daoMapper.mapGood(resultSet);
@@ -81,7 +78,8 @@ public class JWDGoodDao implements GoodDao {
 
     @Override
     public boolean add(Good good) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_GOOD_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_GOOD_SQL)) {
             fillGoodData(good, statement);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -91,7 +89,8 @@ public class JWDGoodDao implements GoodDao {
 
     @Override
     public boolean removeById(Long id) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(REMOVE_GOOD_BY_ID_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(REMOVE_GOOD_BY_ID_SQL)) {
             statement.setLong(1, id);
 
             return statement.executeUpdate() == 1;
@@ -102,7 +101,8 @@ public class JWDGoodDao implements GoodDao {
 
     @Override
     public boolean update(Good good) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_GOOD_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_GOOD_SQL)) {
             statement.setLong(6, good.getId());
             fillGoodData(good, statement);
 
@@ -114,7 +114,8 @@ public class JWDGoodDao implements GoodDao {
 
 
     private int findTypeIDByName(String typeName) throws DaoException, SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_TYPE_BY_NAME_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_TYPE_BY_NAME_SQL)) {
             statement.setString(1, typeName);
             ResultSet resultSet = statement.executeQuery();
             int typeId = 0;

@@ -1,11 +1,13 @@
 package by.lashkevich.logic.dao.transaction;
 
-import by.lashkevich.logic.dao.BaseDao;
 import by.lashkevich.logic.dao.DaoException;
-import by.lashkevich.logic.dao.DaoType;
 
 public interface Transaction {
-    <T extends BaseDao<?, ?>> T createDao(DaoType type);
     void commit() throws DaoException;
     void rollback() throws DaoException;
+    void closeTransaction() throws DaoException;
+
+    // TODO: 18.11.2021 Уровни изоляций транзакций
+    // TODO: 18.11.2021 ASID
+    // TODO: 18.11.2021 Dirty Read, Repeatable Read etc 
 }

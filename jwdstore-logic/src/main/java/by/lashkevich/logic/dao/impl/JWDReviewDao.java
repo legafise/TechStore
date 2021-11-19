@@ -3,6 +3,7 @@ package by.lashkevich.logic.dao.impl;
 import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.ReviewDao;
 import by.lashkevich.logic.dao.mapper.DaoMapper;
+import by.lashkevich.logic.dao.pool.ConnectionPool;
 import by.lashkevich.logic.entity.Review;
 
 import java.sql.*;
@@ -32,20 +33,15 @@ public class JWDReviewDao implements ReviewDao {
     private static final String UPDATE_REVIEW_SQL = "UPDATE reviews SET rate = ?, content = ?," +
             " user_id = ? WHERE id = ?";
     private final DaoMapper mapper;
-    private Connection connection;
 
     public JWDReviewDao() {
         this.mapper = new DaoMapper();
     }
 
     @Override
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    @Override
     public List<Review> findAll() throws DaoException {
-        try (Statement statement = connection.createStatement();) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_REVIEWS_SQL);
             List<Review> reviews = new ArrayList<>();
 
@@ -61,7 +57,8 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public Optional<Review> findById(Long id) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(FIND_REVIEW_BY_ID_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_REVIEW_BY_ID_SQL)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             Review review = new Review();
@@ -78,7 +75,8 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public boolean add(Review review) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(CREATE_REVIEW_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_REVIEW_SQL)) {
             fillReviewData(review, statement);
 
             return statement.executeUpdate() == 1;
@@ -89,7 +87,8 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public boolean removeById(Long id) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(REMOVE_REVIEW_BY_ID_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(REMOVE_REVIEW_BY_ID_SQL)) {
             statement.setLong(1, id);
 
             return statement.executeUpdate() == 1;
@@ -100,7 +99,8 @@ public class JWDReviewDao implements ReviewDao {
 
     @Override
     public boolean update(Review review) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_REVIEW_SQL)) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_REVIEW_SQL)) {
             statement.setLong(4, review.getId());
             fillReviewData(review, statement);
 
@@ -109,6 +109,9 @@ public class JWDReviewDao implements ReviewDao {
             throw new DaoException(e.getMessage());
         }
     }
+
+    // TODO: 18.11.2021 connect review to good
+    // TODO: 18.11.2021 работать стзывами через сервис отзывов
 
     private void fillReviewData(Review review, PreparedStatement statement) throws SQLException {
         statement.setFloat(1, review.getRate());
