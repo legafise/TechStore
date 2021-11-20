@@ -21,7 +21,7 @@
 
 LOCK TABLES `baskets` WRITE;
 /*!40000 ALTER TABLE `baskets` DISABLE KEYS */;
-INSERT INTO `baskets` VALUES (2,1,1),(5,2,1),(5,6,1),(6,1,2);
+INSERT INTO `baskets` VALUES (2,1,1),(2,2,1),(5,2,1),(5,6,1),(6,1,2);
 /*!40000 ALTER TABLE `baskets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -31,7 +31,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `goods` WRITE;
 /*!40000 ALTER TABLE `goods` DISABLE KEYS */;
-INSERT INTO `goods` VALUES (1,'Iphone 13',3144.23,1,'Expensive but cool thing','iphone13.jpg'),(2,'Lenovo Ideapad 3',3506.34,3,'Laptop for work','Ideapad2.jpg'),(6,'Poco X3 PRO',439.43,1,'Best chois for the money','default.jpg');
+INSERT INTO `goods` VALUES (1,'Iphone 13',3144.23,1,'Expensive but cool thing','iphone13.jpg'),(2,'Lenovo Ideapad 3',3506.34,3,'Laptop for work','lenovoIdeapad3.jpg'),(6,'Poco X3 PRO',439.43,1,'Best chois for the money','pocoX3pro.jpg'),(7,'Play Station 5',2534.32,7,'The best game console','ps5.jpg'),(8,'Apple Watch Series 6',999.99,4,'For apple lovers','appleWatchS6.jpeg'),(9,'TV SAMSUNG UE50TU7097UXRU',1290.00,2,'Good TV from Samsung','SAMSUNG_UE50TU7097UXRU.jpg');
 /*!40000 ALTER TABLE `goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +81,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'Roman','Lash','legafise','12340987','tapoc04@yandex.ru','default.jpg','2004-02-12',126,3),(5,'Vasya','Pupkin','PupVasi','12345678','vasyapup@yandex.ru','default.jpg','2003-05-16',65,3),(6,'Gleb','Kirienko','SirPakun','zim','floppa@mail.ru','default.jpg','2003-07-31',243,3);
+INSERT INTO `users` VALUES (2,'Roman','Lash','legafise','12340987','tapoc04@yandex.ru','default.jpg','2004-02-12',126,3),(3,'Admin','Admin','Admin','Admin','techstore@gmail.com','default.jpg','2001-01-01',0,1),(4,'Moder','Moder','Moder','Mpder','techstore.suport@gmail.com','default.jpg','2002-02-02',0,2),(5,'Vasya','Pupkin','PupVasi','12345678','vasyapup@yandex.ru','default.jpg','2003-05-16',65,3),(6,'Gleb','Kirienko','SirPakun','zim','floppa@mail.ru','default.jpg','2003-07-31',243,3);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -94,4 +94,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-10 14:12:12
+-- Dump completed on 2021-11-20 15:52:30
