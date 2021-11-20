@@ -2,7 +2,6 @@ package by.lashkevich.logic.dao;
 
 import by.lashkevich.logic.entity.Entity;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
