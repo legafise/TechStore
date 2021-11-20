@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%request.setAttribute("cssPath", request.getContextPath() + "/static/css/style.css");%>
-<%request.setAttribute("catalogPath", request.getContextPath() + "/controller?command=catalog");%>
-<%request.setAttribute("changeLanguageCommand", request.getContextPath() + "/controller?command=change_language");%>
+<c:url value="/css/style.css" var="cssPath"/>
+<c:url value="/controller?command=catalog" var="catalogPath"/>
+<c:url value="/controller?command=change_language" var="changeLanguageCommand"/>
 
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
@@ -25,27 +25,27 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="${catalogPath}"><fmt:message key="catalog"/><span
-                        class="sr-only">(current)</span></a>
+            <li class="nav-item ${currentPage == 'catalog' ? 'active' : ''}">
+                <a class="nav-link" href="${catalogPath}"><fmt:message key="catalog"/></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href=""><fmt:message key="basket"/><span class="sr-only">(current)</span></a>
+            <li class="nav-item ${currentPage == 'basket' ? 'active' : ''}">
+                <a class="nav-link" href=""><fmt:message key="basket"/></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href=""><fmt:message key="registration"/><span class="sr-only">(current)</span></a>
+            <li class="nav-item ${currentPage == 'registration' ? 'active' : ''}">
+                <a class="nav-link" href=""><fmt:message key="registration"/></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href=""><fmt:message key="sing.in"/><span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href=""></a>
+            <li class="nav-item ${currentPage == 'sing_in' ? 'active' : ''}">
+                <a class="nav-link" href=""><fmt:message key="sing.in"/></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href=""></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href=""></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=""></a>
+                ${uri}
             </li>
             <li class="nav-item">
                 <form action="${changeLanguageCommand}" method="post">

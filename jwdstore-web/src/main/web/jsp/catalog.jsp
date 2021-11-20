@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:url value="/static/img/" var="imgPath" />
+<c:url value="/img/" var="imgPath" />
 <fmt:setLocale value="${locale}" scope="session" />
 <fmt:setBundle basename="languages.keywords" />
 
@@ -44,5 +44,3 @@
 </main>
 
 <c:import url="footer.jsp"/>
-
-
