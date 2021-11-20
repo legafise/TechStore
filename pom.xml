@@ -5,13 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>by.lashkevich.jwdstore</groupId>
-    <artifactId>jwdtore</artifactId>
+    <artifactId>jwdstore</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <modules>
         <module>jwdstore-logic</module>
         <module>jwdstore-web</module>
+        <module>jwdstore-resource</module>
     </modules>
 
     <properties>
@@ -23,6 +24,7 @@
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
         <jstl.version>1.2</jstl.version>
         <jwdstore.logic.version>1.0-SNAPSHOT</jwdstore.logic.version>
+        <jwdstore.resource.version>1.0-SNAPSHOT</jwdstore.resource.version>
     </properties>
 
     <dependencyManagement>
@@ -76,6 +78,12 @@
                 <groupId>by.lashkevich.jwdstore</groupId>
                 <artifactId>jwdstore-logic</artifactId>
                 <version>${jwdstore.logic.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>by.lashkevich.jwdstore</groupId>
+                <artifactId>jwdstore-resource</artifactId>
+                <version>${jwdstore.resource.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
