@@ -22,6 +22,7 @@ public class ChangeLanguageCommand implements Command {
             request.getSession().setAttribute("locale", localeName);
         }
 
-        return new CommandResult(CommandResult.ResponseType.FORWARD,"/controller?command=catalog");
+        String currentPage = request.getHeader("referer").substring(30);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, currentPage);
     }
 }

@@ -9,16 +9,12 @@ import by.lashkevich.web.controller.command.CommandResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/controller")
 public class JWDController extends HttpServlet {
@@ -27,6 +23,7 @@ public class JWDController extends HttpServlet {
     @Override
     public void init() {
         try {
+            LOGGER.debug("init");
             ConnectionPool.getInstance().initializeConnectionPool(3);
         } catch (ConnectionPoolException e) {
             LOGGER.error(e);
@@ -51,7 +48,7 @@ public class JWDController extends HttpServlet {
             if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
                 req.getRequestDispatcher(commandResult.getPage()).forward(req, resp);
             } else {
-                resp.sendRedirect(commandResult.getPage());
+                resp.sendRedirect(req.getContextPath() + commandResult.getPage());
             }
         } catch (ServletException | IOException | CommandException e) {
             LOGGER.error(e);
