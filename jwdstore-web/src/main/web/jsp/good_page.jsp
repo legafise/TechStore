@@ -9,7 +9,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Good page</title>
+    <title>${good.name}</title>
     <c:import url="header.jsp"/>
     <main>
         <div class="container-fluid name">
@@ -38,20 +38,76 @@
             </div>
         </div>
         <br>
-        <div class="container-fluid">
-            <p class="h2 bold" align="center">Отзывы</p>
-        </div>
-        <c:forEach var="review" items="${good.reviews}">
+        <c:if test="${good.reviews.size() == 0}">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-2"></div>
-                    <div class="col-xl-8">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-xl-4">
-                                            <img src="${imgPath}users_${review.author.profilePictureName}" alt="profile picture"/>
+                <p class="h2 bold" align="center"><fmt:message key="no.reviews"/></p>
+            </div>
+        </c:if>
+        <c:if test="${good.reviews.size() != 0}">
+            <div class="container-fluid">
+                <p class="h2 bold" align="center"><fmt:message key="reviews"/></p>
+            </div>
+            <c:forEach var="review" items="${good.reviews}">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-1"></div>
+                        <div class="col-xl-10">
+                            <div class="card review">
+                                <div class="card-body">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <p class="h4">${review.author.login}</p>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xl-2">
+                                                <img class="review-img"
+                                                     src="${imgPath}users_${review.author.profilePictureName}"
+                                                     alt="profile picture"/>
+                                            </div>
+                                            <div class="col-xl-8">
+                                                <div class="review-content">${review.content}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="rating-mini">
+                                                <c:choose>
+                                                    <c:when test="${review.rate == 1}">
+                                                        <span class="active"></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </c:when>
+                                                    <c:when test="${review.rate == 2}">
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </c:when>
+                                                    <c:when test="${review.rate == 3}">
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                    </c:when>
+                                                    <c:when test="${review.rate == 4}">
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span></span>
+                                                    </c:when>
+                                                    <c:when test="${review.rate == 5}">
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                        <span class="active"></span>
+                                                    </c:when>
+                                                </c:choose>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -59,8 +115,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </c:forEach>
+            </c:forEach>
+        </c:if>
     </main>
 
     <c:import url="footer.jsp"/>

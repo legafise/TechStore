@@ -310,3 +310,35 @@ a {
     outline: 0;
     outline-offset: 0;
 }
+
+.review-img {
+    margin: 10px;
+    width: 17vh;
+    height: 17vh;
+}
+
+.rating-mini {
+    display: inline-block;
+    font-size: 0;
+}
+.rating-mini span {
+    padding: 0;
+    font-size: 45px;
+    line-height: 1;
+    color: lightgrey;
+}
+.rating-mini > span:before {
+    content: '*';
+}
+.rating-mini > span.active {
+    color: gold;
+}
+
+.review-content {
+    font-family: "Segoe UI";
+    font-size: 20px;
+}
+
+.review {
+    margin-top: 15px;
+}

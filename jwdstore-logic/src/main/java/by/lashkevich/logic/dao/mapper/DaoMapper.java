@@ -72,7 +72,7 @@ public class DaoMapper {
     public Review mapReview(ResultSet resultSet) throws SQLException {
         Review review = new Review();
         review.setId(resultSet.getLong(REVIEW_ID));
-        review.setRate(resultSet.getFloat(REVIEW_RATE));
+        review.setRate(resultSet.getShort(REVIEW_RATE));
         review.setContent(resultSet.getString(REVIEW_CONTENT));
         review.setAuthor(mapReviewUser(resultSet));
         return review;

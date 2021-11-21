@@ -4,21 +4,21 @@ import java.util.Objects;
 
 public class Review implements Entity {
     private long id;
-    private float rate;
+    private short rate;
     private String content;
     private User author;
 
     public Review() {
     }
 
-    public Review(long id, float rate, String content, User author) {
+    public Review(long id, short rate, String content, User author) {
         this.id = id;
         this.rate = rate;
         this.content = content;
         this.author = author;
     }
 
-    public Review(float rate, String content, User author) {
+    public Review(short rate, String content, User author) {
         this.rate = rate;
         this.content = content;
         this.author = author;
@@ -32,11 +32,11 @@ public class Review implements Entity {
         this.id = id;
     }
 
-    public float getRate() {
+    public short getRate() {
         return rate;
     }
 
-    public void setRate(float rate) {
+    public void setRate(short rate) {
         this.rate = rate;
     }
 

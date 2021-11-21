@@ -114,7 +114,7 @@ public class JWDReviewDao implements ReviewDao {
     // TODO: 18.11.2021 работать стзывами через сервис отзывов
 
     private void fillReviewData(Review review, PreparedStatement statement) throws SQLException {
-        statement.setFloat(1, review.getRate());
+        statement.setShort(1, review.getRate());
         statement.setString(2, review.getContent());
         statement.setLong(3, review.getAuthor().getId());
     }
