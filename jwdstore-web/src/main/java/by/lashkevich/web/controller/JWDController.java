@@ -42,7 +42,23 @@ public class JWDController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            Command command = CommandFactory.findCommandByRequest(req);
+            handleRequest(req, resp, CommandFactory.findCommandByRequest(req, true));
+        } catch (CommandException e) {
+            handleRequest(req, resp, CommandFactory.ERROR.getCommand());
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            handleRequest(req, resp, CommandFactory.findCommandByRequest(req, false));
+        } catch (CommandException e) {
+            handleRequest(req, resp, CommandFactory.ERROR.getCommand());
+        }
+    }
+
+    private void handleRequest(HttpServletRequest req, HttpServletResponse resp, Command command) throws IOException {
+        try {
             CommandResult commandResult = command.execute(req);
 
             if (commandResult.getResponseType() == CommandResult.ResponseType.FORWARD) {
@@ -54,10 +70,5 @@ public class JWDController extends HttpServlet {
             LOGGER.error(e);
             resp.sendRedirect(req.getContextPath() + "/controller?command=error");
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doGet(req, resp);
     }
 }
