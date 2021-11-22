@@ -34,6 +34,17 @@ public class User implements Entity {
     }
 
     public User(String name, String surname, String login, String password, String email, LocalDate birthDate,
+                String profilePictureName) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.profilePictureName = profilePictureName;
+    }
+
+    public User(String name, String surname, String login, String password, String email, LocalDate birthDate,
                 String profilePictureName, BigDecimal balance, Role role) {
         this.name = name;
         this.surname = surname;

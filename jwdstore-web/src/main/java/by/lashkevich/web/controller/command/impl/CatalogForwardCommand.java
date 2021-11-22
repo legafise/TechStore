@@ -21,7 +21,7 @@ public class CatalogForwardCommand implements Command {
             request.setAttribute("currentPage", "catalog");
             return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/catalog.jsp");
         } catch (ServiceException e) {
-            throw new CommandException(e.getMessage());
+            throw new CommandException(e);
         }
     }
 }

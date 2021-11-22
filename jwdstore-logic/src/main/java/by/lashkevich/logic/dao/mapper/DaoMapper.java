@@ -140,6 +140,8 @@ public class DaoMapper {
 
     public Basket mapBasket(ResultSet resultSet) throws SQLException {
         Basket basket = new Basket();
+        resultSet.next();
+        basket.setOwner(mapUser(resultSet));
 
         while (resultSet.next()) {
             basket.getGoods().put(mapGoodInBasket(resultSet), resultSet.getInt(GOOD_QUANTITY));

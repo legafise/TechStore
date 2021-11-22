@@ -1,9 +1,11 @@
 package by.lashkevich.logic.service;
 
 import by.lashkevich.logic.service.impl.JWDGoodService;
+import by.lashkevich.logic.service.impl.JWDUserService;
 
 public enum ServiceFactory {
-    GOOD_SERVICE(new JWDGoodService());
+    GOOD_SERVICE(new JWDGoodService()),
+    USER_SERVICE(new JWDUserService());
 
     private final Service<?> service;
 

@@ -12,7 +12,8 @@ public class GoodValidator implements Predicate<Good> {
     @Override
     public boolean test(Good good) {
         return good != null && validateGoodName(good.getName()) && validateGoodPrice(good.getPrice())
-                && validateGoodDescription(good.getDescription()) && validateGoodType(good.getType());
+                && validateGoodDescription(good.getDescription()) && validateGoodType(good.getType())
+                && good.getImgURL() != null;
     }
 
     private boolean validateGoodType(String type) {

@@ -51,7 +51,7 @@ public class JWDReviewDao implements ReviewDao {
 
             return reviews;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -69,7 +69,7 @@ public class JWDReviewDao implements ReviewDao {
 
             return review.getId() != 0 ? Optional.of(review) : Optional.empty();
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -81,7 +81,7 @@ public class JWDReviewDao implements ReviewDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -93,7 +93,7 @@ public class JWDReviewDao implements ReviewDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -106,7 +106,7 @@ public class JWDReviewDao implements ReviewDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 

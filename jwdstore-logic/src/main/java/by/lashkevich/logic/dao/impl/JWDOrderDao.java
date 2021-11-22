@@ -85,7 +85,7 @@ public class JWDOrderDao implements OrderDao {
 
             return orders;
         } catch (SQLException | OrderStatusException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -99,7 +99,7 @@ public class JWDOrderDao implements OrderDao {
 
             return order.getId() != 0 ? Optional.of(order) : Optional.empty();
         } catch (SQLException | OrderStatusException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -111,7 +111,7 @@ public class JWDOrderDao implements OrderDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -123,7 +123,7 @@ public class JWDOrderDao implements OrderDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -141,7 +141,7 @@ public class JWDOrderDao implements OrderDao {
 
             return orders;
         } catch (SQLException | OrderStatusException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -154,7 +154,7 @@ public class JWDOrderDao implements OrderDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 

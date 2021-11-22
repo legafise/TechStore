@@ -58,7 +58,7 @@ public class JWDGoodDao implements GoodDao {
 
             return goods;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -72,7 +72,7 @@ public class JWDGoodDao implements GoodDao {
 
             return good.getId() != 0 ? Optional.of(good) : Optional.empty();
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -83,7 +83,7 @@ public class JWDGoodDao implements GoodDao {
             fillGoodData(good, statement);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -95,7 +95,7 @@ public class JWDGoodDao implements GoodDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
@@ -108,7 +108,7 @@ public class JWDGoodDao implements GoodDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e);
         }
     }
 
