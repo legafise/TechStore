@@ -78,7 +78,6 @@ public class ConnectionPool {
                         propertiesReader.readProperties())));
             }
         } catch (ClassNotFoundException | SQLException | PropertiesReaderException e) {
-            // TODO: 18.11.2021 Убрать гет месейдж
             throw new ConnectionPoolException(e);
         } finally {
             CONNECTION_LOCK.unlock();

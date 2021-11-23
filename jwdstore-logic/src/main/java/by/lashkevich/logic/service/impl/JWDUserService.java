@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 public class JWDUserService implements UserService {
     private static final String EMPTY_PICTURE_NAME = "";
     private static final String STANDARD_USER_PICTURE_NAME = "users_default";
-    private static final String NONEXISTENT_USER_ID_MESSAGE = "Nonexistent user id was received";
+    private static final String NONEXISTENT_USER_MESSAGE = "Nonexistent user data was received";
     private static final String INVALID_USER_MESSAGE = "Invalid user was received";
     private static final String USERS_BASKET_IS_EMPTY_MESSAGE = "The user dont have goods" +
             " in basket or user id is invalid";
@@ -52,7 +52,7 @@ public class JWDUserService implements UserService {
                 return userOptional.get();
             }
 
-            throw new ServiceException(NONEXISTENT_USER_ID_MESSAGE);
+            throw new ServiceException(NONEXISTENT_USER_MESSAGE);
         } catch (DaoException | NumberFormatException e) {
             throw new ServiceException(e);
         }
@@ -106,6 +106,24 @@ public class JWDUserService implements UserService {
 
             throw new ServiceException(USERS_BASKET_IS_EMPTY_MESSAGE);
         } catch (DaoException | NumberFormatException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) throws ServiceException {
+        try {
+            return userDao.findByEmail(email);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findUserByLogin(String login) throws ServiceException {
+        try {
+            return userDao.findByLogin(login);
+        } catch (DaoException e) {
             throw new ServiceException(e);
         }
     }

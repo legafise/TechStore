@@ -1,7 +1,6 @@
 package by.lashkevich.logic.dao.pool;
 
 public class ConnectionPoolException extends RuntimeException {
-    // TODO: 18.11.2021 Везде рантайм
     public ConnectionPoolException() {
     }
 

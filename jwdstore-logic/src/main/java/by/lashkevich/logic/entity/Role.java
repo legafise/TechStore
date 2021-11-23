@@ -3,18 +3,24 @@ package by.lashkevich.logic.entity;
 import java.util.Arrays;
 
 public enum Role {
-    ADMIN(1),
-    MODER(2),
-    USER(3);
+    ADMIN(1, "admin"),
+    MODER(2, "moder"),
+    USER(3, "user");
 
     private final int roleNumber;
+    private final String roleName;
 
-    Role(int roleNumber) {
+    Role(int roleNumber, String roleName) {
         this.roleNumber = roleNumber;
+        this.roleName = roleName;
     }
 
     public int getRoleNumber() {
         return roleNumber;
+    }
+
+    public String getRoleName() {
+        return roleName;
     }
 
     public static Role findRole(int roleNumber) {

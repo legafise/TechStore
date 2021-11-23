@@ -12,6 +12,7 @@ public class CommandResult {
     private String page;
 
     public CommandResult() {
+        page = "";
     }
 
     public CommandResult(ResponseType responseType, String page) {

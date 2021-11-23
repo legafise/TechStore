@@ -44,6 +44,11 @@
             <groupId>by.lashkevich.jwdstore</groupId>
             <artifactId>jwdstore-resource</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

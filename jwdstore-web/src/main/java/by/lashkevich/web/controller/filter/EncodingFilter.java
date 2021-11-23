@@ -30,6 +30,10 @@ public class EncodingFilter implements Filter {
             httpServletResponse.setCharacterEncoding(encoding);
         }
 
+        httpServletResponse.setHeader("Cache-Control", "no-cache");
+        httpServletResponse.setHeader("Pragma", "no-cache");
+        httpServletResponse.setDateHeader("Expires", 0);
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

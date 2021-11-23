@@ -1,9 +1,6 @@
 package by.lashkevich.web.controller.command;
 
-import by.lashkevich.web.controller.command.impl.CatalogForwardCommand;
-import by.lashkevich.web.controller.command.impl.ChangeLanguageCommand;
-import by.lashkevich.web.controller.command.impl.ErrorCommand;
-import by.lashkevich.web.controller.command.impl.GoodPageForwardCommand;
+import by.lashkevich.web.controller.command.impl.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -12,13 +9,19 @@ public enum CommandFactory {
     CATALOG(new CatalogForwardCommand(), "catalog", true),
     ERROR(new ErrorCommand(), "error", true),
     CHANGE_LANGUAGE(new ChangeLanguageCommand(), "change_language", false),
-    GOOD_PAGE_FORWARD(new GoodPageForwardCommand(), "good", true);
+    GOOD_PAGE_FORWARD(new GoodPageForwardCommand(), "good", true),
+    AUTHORIZATION_PAGE_FORWARD(new AuthorizationPageForwardCommand(), "authorization_page", true),
+    AUTHORIZATION(new AuthorizationCommand(), "authorization", false),
+    CHECK_AUTHORIZATION(new CheckAuthorizationCommand(), "check_authorization", true),
+    LOG_OUT(new LogOutCommand(), "log_out", true),
+    PROFILE_FORWARD(new ProfilePageForwardCommand(), "profile", true),
+    REGISTRATION_PAGE(new RegistrationPageForwardCommand(), "registration_page", true);
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
     private static final String COMMAND_PARAMETER_NAME = "command";
     private final Command command;
     private final String commandName;
-    private boolean isGetMethodCommand;
+    private final boolean isGetMethodCommand;
 
     CommandFactory(Command command, String commandName, boolean isGetMethodCommand) {
         this.command = command;

@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/controller")
+@MultipartConfig(location = "C:\\IdeaProjects\\JWDStore\\jwdstore-web\\src\\main\\web\\download")
 public class JWDController extends HttpServlet {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
@@ -44,6 +46,7 @@ public class JWDController extends HttpServlet {
         try {
             handleRequest(req, resp, CommandFactory.findCommandByRequest(req, true));
         } catch (CommandException e) {
+            LOGGER.error(e);
             handleRequest(req, resp, CommandFactory.ERROR.getCommand());
         }
     }
@@ -53,6 +56,7 @@ public class JWDController extends HttpServlet {
         try {
             handleRequest(req, resp, CommandFactory.findCommandByRequest(req, false));
         } catch (CommandException e) {
+            LOGGER.error(e);
             handleRequest(req, resp, CommandFactory.ERROR.getCommand());
         }
     }

@@ -8,6 +8,12 @@
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>SecurityFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter-mapping>
         <filter-name>PageRedirectSecurityFilter</filter-name>
         <url-pattern>/jsp/*</url-pattern>

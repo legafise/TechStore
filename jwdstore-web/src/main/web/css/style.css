@@ -49,6 +49,7 @@ a {
     font-family: "Segoe UI";
     font-size: 1.05rem;
     padding-right: 10px;
+    margin-right: 17px;
 }
 
 .basket-indents {
@@ -186,8 +187,8 @@ a {
     min-height: 45vh;
 }
 
-.authorization-form-idents {
-    margin-top: 40%;
+.authorization-form-indents {
+    margin-top: 30%;
     margin-bottom: 25%;
 }
 
@@ -239,7 +240,7 @@ a {
 
 .user-info {
     font-family: "Segoe UI";
-    font-size: 1.55rem;
+    font-size: 1.45rem;
 }
 
 .user-info-card {
@@ -341,4 +342,8 @@ a {
 
 .review {
     margin-top: 15px;
+}
+
+.authorization-result {
+    margin-top: 10px;
 }

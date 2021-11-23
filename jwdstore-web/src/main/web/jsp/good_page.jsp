@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:url value="/img/" var="imgPath"/>
+<c:url value="/download/" var="imgPath"/>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
 
@@ -50,8 +50,8 @@
             <c:forEach var="review" items="${good.reviews}">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xl-1"></div>
-                        <div class="col-xl-10">
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-10">
                             <div class="card review">
                                 <div class="card-body">
                                     <div class="container-fluid">
@@ -59,12 +59,12 @@
                                             <p class="h4">${review.author.login}</p>
                                         </div>
                                         <div class="row">
-                                            <div class="col-xl-2">
+                                            <div class="col-lg-2">
                                                 <img class="review-img"
                                                      src="${imgPath}users_${review.author.profilePictureName}"
                                                      alt="profile picture"/>
                                             </div>
-                                            <div class="col-xl-8">
+                                            <div class="col-lg-8">
                                                 <div class="review-content">${review.content}</div>
                                             </div>
                                         </div>

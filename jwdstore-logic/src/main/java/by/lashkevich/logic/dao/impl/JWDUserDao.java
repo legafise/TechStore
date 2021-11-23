@@ -94,7 +94,7 @@ public class JWDUserDao implements UserDao {
     public boolean add(User user) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_USER_SQL)) {
-            fillUserData(user, statement);
+            fillAddingUserData(user, statement);
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -119,7 +119,7 @@ public class JWDUserDao implements UserDao {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER_SQL)) {
             statement.setLong(10, user.getId());
-            fillUserData(user, statement);
+            fillUpdatingUserData(user, statement);
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
@@ -127,7 +127,7 @@ public class JWDUserDao implements UserDao {
         }
     }
 
-    private void fillUserData(User user, PreparedStatement statement) throws SQLException {
+    private void fillAddingUserData(User user, PreparedStatement statement) throws SQLException {
         statement.setString(1, user.getName());
         statement.setString(2, user.getSurname());
         statement.setString(3, user.getLogin());
@@ -135,6 +135,12 @@ public class JWDUserDao implements UserDao {
         statement.setString(5, user.getEmail());
         statement.setString(6, user.getProfilePictureName());
         statement.setDate(7, Date.valueOf(user.getBirthDate()));
+    }
+
+    private void fillUpdatingUserData(User user, PreparedStatement statement) throws SQLException {
+        fillAddingUserData(user, statement);
+        statement.setBigDecimal(8, user.getBalance());
+        statement.setInt(9, user.getRole().getRoleNumber());
     }
 
     @Override
