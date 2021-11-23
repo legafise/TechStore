@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 public class JWDUserService implements UserService {
     private static final String EMPTY_PICTURE_NAME = "";
-    private static final String STANDARD_USER_PICTURE_NAME = "users_default";
+    private static final String STANDARD_USER_PICTURE_NAME = "default.jpg";
     private static final String NONEXISTENT_USER_MESSAGE = "Nonexistent user data was received";
     private static final String INVALID_USER_MESSAGE = "Invalid user was received";
     private static final String USERS_BASKET_IS_EMPTY_MESSAGE = "The user dont have goods" +

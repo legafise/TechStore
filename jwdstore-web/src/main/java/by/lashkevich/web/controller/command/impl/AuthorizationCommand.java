@@ -36,7 +36,6 @@ public class AuthorizationCommand implements Command {
                 request.getSession().setAttribute("userId", user.getId());
                 request.getSession().setAttribute("balance", user.getBalance());
                 request.getSession().setAttribute("authorizationResult", true);
-//                Thread.currentThread().setName(user.getId() + user.getLogin());
                 // TODO: 22.11.2021 Перепроверить потоки 
             } else {
                 request.getSession().setAttribute("authorizationResult", false);

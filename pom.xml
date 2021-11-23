@@ -25,6 +25,7 @@
         <jstl.version>1.2</jstl.version>
         <jwdstore.logic.version>1.0-SNAPSHOT</jwdstore.logic.version>
         <jwdstore.resource.version>1.0-SNAPSHOT</jwdstore.resource.version>
+        <bcrypt.version>0.4</bcrypt.version>
     </properties>
 
     <dependencyManagement>
@@ -89,7 +90,7 @@
             <dependency>
                 <groupId>org.mindrot</groupId>
                 <artifactId>jbcrypt</artifactId>
-                <version>0.4</version>
+                <version>${bcrypt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

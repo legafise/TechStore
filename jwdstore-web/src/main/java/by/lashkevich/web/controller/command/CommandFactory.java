@@ -15,7 +15,9 @@ public enum CommandFactory {
     CHECK_AUTHORIZATION(new CheckAuthorizationCommand(), "check_authorization", true),
     LOG_OUT(new LogOutCommand(), "log_out", true),
     PROFILE_FORWARD(new ProfilePageForwardCommand(), "profile", true),
-    REGISTRATION_PAGE(new RegistrationPageForwardCommand(), "registration_page", true);
+    REGISTRATION_PAGE(new RegistrationPageForwardCommand(), "registration_page", true),
+    REGISTRATION(new RegistrationCommand(), "registration", false),
+    CHECK_REGISTRATION(new CheckRegistrationCommand(), "check_registration", true);
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
     private static final String COMMAND_PARAMETER_NAME = "command";

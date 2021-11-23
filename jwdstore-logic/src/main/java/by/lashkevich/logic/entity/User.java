@@ -17,6 +17,7 @@ public class User implements Entity {
     private Role role;
 
     public User() {
+        profilePictureName = "";
     }
 
     public User(long id, String name, String surname, String login, String password, String email, LocalDate birthDate,

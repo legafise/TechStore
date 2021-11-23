@@ -12,6 +12,17 @@
     <title><fmt:message key="authorization"/></title>
     <c:import url="header.jsp"/>
     <main>
+        <c:if test="${registrationResult == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="positive.registration.result"/> </strong> <fmt:message key="positive.registration.result.info"/>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("registrationResult");%>
+        </c:if>
         <c:if test="${authorizationResult == false}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
