@@ -20,8 +20,6 @@ public class JWDUserService implements UserService {
     private static final String STANDARD_USER_PICTURE_NAME = "default.jpg";
     private static final String NONEXISTENT_USER_MESSAGE = "Nonexistent user data was received";
     private static final String INVALID_USER_MESSAGE = "Invalid user was received";
-    private static final String USERS_BASKET_IS_EMPTY_MESSAGE = "The user dont have goods" +
-            " in basket or user id is invalid";
     private final UserDao userDao;
     private final Predicate<User> userValidator;
     private final Predicate<User> userAddingDuplicationChecker;
@@ -35,7 +33,7 @@ public class JWDUserService implements UserService {
     }
 
     @Override
-    public List<User> findAll() throws ServiceException {
+    public List<User> findAllUsers() throws ServiceException {
         try {
             return userDao.findAll();
         } catch (DaoException e) {
@@ -44,7 +42,7 @@ public class JWDUserService implements UserService {
     }
 
     @Override
-    public User findById(String id) throws ServiceException {
+    public User findUserById(String id) throws ServiceException {
         try {
             Optional<User> userOptional = userDao.findById(Long.parseLong(id));
 
@@ -59,7 +57,7 @@ public class JWDUserService implements UserService {
     }
 
     @Override
-    public boolean add(User user) throws ServiceException {
+    public boolean addUser(User user) throws ServiceException {
         try {
             if (userValidator.test(user) && userAddingDuplicationChecker.test(user)) {
                 setStandardPicture(user);
@@ -73,7 +71,7 @@ public class JWDUserService implements UserService {
     }
 
     @Override
-    public boolean removeById(String id) throws ServiceException {
+    public boolean removeUserById(String id) throws ServiceException {
         try {
             return userDao.removeById(Long.parseLong(id));
         } catch (DaoException | NumberFormatException e) {
@@ -82,7 +80,7 @@ public class JWDUserService implements UserService {
     }
 
     @Override
-    public boolean update(User user) throws ServiceException {
+    public boolean updateUser(User user) throws ServiceException {
         try {
             if (userValidator.test(user) && userUpdatingDuplicationChecker.test(user) && user.getId() != 0) {
                 setStandardPicture(user);
@@ -99,12 +97,11 @@ public class JWDUserService implements UserService {
     public Basket findBasketByUserId(String userId) throws ServiceException {
         try {
             Optional<Basket> basketOptional = userDao.findBasketByUserId(Long.parseLong(userId));
-
             if (basketOptional.isPresent()) {
                 return basketOptional.get();
             }
 
-            throw new ServiceException(USERS_BASKET_IS_EMPTY_MESSAGE);
+            throw new ServiceException(INVALID_USER_MESSAGE);
         } catch (DaoException | NumberFormatException e) {
             throw new ServiceException(e);
         }

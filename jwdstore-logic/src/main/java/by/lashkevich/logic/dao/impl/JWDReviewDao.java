@@ -20,6 +20,23 @@ public class JWDReviewDao implements ReviewDao {
             " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
             " review_user_balance, users.role AS review_user_role" +
             " FROM reviews LEFT JOIN users ON users.id = reviews.user_id";
+    private static final String FIND_REVIEWS_BY_USER_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
+            " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
+            " review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
+            " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login, " +
+            " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
+            " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
+            " review_user_balance, users.role AS review_user_role" +
+            " FROM reviews LEFT JOIN users ON users.id = reviews.user_id WHERE reviews.user_id = ?";
+    private static final String FIND_REVIEW_BY_USER_AND_GOOD_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
+            " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
+            " review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
+            " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login, " +
+            " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
+            " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
+            " review_user_balance, users.role AS review_user_role, goods_reviews.good_id" +
+            " FROM reviews LEFT JOIN users ON users.id = reviews.user_id LEFT JOIN goods_reviews ON" +
+            " reviews.id = goods_reviews.review_id WHERE reviews.user_id = ? AND goods_reviews.good_id = ?";
     private static final String FIND_REVIEW_BY_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
             " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
             " review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
@@ -32,6 +49,9 @@ public class JWDReviewDao implements ReviewDao {
     private static final String CREATE_REVIEW_SQL = "INSERT INTO reviews (rate, content, user_id) VALUES (?, ?, ?)";
     private static final String UPDATE_REVIEW_SQL = "UPDATE reviews SET rate = ?, content = ?," +
             " user_id = ? WHERE id = ?";
+    private static final String CONNECT_REVIEW_TO_GOOD = "INSERT INTO goods_reviews (review_id, good_id) VALUES (?, ?)";
+    private static final String REMOVE_CONNECTION_BETWEEN_REVIEW_AND_GOOD = "DELETE FROB goods_reviews" +
+            " WHERE goods_reviews.order_id = ?";
     private final DaoMapper mapper;
 
     public JWDReviewDao() {
@@ -110,8 +130,66 @@ public class JWDReviewDao implements ReviewDao {
         }
     }
 
-    // TODO: 18.11.2021 connect review to good
-    // TODO: 18.11.2021 работать стзывами через сервис отзывов
+    public boolean connectReviewToGood(Long reviewId, Long goodId) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(CONNECT_REVIEW_TO_GOOD)) {
+            statement.setLong(1, reviewId);
+            statement.setLong(2, goodId);
+
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Review> findByUserId(Long userId) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_REVIEWS_BY_USER_ID_SQL)) {
+            statement.setLong(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            List<Review> reviews = new ArrayList<>();
+
+            while (resultSet.next()) {
+                reviews.add(mapper.mapReview(resultSet));
+            }
+
+            return reviews;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public boolean removeConnectionBetweenReviewAndGood(Long reviewId) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(REMOVE_CONNECTION_BETWEEN_REVIEW_AND_GOOD)) {
+            statement.setLong(1, reviewId);
+
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<Review> findReviewByUserAndGoodId(Long userId, Long goodId) {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_REVIEW_BY_USER_AND_GOOD_ID_SQL)) {
+            statement.setLong(1, userId);
+            statement.setLong(2, goodId);
+            ResultSet resultSet = statement.executeQuery();
+            Review review = new Review();
+
+            while (resultSet.next()) {
+                review = mapper.mapReview(resultSet);
+            }
+
+            return review.getId() != 0 ? Optional.of(review) : Optional.empty();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
 
     private void fillReviewData(Review review, PreparedStatement statement) throws SQLException {
         statement.setShort(1, review.getRate());

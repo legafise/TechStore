@@ -35,20 +35,22 @@ public class JWDUserDao implements UserDao {
             " profile_picture, birth_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, surname = ?, login = ?, password = ?," +
             " email = ?, profile_picture = ?, birth_date = ?, balance = ?, role = ? WHERE id = ?";
-    private static final String FIND_BASKET_BY_USER_ID_SQL = "SELECT baskets.user_id AS user_id, baskets_owners.name AS user_name, baskets_owners.surname AS user_surname, baskets_owners.login AS user_login," +
-            " baskets_owners.password AS user_password, baskets_owners.email AS user_email, baskets_owners.profile_picture AS user_profile_picture," +
-            " baskets_owners.birth_date AS user_birth_date, baskets_owners.balance AS user_balance, baskets_owners.role AS user_role, baskets.good_id" +
-            " AS good_id, baskets.quantity AS good_quantity, goods.name AS good_name," +
-            " goods.price AS good_price, goods.description AS good_description, goods.picture AS good_picture," +
-            " goods_types.name AS good_type_name, reviews.id AS review_id, reviews.rate AS review_rate," +
-            " reviews.content AS review_content, users.id AS review_user_id, users.name AS review_user_name, users.surname" +
-            " AS review_user_surname, users.login AS review_user_login, users.password AS review_user_password, users.email AS review_user_email," +
-            " users.profile_picture AS review_user_profile_picture, users.birth_date AS review_user_birth_date,users.balance AS" +
-            " review_user_balance, users.role AS review_user_role FROM baskets LEFT JOIN users AS baskets_owners ON" +
-            " baskets.user_id = baskets_owners.id LEFT JOIN goods ON baskets.good_id = goods.id" +
-            " LEFT JOIN goods_types ON goods.type_id = goods_types.id LEFT JOIN goods_reviews ON goods.id =" +
-            " goods_reviews.good_id LEFT JOIN reviews ON goods_reviews.review_id = reviews.id LEFT JOIN users" +
-            " ON users.id = reviews.user_id WHERE baskets.user_id = ? ORDER BY baskets.good_id";
+    private static final String FIND_BASKET_BY_USER_ID_SQL = "SELECT baskets_owners.id AS user_id, baskets_owners.name" +
+            " AS user_name, baskets_owners.surname AS user_surname, baskets_owners.login AS user_login," +
+            " baskets_owners.password AS user_password, baskets_owners.email AS user_email," +
+            " baskets_owners.profile_picture AS user_profile_picture, baskets_owners.birth_date AS user_birth_date," +
+            " baskets_owners.balance AS user_balance, baskets_owners.role AS user_role, baskets.good_id AS good_id," +
+            " baskets.quantity AS good_quantity, goods.name AS good_name, goods.price AS good_price, goods.description" +
+            " AS good_description, goods.picture AS good_picture, goods_types.name AS good_type_name, reviews.id" +
+            " AS review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
+            " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login," +
+            " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
+            " review_user_profile_picture, users.birth_date AS review_user_birth_date,users.balance AS" +
+            " review_user_balance, users.role AS review_user_role FROM users as baskets_owners LEFT JOIN baskets" +
+            " ON baskets.user_id = baskets_owners.id LEFT JOIN goods ON baskets.good_id = goods.id LEFT JOIN" +
+            " goods_types ON goods.type_id = goods_types.id LEFT JOIN goods_reviews ON goods.id =" +
+            " goods_reviews.good_id LEFT JOIN reviews ON goods_reviews.review_id = reviews.id LEFT JOIN users ON" +
+            " users.id = reviews.user_id WHERE baskets_owners.id = ? ORDER BY baskets.good_id";
     private final DaoMapper daoMapper;
 
     public JWDUserDao() {
@@ -199,5 +201,5 @@ public class JWDUserDao implements UserDao {
         }
     }
 
-    // TODO: 18.11.2021 Сделать метод для поиска всех твоаров корзины юзера + метод апдейта карзины а все остальное сервис
+    // TODO: 18.11.2021 метод апдейта корзины а все остальное сервис
 }

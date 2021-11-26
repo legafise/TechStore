@@ -48,6 +48,21 @@ public class DaoMapper {
                 USER_EMAIL, USER_BIRTH_DATE, USER_PROFILE_PICTURE, USER_BALANCE, USER_ROLE);
     }
 
+    public Review mapReview(ResultSet resultSet) throws SQLException {
+        Review review = new Review();
+        review.setId(resultSet.getLong(REVIEW_ID));
+        review.setRate(resultSet.getShort(REVIEW_RATE));
+        review.setContent(resultSet.getString(REVIEW_CONTENT));
+        review.setAuthor(mapReviewUser(resultSet));
+        return review;
+    }
+
+    private User mapReviewUser(ResultSet resultSet) throws SQLException {
+        return fillUserData(resultSet, REVIEW_USER_ID, REVIEW_USER_NAME, REVIEW_USER_SURNAME, REVIEW_USER_LOGIN,
+                REVIEW_USER_PASSWORD, REVIEW_USER_EMAIL, REVIEW_USER_BIRTH_DATE, REVIEW_USER_PROFILE_PICTURE,
+                REVIEW_USER_BALANCE, REVIEW_USER_ROLE);
+    }
+
     public Good mapGood(ResultSet resultSet) throws SQLException {
         Good good = new Good();
 
@@ -69,44 +84,7 @@ public class DaoMapper {
         return good;
     }
 
-    public Review mapReview(ResultSet resultSet) throws SQLException {
-        Review review = new Review();
-        review.setId(resultSet.getLong(REVIEW_ID));
-        review.setRate(resultSet.getShort(REVIEW_RATE));
-        review.setContent(resultSet.getString(REVIEW_CONTENT));
-        review.setAuthor(mapReviewUser(resultSet));
-        return review;
-    }
-
-    private User mapReviewUser(ResultSet resultSet) throws SQLException {
-        return fillUserData(resultSet, REVIEW_USER_ID, REVIEW_USER_NAME, REVIEW_USER_SURNAME, REVIEW_USER_LOGIN,
-                REVIEW_USER_PASSWORD, REVIEW_USER_EMAIL, REVIEW_USER_BIRTH_DATE, REVIEW_USER_PROFILE_PICTURE,
-                REVIEW_USER_BALANCE, REVIEW_USER_ROLE);
-    }
-
-    public Order mapOrder(ResultSet resultSet) throws SQLException, OrderStatusException {
-        Order order = new Order();
-
-        while (resultSet.next()) {
-            if (resultSet.getInt(ORDER_ID) != order.getId() && order.getId() != 0) {
-                resultSet.previous();
-                return order;
-            }
-
-            if (order.getId() == 0) {
-                fillOrderData(order, resultSet);
-            }
-
-            if (resultSet.getInt(ORDER_ID) == order.getId()) {
-                int quantity = resultSet.getInt(GOOD_QUANTITY);
-                order.getGoods().put(mapOrderedGood(resultSet, resultSet.getInt(ORDER_ID)), quantity);
-            }
-        }
-
-        return order;
-    }
-
-    private Good mapOrderedGood(ResultSet resultSet, int orderId) throws SQLException {
+    private Good mapOrderedGood(ResultSet resultSet, long orderId) throws SQLException {
         Good good = new Good();
 
         while (!resultSet.isAfterLast()) {
@@ -122,6 +100,40 @@ public class DaoMapper {
         }
 
         return good;
+    }
+
+    public Order mapOrder(ResultSet resultSet) throws SQLException, OrderStatusException {
+        Order order = new Order();
+
+        while (resultSet.next()) {
+            order.setCustomer(mapUser(resultSet));
+
+            if (resultSet.getInt(ORDER_ID) == 0 && resultSet.getString(ORDER_STATUS) == null) {
+                resultSet.next();
+                return order;
+            }
+
+            if (order.getId() == 0) {
+                fillOrderData(order, resultSet);
+            }
+
+            if (resultSet.getInt(ORDER_ID) != order.getId() && order.getId() != 0) {
+                resultSet.previous();
+                return order;
+            }
+
+            if (resultSet.getInt(GOOD_ID) == 0 && resultSet.getLong(ORDER_ID) != 0) {
+                resultSet.next();
+                return order;
+            }
+
+            if (resultSet.getInt(ORDER_ID) == order.getId()) {
+                int quantity = resultSet.getInt(GOOD_QUANTITY);
+                order.getGoods().put(mapOrderedGood(resultSet, resultSet.getLong(ORDER_ID)), quantity);
+            }
+        }
+
+        return order;
     }
 
     private Good mapGoodInBasket(ResultSet resultSet) throws SQLException {
@@ -165,7 +177,6 @@ public class DaoMapper {
         order.setPrice(resultSet.getBigDecimal(ORDER_PRICE));
         order.setAddress(resultSet.getString(ORDER_ADDRESS));
         order.setDate(resultSet.getDate(ORDER_DATE).toLocalDate());
-        order.setCustomer(mapUser(resultSet));
     }
 
     private User fillUserData(ResultSet resultSet, String idColumn, String nameColumn, String surnameColumn,
@@ -195,11 +206,11 @@ public class DaoMapper {
             fillGoodData(good, resultSet);
         }
 
-        if (resultSet.getInt(GOOD_ID) == good.getId()) {
+        if (resultSet.getInt(GOOD_ID) == good.getId() && resultSet.getLong(REVIEW_ID) != 0) {
             good.getReviews().add(mapReview(resultSet));
-            resultSet.next();
         }
 
+        resultSet.next();
         return Optional.empty();
     }
 }

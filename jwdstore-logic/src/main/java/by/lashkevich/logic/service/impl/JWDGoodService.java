@@ -26,7 +26,7 @@ public class JWDGoodService implements GoodService {
     }
 
     @Override
-    public List<Good> findAll() throws ServiceException {
+    public List<Good> findAllGoods() throws ServiceException {
         try {
             return goodDao.findAll();
         } catch (DaoException e) {
@@ -35,7 +35,7 @@ public class JWDGoodService implements GoodService {
     }
 
     @Override
-    public Good findById(String id) throws ServiceException {
+    public Good findGoodById(String id) throws ServiceException {
         try {
             Optional<Good> goodOptional = goodDao.findById(Long.parseLong(id));
 
@@ -50,7 +50,7 @@ public class JWDGoodService implements GoodService {
     }
 
     @Override
-    public boolean add(Good good) throws ServiceException {
+    public boolean addGood(Good good) throws ServiceException {
         try {
             if (goodValidator.test(good)) {
                 setStandardPicture(good);
@@ -64,7 +64,7 @@ public class JWDGoodService implements GoodService {
     }
 
     @Override
-    public boolean removeById(String id) throws ServiceException {
+    public boolean removeGoodById(String id) throws ServiceException {
         try {
             return goodDao.removeById(Long.parseLong(id));
         } catch (DaoException | NumberFormatException e) {
@@ -73,7 +73,7 @@ public class JWDGoodService implements GoodService {
     }
 
     @Override
-    public boolean update(Good good) throws ServiceException {
+    public boolean updateGood(Good good) throws ServiceException {
         try {
             if (goodValidator.test(good) && good.getId() != 0) {
                 setStandardPicture(good);
