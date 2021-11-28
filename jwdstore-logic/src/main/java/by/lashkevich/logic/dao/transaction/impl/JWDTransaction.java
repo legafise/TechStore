@@ -34,6 +34,11 @@ public class JWDTransaction implements Transaction {
 
     @Override
     public void closeTransaction() {
-        ConnectionPool.getInstance().putBackTransactionalConnection();
+        try {
+            connection.setAutoCommit(true);
+            ConnectionPool.getInstance().putBackTransactionalConnection();
+        } catch (SQLException e) {
+            throw new DaoException(e.getMessage());
+        }
     }
 }

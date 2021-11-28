@@ -132,7 +132,7 @@ public class JWDOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findOrdersByUserId(Long userId) throws DaoException {
+    public Optional<List<Order>> findOrdersByUserId(Long userId) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_BY_USER_ID_SQL)) {
             statement.setLong(1, userId);
@@ -148,7 +148,7 @@ public class JWDOrderDao implements OrderDao {
                 orders.add(order);
             }
 
-            return orders;
+            return orders.size() == 1 && orders.get(0).getId() == 0 ? Optional.empty() : Optional.of(orders);
         } catch (SQLException | OrderStatusException e) {
             throw new DaoException(e);
         }

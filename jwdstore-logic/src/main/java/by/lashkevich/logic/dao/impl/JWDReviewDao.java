@@ -50,8 +50,8 @@ public class JWDReviewDao implements ReviewDao {
     private static final String UPDATE_REVIEW_SQL = "UPDATE reviews SET rate = ?, content = ?," +
             " user_id = ? WHERE id = ?";
     private static final String CONNECT_REVIEW_TO_GOOD = "INSERT INTO goods_reviews (review_id, good_id) VALUES (?, ?)";
-    private static final String REMOVE_CONNECTION_BETWEEN_REVIEW_AND_GOOD = "DELETE FROB goods_reviews" +
-            " WHERE goods_reviews.order_id = ?";
+    private static final String REMOVE_CONNECTION_BETWEEN_REVIEW_AND_GOOD = "DELETE FROM goods_reviews" +
+            " WHERE goods_reviews.review_id = ?";
     private final DaoMapper mapper;
 
     public JWDReviewDao() {
