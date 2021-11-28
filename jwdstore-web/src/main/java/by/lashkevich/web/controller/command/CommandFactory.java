@@ -17,7 +17,12 @@ public enum CommandFactory {
     PROFILE_FORWARD(new ProfilePageForwardCommand(), "profile", true),
     REGISTRATION_PAGE(new RegistrationPageForwardCommand(), "registration_page", true),
     REGISTRATION(new RegistrationCommand(), "registration", false),
-    CHECK_REGISTRATION(new CheckRegistrationCommand(), "check_registration", true);
+    CHECK_REGISTRATION(new CheckRegistrationCommand(), "check_registration", true),
+    BASKET_PAGE(new BasketForwardCommand(), "basket", true),
+    ORDERS_PAGE(new OrdersPageForwardCommand(), "orders_page", true),
+    HANDLE_REVIEW(new HandleReviewCommand(), "handle_review", false),
+    CHECK_REVIEW_ADD_RESULT(new CheckReviewAddResultCommand(), "check_review", true),
+    REMOVE_REVIEW(new RemoveReviewCommand(), "remove_review", false);
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
     private static final String COMMAND_PARAMETER_NAME = "command";

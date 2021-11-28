@@ -16,7 +16,7 @@ public class CatalogForwardCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             GoodService goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
-            List<Good> goods = goodService.findAll();
+            List<Good> goods = goodService.findAllGoods();
             request.setAttribute("goodList", goods);
             request.setAttribute("currentPage", "catalog");
             return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/catalog.jsp");

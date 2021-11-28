@@ -11,6 +11,7 @@ public class LogOutCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         request.getSession().setAttribute("role", "guest");
         request.getSession().removeAttribute("userId");
+        request.getSession().setAttribute("logOutResult", true);
         return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=catalog");
     }
 }

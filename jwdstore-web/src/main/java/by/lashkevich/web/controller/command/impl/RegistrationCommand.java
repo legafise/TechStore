@@ -28,13 +28,13 @@ public class RegistrationCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            if (!registrationValidator(request)) {
+            if (!validateUserData(request)) {
                 request.getSession().setAttribute("registrationResult", false);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT,
                         "/controller?command=check_registration");
             }
 
-            User user = registrationMapper(request);
+            User user = mapUser(request);
 
             for (Part part : request.getParts()) {
                 if (part.getName().equals("profilePhoto")) {
@@ -52,7 +52,7 @@ public class RegistrationCommand implements Command {
                 }
             }
 
-            request.getSession().setAttribute("registrationResult", userService.add(user));
+            request.getSession().setAttribute("registrationResult", userService.addUser(user));
             return new CommandResult(CommandResult.ResponseType.REDIRECT,
                     "/controller?command=check_registration");
         } catch (IOException | ServletException e) {
@@ -60,12 +60,20 @@ public class RegistrationCommand implements Command {
         }
     }
 
-    private boolean registrationValidator(HttpServletRequest request) {
-        return !request.getParameter("login").isEmpty() && !request.getParameter("name").isEmpty() && !request.getParameter("surname").isEmpty() &&
-                !request.getParameter("email").isEmpty() && !request.getParameter("password").isEmpty() && !request.getParameter("birthDate").isEmpty();
+    private boolean validateUserData(HttpServletRequest request) {
+        String login = request.getParameter("login");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String birthDate = request.getParameter("birthDate");
+
+        return login != null && name != null && surname != null && email != null && password != null
+                && birthDate != null && !login.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !email.isEmpty()
+                && !password.isEmpty() && !birthDate.isEmpty();
     }
 
-    private User registrationMapper(HttpServletRequest request) {
+    private User mapUser(HttpServletRequest request) {
         User user = new User();
         user.setLogin(request.getParameter("login"));
         user.setName(request.getParameter("name"));

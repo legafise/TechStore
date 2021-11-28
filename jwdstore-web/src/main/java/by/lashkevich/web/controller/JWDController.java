@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/controller")
-@MultipartConfig(location = "C:\\IdeaProjects\\JWDStore\\jwdstore-web\\src\\main\\web\\download")
+@MultipartConfig(location = "C:\\IdeaProjects\\JWDStore\\jwdstore-web\\target\\jwdstore-web-1.0-SNAPSHOT\\download")
 public class JWDController extends HttpServlet {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
