@@ -1,7 +1,7 @@
 window.onload = function () {
     $(".authorization-button").prop("disabled", true)
 
-    $("#authorization_inputs").on('input', function () {
+    $("#authorization-inputs").on('input', function () {
         if (isValidEmail() && isValidPassword()) {
             $(".authorization-button").prop("disabled", false);
         } else {

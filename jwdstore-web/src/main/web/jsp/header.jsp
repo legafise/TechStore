@@ -4,11 +4,13 @@
 
 <c:url value="/css/style.css" var="cssPath"/>
 <c:url value="/controller?command=catalog" var="catalogPath"/>
+<c:url value="/controller?command=basket" var="basketPath"/>
 <c:url value="/controller?command=change_language" var="changeLanguageCommand"/>
 <c:url value="/controller?command=authorization_page" var="authorizationPageCommand"/>
 <c:url value="/controller?command=registration_page" var="registrationPageCommand"/>
 <c:url value="/controller?command=log_out" var="logOutCommand"/>
-<c:url value="/controller?command=profile" var="profileCommand"/>
+<c:url value="/controller?command=profile" var="profilePageCommand"/>
+<c:url value="/controller?command=orders_page" var="ordersPageCommand"/>
 
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
@@ -43,7 +45,7 @@
                 <a class="nav-link" href="${catalogPath}"><fmt:message key="catalog"/></a>
             </li>
             <li class="nav-item ${currentPage == 'basket' ? 'active' : ''}">
-                <a class="nav-link" href=""><fmt:message key="basket"/></a>
+                <a class="nav-link" href="${basketPath}"><fmt:message key="basket"/></a>
             </li>
             <c:choose>
                 <c:when test="${role == 'guest'}">
@@ -51,17 +53,20 @@
                         <a class="nav-link" href="${registrationPageCommand}"><fmt:message key="registration"/></a>
                     </li>
                     <li class="nav-item ${currentPage == 'sing_in' ? 'active' : ''}">
-                        <a class="nav-link" href="${authorizationPageCommand}"><fmt:message key="sing.in"/></a>
+                        <a class="nav-link" href="${authorizationPageCommand}"><fmt:message key="sign.in"/></a>
                     </li>
                 </c:when>
                 <c:when test="${role != 'guest'}">
                     <li class="nav-item">
                         <a class="nav-link ${currentPage == 'profile' ? 'active' : ''}"
-                           href="${profileCommand}"><fmt:message key="profile"/><span
-                                class="sr-only">(current)</span></a>
+                           href="${profilePageCommand}"><fmt:message key="profile"/></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${logOutCommand}"><fmt:message key="log.out"/><span class="sr-only">(current)</span></a>
+                        <a class="nav-link ${currentPage == 'orders' ? 'active' : ''}"
+                           href="${ordersPageCommand}"><fmt:message key="orders"/></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${logOutCommand}"><fmt:message key="log.out"/></a>
                     </li>
                 </c:when>
             </c:choose>

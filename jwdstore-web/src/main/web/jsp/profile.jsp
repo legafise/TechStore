@@ -26,7 +26,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <img src="${imgPath}users_${user.profilePictureName}"
-                                             alt="Это вы" class="img-fluid img-idents profile-img"/>
+                                             alt="Ваше фото" class="img-fluid img-indents profile-img"/>
                                     </div>
                                     <div class="col-xl-6">
                                         <p class="h4 bold"><fmt:message key="personal.information"/> </p>

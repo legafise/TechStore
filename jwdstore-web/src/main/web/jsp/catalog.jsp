@@ -24,6 +24,17 @@
             </div>
             <%request.getSession().removeAttribute("authorizationResult");%>
         </c:if>
+        <c:if test="${logOutResult == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="positive.log.out.result"/> </strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("logOutResult");%>
+        </c:if>
         <div class="container-fluid name">
             <p class="h2 bold"><fmt:message key="catalog"/></p>
         </div>
@@ -34,11 +45,11 @@
                         <div class="card text-center card-size">
                             <div class="card-body">
                                 <h5 class="card-title short-description"><a
-                                        href="controller?command=good&goodId=${good.id}&currencyId=${currency.id}">${good.name}</a>
+                                        href="controller?command=good&goodId=${good.id}">${good.name}</a>
                                 </h5>
                                 <p class="card-text">
                                     <a href="controller?command=good&goodId=${good.id}">
-                                        <img src="${imgPath}goods_${good.imgURL}" class="img-fluid img-idents img-size"
+                                        <img src="${imgPath}goods_${good.imgURL}" class="img-fluid img-indents img-size"
                                              alt="${good.name}">
                                     </a>
                                 </p>

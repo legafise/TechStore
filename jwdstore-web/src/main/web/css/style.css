@@ -146,7 +146,7 @@ a {
     margin-bottom: 60px;
 }
 
-.img-idents {
+.img-indents {
     margin-bottom: 10px;
 }
 
@@ -284,12 +284,12 @@ a {
     font-family: "Tahoma";
 }
 
-.delete-button-in-basket:hover {
+.delete-button:hover {
     color: #e7e7e7;
     background-color: #ac041a;
 }
 
-.delete-button-in-basket {
+.delete-button {
     margin-top: 5px;
     background-color: #FFFFFF;
     font-size: 20px;
@@ -346,4 +346,39 @@ a {
 
 .authorization-result {
     margin-top: 10px;
+}
+
+.order-img-size {
+    height: 20vh;
+    overflow: hidden;
+}
+
+.order-info {
+    font-family: "Segoe UI";
+    font-size: 2vh;
+}
+
+.order-info>a {
+    color: black!important;
+}
+
+textarea {
+    resize: none;
+}
+
+.review-area {
+    height: 200px!important;
+}
+
+.review-button {
+    margin-top: 20px;
+}
+
+.review-indents {
+    margin-bottom: 35px;
+}
+
+#rate-value {
+    display: inline-block;
+    margin-top: 30px
 }

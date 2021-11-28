@@ -34,6 +34,17 @@
             </div>
             <%request.getSession().removeAttribute("authorizationResult");%>
         </c:if>
+        <c:if test="${authorizationInformation == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="you.are.not.authorized"/> </strong> <fmt:message key="you.are.not.authorized.info"/>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("authorizationInformation");%>
+        </c:if>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-4"></div>
@@ -43,7 +54,7 @@
                             <fmt:message key="authorization"/>
                         </div>
                         <div class="card-body">
-                            <form action="${authorizationCommand}" method="post" id="authorization_inputs">
+                            <form action="${authorizationCommand}" method="post" id="authorization-inputs">
                                 <div class="form-group">
                                     <label for="email" class="authorization">Email</label>
                                     <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
@@ -54,7 +65,7 @@
                                     <input type="password" class="form-control" id="password" name="password">
                                 </div>
                                 <button type="submit" class="btn btn-secondary authorization authorization-button">
-                                    <fmt:message key="sing.in"/>
+                                    <fmt:message key="sign.in"/>
                                 </button>
                             </form>
                         </div>

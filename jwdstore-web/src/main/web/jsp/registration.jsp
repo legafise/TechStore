@@ -88,4 +88,5 @@
             </div>
         </div>
     </main>
+    <script src="<c:url value="/js/registrationValidator.js"/>"></script>
     <c:import url="footer.jsp"/>
