@@ -155,8 +155,9 @@ public class DaoMapper {
         resultSet.next();
         basket.setOwner(mapUser(resultSet));
 
-        while (resultSet.next()) {
+        while (!resultSet.isAfterLast()) {
             basket.getGoods().put(mapGoodInBasket(resultSet), resultSet.getInt(GOOD_QUANTITY));
+            resultSet.next();
         }
 
         return basket;

@@ -3,6 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:url value="/download/" var="imgPath"/>
+<c:url value="/controller?command=remove_good_from_basket" var="removeGoodFromBasketCommand"/>
+<c:url value="/controller?command=change_good_quantity" var="changeGoodQuantityCommand"/>
+<c:url value="/controller?command=clear_basket" var="clearBasketCommand"/>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
 <c:set var="totalPrice" value="0"/>
@@ -13,6 +16,51 @@
     <title><fmt:message key="basket"/></title>
     <c:import url="header.jsp"/>
     <main class="content">
+        <c:if test="${goodUpdatingResult == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="quantity.updated"/></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("goodUpdatingResult");%>
+        </c:if><c:if test="${clearingBasketResult == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="basket.cleaned"/></strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("clearingBasketResult");%>
+        </c:if>
+        <c:if test="${goodRemovingResult == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="good.removed"/> </strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("goodRemovingResult");%>
+        </c:if>
+        <c:if test="${goodRemovingResult == false || goodUpdatingResult == false || clearingBasketResult == false}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("goodRemovingResult");%>
+            <%request.getSession().removeAttribute("goodUpdatingResult");%>
+            <%request.getSession().removeAttribute("clearingBasketResult");%>
+        </c:if>
         <div class="container-fluid name">
             <p class="h2 bold"><fmt:message key="basket"/></p>
         </div>
@@ -34,16 +82,30 @@
                                     </div>
                                     <div class="col-xl-9">
                                         <span class="bold"><fmt:message key="description"/></span> ${entry.key.description} <br>
-                                        <span class="bold"><fmt:message key="type"/></span> ${entry.key.type} <br>
-                                        <span class="bold"><fmt:message key="quantity"/></span> ${entry.value}
+                                        <span class="bold"><fmt:message key="type"/></span> ${entry.key.type} <br><br>
+                                            <form method="post" action="${changeGoodQuantityCommand}">
+                                                <div class="row">
+                                                    <span class="bold quantity-in-basket"><fmt:message key="quantity"/></span>
+                                                    <div class="input-group mb-3 quantity-form">
+                                                        <input type="hidden" value="${entry.key.id}" name="goodId">
+                                                        <input type="number" min="1" step="1" value="${entry.value}" class="form-control" name="quantity" placeholder="Количество" aria-describedby="button-addon2">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><fmt:message key="change"/> </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
                                     </div>
                                 </div>
                                 <span class="price-in-basket"><fmt:message key="price"/>: ${entry.key.price * entry.value} <fmt:message key="currency.sign"/> </span>
                                 <br>
                                 <a href="" class="btn buy-button-in-basket"><fmt:message key="buy"/></a>
-                                <a href="${removeGoodCommand}${entry.key.id}" class="btn delete-button"><fmt:message key="remove"/></a>
+                                <form action="${removeGoodFromBasketCommand}" method="post">
+                                    <input type="hidden" value="${entry.key.id}" name="goodId"/>
+                                    <button class="btn delete-button"><fmt:message key="remove"/></button>
+                                </form>
                             </div>
-                            <!--${totalPrice = totalPrice + entry.key.price * entry.value}-->
+                            <input type="hidden" value="${totalPrice = totalPrice + entry.key.price * entry.value}">
                         </div>
                     </c:forEach>
                 </div>
@@ -51,7 +113,9 @@
                     <span class="price-in-basket"><fmt:message key="total.price"/> ${totalPrice} <fmt:message key="currency.sign"/> </span>
                     <div>
                         <a href="" class="btn buy-button-in-basket"><fmt:message key="to.order"/></a>
-                        <a href="${clearBasketCommand}" class="btn delete-button"><fmt:message key="remove.goods.from.basket"/></a>
+                        <form method="post" action="${clearBasketCommand}">
+                            <button type="submit" class="btn delete-button"><fmt:message key="remove.goods.from.basket"/></button>
+                        </form>
                     </div>
                 </div>
             </c:when>

@@ -28,7 +28,7 @@
         <c:if test="${paymentResult == false}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="retry.your.attempt"/>
+                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

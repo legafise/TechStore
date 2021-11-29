@@ -15,6 +15,7 @@ import by.lashkevich.logic.service.validator.UserValidator;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -23,6 +24,9 @@ public class JWDUserService implements UserService {
     private static final String STANDARD_USER_PICTURE_NAME = "default.jpg";
     private static final String NONEXISTENT_USER_MESSAGE = "Nonexistent user data was received";
     private static final String INVALID_USER_MESSAGE = "Invalid user was received";
+    private static final String INVALID_GOOD_ID_MESSAGE = "Invalid good id was received";
+    private static final String GOOD_THERE_IS_NOT_MESSAGE = "The good there isn't in basket";
+    private static final String INVALID_GOOD_QUANTITY = "Invalid good quantity %d";
     private final UserDao userDao;
     private final Predicate<User> userValidator;
     private final Predicate<User> userAddingDuplicationChecker;
@@ -97,14 +101,9 @@ public class JWDUserService implements UserService {
     }
 
     @Override
-    public Basket findBasketByUserId(String userId) throws ServiceException {
+    public Optional<Basket> findBasketByUserId(String userId) throws ServiceException {
         try {
-            Optional<Basket> basketOptional = userDao.findBasketByUserId(Long.parseLong(userId));
-            if (basketOptional.isPresent()) {
-                return basketOptional.get();
-            }
-
-            throw new ServiceException(INVALID_USER_MESSAGE);
+            return userDao.findBasketByUserId(Long.parseLong(userId));
         } catch (DaoException | NumberFormatException e) {
             throw new ServiceException(e);
         }
@@ -157,6 +156,107 @@ public class JWDUserService implements UserService {
 
             transaction.rollback();
             throw new ServiceException(INVALID_USER_MESSAGE);
+        } catch (DaoException | NumberFormatException e) {
+            transaction.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transaction.closeTransaction();
+        }
+    }
+
+    @Override
+    public boolean addGoodInBasket(String userId, String goodId) {
+        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        try {
+            Long longUserId = Long.parseLong(userId);
+            long longGoodId = Long.parseLong(goodId);
+            boolean goodAddingResult;
+
+            Optional<Basket> basketOptional = userDao.findBasketByUserId(longUserId);
+            if (!basketOptional.isPresent() || basketOptional.get().getGoods().entrySet().stream()
+                    .noneMatch(entry -> entry.getKey().getId() == longGoodId)) {
+                goodAddingResult = userDao.addGoodInBasket(longUserId, longGoodId);
+            } else {
+                goodAddingResult = userDao.changeGoodQuantity(longUserId, longGoodId, basketOptional.get()
+                        .getGoods().entrySet().stream()
+                        .filter(entry -> entry.getKey().getId() == longGoodId)
+                        .findFirst()
+                        .map(Map.Entry::getValue)
+                        .orElseThrow(() -> new ServiceException(INVALID_GOOD_ID_MESSAGE)) + 1);
+            }
+
+            if (goodAddingResult) {
+                transaction.commit();
+            } else {
+                transaction.rollback();
+            }
+
+            return goodAddingResult;
+        } catch (DaoException | NumberFormatException e) {
+            transaction.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transaction.closeTransaction();
+        }
+    }
+
+    @Override
+    public boolean removeGoodFromBasket(String userId, String goodId) {
+        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        try {
+            Long longUserId = Long.parseLong(userId);
+            long longGoodId = Long.parseLong(goodId);
+
+            Optional<Basket> basketOptional = userDao.findBasketByUserId(longUserId);
+            if (!basketOptional.isPresent() || basketOptional.get().getGoods().entrySet().stream()
+                    .noneMatch(entry -> entry.getKey().getId() == longGoodId)) {
+                throw new ServiceException(GOOD_THERE_IS_NOT_MESSAGE);
+            }
+
+            boolean goodRemovingResult = userDao.removeGoodFromBasket(longUserId, longGoodId);
+
+            if (goodRemovingResult) {
+                transaction.commit();
+            } else {
+                transaction.rollback();
+            }
+
+            return goodRemovingResult;
+        } catch (DaoException | NumberFormatException e) {
+            transaction.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transaction.closeTransaction();
+        }
+    }
+
+    @Override
+    public boolean changeGoodQuantityInBasket(String userId, String goodId, String quantity) {
+        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        try {
+            Long longUserId = Long.parseLong(userId);
+            long longGoodId = Long.parseLong(goodId);
+            int intQuantity = Integer.parseInt(quantity);
+
+            if (intQuantity < 1) {
+                throw new ServiceException(String.format(INVALID_GOOD_QUANTITY, intQuantity));
+            }
+
+            Optional<Basket> basketOptional = userDao.findBasketByUserId(longUserId);
+            if (!basketOptional.isPresent() || basketOptional.get().getGoods().entrySet().stream()
+                    .noneMatch(entry -> entry.getKey().getId() == longGoodId)) {
+                throw new ServiceException(GOOD_THERE_IS_NOT_MESSAGE);
+            }
+
+            boolean goodUpdatingResult = userDao.changeGoodQuantity(longUserId, longGoodId, intQuantity);
+
+            if (goodUpdatingResult) {
+                transaction.commit();
+            } else {
+                transaction.rollback();
+            }
+
+            return goodUpdatingResult;
         } catch (DaoException | NumberFormatException e) {
             transaction.rollback();
             throw new ServiceException(e);

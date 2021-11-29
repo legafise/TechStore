@@ -35,6 +35,9 @@ public class JWDUserDao implements UserDao {
             " profile_picture, birth_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_USER_SQL = "UPDATE users SET name = ?, surname = ?, login = ?, password = ?," +
             " email = ?, profile_picture = ?, birth_date = ?, balance = ?, role = ? WHERE id = ?";
+    private static final String ADD_GOOD_IN_BASKET_SQL = "INSERT INTO baskets (user_id, good_id) VALUES (?, ?)";
+    private static final String REMOVE_GOOD_FROM_BASKET_SQL = "DELETE FROM baskets" +
+            " WHERE baskets.user_id = ? AND baskets.good_id = ?";
     private static final String FIND_BASKET_BY_USER_ID_SQL = "SELECT baskets_owners.id AS user_id, baskets_owners.name" +
             " AS user_name, baskets_owners.surname AS user_surname, baskets_owners.login AS user_login," +
             " baskets_owners.password AS user_password, baskets_owners.email AS user_email," +
@@ -51,6 +54,8 @@ public class JWDUserDao implements UserDao {
             " goods_types ON goods.type_id = goods_types.id LEFT JOIN goods_reviews ON goods.id =" +
             " goods_reviews.good_id LEFT JOIN reviews ON goods_reviews.review_id = reviews.id LEFT JOIN users ON" +
             " users.id = reviews.user_id WHERE baskets_owners.id = ? ORDER BY baskets.good_id";
+    private static final String CHANGE_GOOD_QUANTITY_IN_BASKET_SQL = "UPDATE baskets SET baskets.quantity = ?" +
+            " WHERE baskets.user_id = ? AND baskets.good_id = ?";
     private final DaoMapper daoMapper;
 
     public JWDUserDao() {
@@ -151,7 +156,8 @@ public class JWDUserDao implements UserDao {
                 basket = daoMapper.mapBasket(resultSet);
             }
 
-            return Optional.of(basket);
+            return basket.getGoods().entrySet().stream().anyMatch(entry -> entry.getKey().getId() == 0)
+                    ? Optional.empty() : Optional.of(basket);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -173,17 +179,58 @@ public class JWDUserDao implements UserDao {
         }
     }
 
+    @Override
+    public Optional<User> findByLogin(String login) throws DaoException {
+        return findUserByStringParameter(login, FIND_USER_BY_LOGIN_SQL);
+    }
+
+    @Override
+    public boolean addGoodInBasket(Long userId, Long goodId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(ADD_GOOD_IN_BASKET_SQL)) {
+            statement.setLong(1, userId);
+            statement.setLong(2, goodId);
+
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public boolean removeGoodFromBasket(Long userId, Long goodId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(REMOVE_GOOD_FROM_BASKET_SQL)) {
+            statement.setLong(1, userId);
+            statement.setLong(2, goodId);
+
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public boolean changeGoodQuantity(Long userId, Long goodId, Integer goodQuantity) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement statement = connection.prepareStatement(CHANGE_GOOD_QUANTITY_IN_BASKET_SQL)) {
+            statement.setInt(1, goodQuantity);
+            statement.setLong(2, userId);
+            statement.setLong(3, goodId);
+
+            return statement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    // TODO: 28.11.2021 Метод добавления \ метод изменения количества
 
     private void fillUpdatingUserData(User user, PreparedStatement statement) throws SQLException {
         fillAddingUserData(user, statement);
         statement.setBigDecimal(8, user.getBalance());
         statement.setInt(9, user.getRole().getRoleNumber());
-    }
-    // TODO: 28.11.2021 Метод добавления \ метод изменения количества
 
-    @Override
-    public Optional<User> findByLogin(String login) throws DaoException {
-        return findUserByStringParameter(login, FIND_USER_BY_LOGIN_SQL);
     }
 
     private Optional<User> findUserByStringParameter(String parameter, String findSQLScript) throws DaoException {

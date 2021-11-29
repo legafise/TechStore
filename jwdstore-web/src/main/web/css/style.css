@@ -324,7 +324,7 @@ a {
 }
 .rating-mini span {
     padding: 0;
-    font-size: 35px;
+    font-size: 30px;
     line-height: 1;
     color: lightgrey;
 }
@@ -401,4 +401,14 @@ textarea {
 
 .replenishment-button {
     text-align: center;
+}
+
+.quantity-form {
+    width: 170px;
+}
+
+.quantity-in-basket {
+    padding-top: 6px;
+    padding-left: 15px;
+    padding-right: 10px;
 }

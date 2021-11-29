@@ -18,7 +18,7 @@
         <c:if test="${isInvalidCardData == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong><fmt:message key="invalid.card.data"/></strong> <fmt:message key="retry.your.attempt"/>
+                    <strong><fmt:message key="invalid.card.data"/></strong> <fmt:message key="try.again"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -27,7 +27,7 @@
             <%request.getSession().removeAttribute("isInvalidCardData");%>
         </c:if>
         <div class="container-fluid name">
-            <p align="center" class="h3 bold">Сумма пополнения: ${amount} <fmt:message key="currency.sign"/></p>
+            <p align="center" class="h3 bold"><fmt:message key="top.up.amount"/> ${amount} <fmt:message key="currency.sign"/></p>
         </div>
         <form action="${paymentCommand}" method="post">
             <div class="wrapper" id="app">

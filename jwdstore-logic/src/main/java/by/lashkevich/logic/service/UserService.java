@@ -3,7 +3,6 @@ package by.lashkevich.logic.service;
 import by.lashkevich.logic.entity.Basket;
 import by.lashkevich.logic.entity.User;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +17,7 @@ public interface UserService extends Service {
 
     boolean updateUser(User user) throws ServiceException;
 
-    Basket findBasketByUserId(String userId) throws ServiceException;
+    Optional<Basket> findBasketByUserId(String userId) throws ServiceException;
 
     Optional<User> findUserByEmail(String email) throws ServiceException;
 
@@ -27,4 +26,10 @@ public interface UserService extends Service {
     boolean removeBasketByUserId(String userId) throws ServiceException;
 
     boolean upBalance(String amount, String userId);
+
+    boolean addGoodInBasket(String userId, String goodId);
+
+    boolean removeGoodFromBasket(String userId, String goodId);
+
+    boolean changeGoodQuantityInBasket(String userId, String goodId, String quantity);
 }

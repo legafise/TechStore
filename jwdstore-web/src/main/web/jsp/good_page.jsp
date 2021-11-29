@@ -5,6 +5,7 @@
 <c:url value="/download/" var="imgPath"/>
 <c:url value="/controller?command=handle_review" var="sendReviewCommand"/>
 <c:url value="/controller?command=remove_review" var="removeReviewCommand"/>
+<c:url value="/controller?command=add_good_in_basket" var="addGoodInBasket"/>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
 
@@ -14,6 +15,17 @@
     <title>${good.name}</title>
     <c:import url="header.jsp"/>
     <main>
+        <c:if test="${basketAddingResult == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Товар добавлен в корзину!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("basketAddingResult");%>
+        </c:if>
         <c:if test="${reviewAddResult == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,10 +38,10 @@
             </div>
             <%request.getSession().removeAttribute("reviewAddResult");%>
         </c:if>
-        <c:if test="${reviewAddResult == false || isReviewRemoved == false}">
+        <c:if test="${reviewAddResult == false || isReviewRemoved == false || basketAddingResult == false}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="retry.your.attempt"/>
+                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -37,6 +49,7 @@
             </div>
             <%request.getSession().removeAttribute("reviewAddResult");%>
             <%request.getSession().removeAttribute("isReviewRemoved");%>
+            <%request.getSession().removeAttribute("basketAddingResult");%>
         </c:if>
         <c:if test="${isReviewRemoved == true}">
             <div class="container-fluid authorization-result">
@@ -61,11 +74,12 @@
                         <button class="buy-button">
                             <fmt:message key="buy"/>
                         </button>
-                        <a href="">
-                            <button class="basket-button">
+                        <form method="post" action="${addGoodInBasket}">
+                            <input type="hidden" value="${good.id}" name="goodId">
+                            <button class="basket-button" type="submit">
                                 <fmt:message key="add.to.cart"/>
                             </button>
-                        </a>
+                        </form>
                     </div>
                 </div>
                 <div class="col-xl-6 description">
@@ -97,7 +111,8 @@
                                         <div class="card-footer">
                                             <div class="row">
                                                 <div class="col-lg-11">
-                                                    <label for="customRange3" class="bold"><fmt:message key="rate.the.good"/></label>
+                                                    <label for="customRange3" class="bold"><fmt:message
+                                                            key="rate.the.good"/></label>
                                                     <input type="range" class="custom-range" min="1" max="5"
                                                            step="1"
                                                            id="customRange3" name="rate">
@@ -196,7 +211,8 @@
                                                 <c:if test="${review.author.id == userId}">
                                                     <form method="post" action="${removeReviewCommand}">
                                                         <input type="hidden" value="${review.id}" name="reviewId">
-                                                        <button type="submit" class="btn delete-button"><fmt:message key="remove"/></button>
+                                                        <button type="submit" class="btn delete-button"><fmt:message
+                                                                key="remove"/></button>
                                                     </form>
                                                 </c:if>
                                             </div>

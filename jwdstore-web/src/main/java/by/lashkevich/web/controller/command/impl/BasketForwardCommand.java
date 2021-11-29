@@ -9,6 +9,7 @@ import by.lashkevich.web.controller.command.CommandException;
 import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public class BasketForwardCommand implements Command {
     private final UserService userService;
@@ -20,21 +21,21 @@ public class BasketForwardCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            if (request.getSession().getAttribute("userId") == null) {
+            if (request.getSession().getAttribute("role").equals("guest")) {
                 request.getSession().setAttribute("authorizationInformation", true);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=authorization_page");
             }
 
-            Basket basket = userService.findBasketByUserId(String.valueOf(request
+            Optional<Basket> basketOptional = userService.findBasketByUserId(String.valueOf(request
                     .getSession().getAttribute("userId")));
 
-            if (basket.getGoods().isEmpty()) {
+            if (!basketOptional.isPresent()) {
                 request.setAttribute("isBasketEmpty", true);
                 return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/basket.jsp");
             }
 
             request.setAttribute("isBasketEmpty", false);
-            request.setAttribute("basketGoods", basket.getGoods().entrySet());
+            request.setAttribute("basketGoods", basketOptional.get().getGoods().entrySet());
             request.setAttribute("currentPage", "basket");
             return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/basket.jsp");
         } catch (ServiceException e) {
