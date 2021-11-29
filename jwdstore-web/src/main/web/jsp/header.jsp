@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:url value="/css/style.css" var="cssPath"/>
+<c:url value="/img/plus_in_circle.png" var="plusImg"/>
 <c:url value="/controller?command=catalog" var="catalogPath"/>
 <c:url value="/controller?command=basket" var="basketPath"/>
 <c:url value="/controller?command=change_language" var="changeLanguageCommand"/>
@@ -11,6 +12,7 @@
 <c:url value="/controller?command=log_out" var="logOutCommand"/>
 <c:url value="/controller?command=profile" var="profilePageCommand"/>
 <c:url value="/controller?command=orders_page" var="ordersPageCommand"/>
+<c:url value="/controller?command=replenishment_page" var="replenishmentPageCommand"/>
 
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
@@ -32,7 +34,7 @@
         <ul class="navbar-nav">
             <c:if test="${role != 'guest'}">
                 <li class="nav-item active">
-                    <span class="nav-link"><fmt:message key="balance"/> ${balance} <fmt:message key="currency.sign"/></span>
+                    <a class="nav-link" href="${replenishmentPageCommand}"><fmt:message key="balance"/> ${balance} <fmt:message key="currency.sign"/></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"></a>

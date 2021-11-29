@@ -8,7 +8,7 @@ import java.io.IOException;
 
 @WebFilter(filterName = "SecurityFilter")
 public class SecurityFilter implements Filter {
-    private static final String REQUEST_ROLE_PARAMETER = "role";
+    private static final String SESSION_ROLE_PARAMETER = "role";
     private static final String GUEST_ROLE = "guest";
 
     @Override
@@ -20,7 +20,7 @@ public class SecurityFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpSession session = request.getSession();
-        String role = (String) session.getAttribute(REQUEST_ROLE_PARAMETER);
+        String role = (String) session.getAttribute(SESSION_ROLE_PARAMETER);
 
         if (role == null) {
             session.setAttribute("role", GUEST_ROLE);

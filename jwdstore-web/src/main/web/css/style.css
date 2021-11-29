@@ -324,12 +324,12 @@ a {
 }
 .rating-mini span {
     padding: 0;
-    font-size: 45px;
+    font-size: 35px;
     line-height: 1;
     color: lightgrey;
 }
 .rating-mini > span:before {
-    content: '*';
+    content: '\2605';
 }
 .rating-mini > span.active {
     color: gold;
@@ -381,4 +381,24 @@ textarea {
 #rate-value {
     display: inline-block;
     margin-top: 30px
+}
+
+.replenishment-card {
+    margin-top: 10%;
+    font-family: "Segoe UI";
+    font-size: 1.05rem;
+}
+
+.replenishment-card-header {
+    text-align: center;
+    margin: 0!important;
+    font-size: 1.3rem;
+}
+
+.replenishment-card-body {
+    text-align: center;
+}
+
+.replenishment-button {
+    text-align: center;
 }

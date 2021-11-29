@@ -22,9 +22,13 @@ public enum CommandFactory {
     ORDERS_PAGE(new OrdersPageForwardCommand(), "orders_page", true),
     HANDLE_REVIEW(new HandleReviewCommand(), "handle_review", false),
     CHECK_REVIEW_ADD_RESULT(new CheckReviewAddResultCommand(), "check_review", true),
-    REMOVE_REVIEW(new RemoveReviewCommand(), "remove_review", false);
+    REMOVE_REVIEW(new RemoveReviewCommand(), "remove_review", false),
+    REPLENISHMENT_REVIEW(new ReplenishmentPageForwardCommand(), "replenishment_page", true),
+    PAYMENT_PAGE_COMMAND(new PaymentPageCommand(), "payment_page", false),
+    PAYMENT(new PaymentCommand(), "payment", false);
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
+    private static final String COMMAND_IS_NULL_MESSAGE = "Command is null";
     private static final String COMMAND_PARAMETER_NAME = "command";
     private final Command command;
     private final String commandName;
@@ -50,13 +54,18 @@ public enum CommandFactory {
 
     public static Command findCommandByRequest(HttpServletRequest request,
                                                boolean isGetMethodCommand) throws CommandException {
-        String commandNameInUpperCase = request.getParameter(COMMAND_PARAMETER_NAME).toUpperCase();
+        String commandName = request.getParameter(COMMAND_PARAMETER_NAME);
+        if (commandName == null) {
+            throw new CommandException(COMMAND_IS_NULL_MESSAGE);
+        }
+
         return Arrays.stream(CommandFactory.values())
-                .filter(currentCommand -> currentCommand.getCommandName().toUpperCase().equals(commandNameInUpperCase)
+                .filter(currentCommand -> currentCommand.getCommandName().toUpperCase()
+                        .equals(commandName.toUpperCase())
                         && currentCommand.isGetMethodCommand == isGetMethodCommand)
                 .findFirst()
                 .map(CommandFactory::getCommand)
                 .orElseThrow(() -> new CommandException(String.format(UNKNOWN_COMMAND_ERROR_MESSAGE,
-                        commandNameInUpperCase.toLowerCase())));
+                        commandName.toLowerCase())));
     }
 }

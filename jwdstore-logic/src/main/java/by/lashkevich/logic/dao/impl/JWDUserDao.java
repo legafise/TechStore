@@ -139,12 +139,6 @@ public class JWDUserDao implements UserDao {
         statement.setDate(7, Date.valueOf(user.getBirthDate()));
     }
 
-    private void fillUpdatingUserData(User user, PreparedStatement statement) throws SQLException {
-        fillAddingUserData(user, statement);
-        statement.setBigDecimal(8, user.getBalance());
-        statement.setInt(9, user.getRole().getRoleNumber());
-    }
-
     @Override
     public Optional<Basket> findBasketByUserId(Long userId) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
@@ -169,6 +163,25 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
+    public boolean clearBasketByUserId(Long userId) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_BASKET_BY_USER_ID_SQL)) {
+            preparedStatement.setLong(1, userId);
+            return preparedStatement.executeUpdate() >= 1;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+
+    private void fillUpdatingUserData(User user, PreparedStatement statement) throws SQLException {
+        fillAddingUserData(user, statement);
+        statement.setBigDecimal(8, user.getBalance());
+        statement.setInt(9, user.getRole().getRoleNumber());
+    }
+    // TODO: 28.11.2021 Метод добавления \ метод изменения количества
+
+    @Override
     public Optional<User> findByLogin(String login) throws DaoException {
         return findUserByStringParameter(login, FIND_USER_BY_LOGIN_SQL);
     }
@@ -189,17 +202,4 @@ public class JWDUserDao implements UserDao {
             throw new DaoException(e);
         }
     }
-
-    @Override
-    public boolean clearBasketByUserId(Long userId) throws DaoException {
-        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_BASKET_BY_USER_ID_SQL)) {
-            preparedStatement.setLong(1, userId);
-            return preparedStatement.executeUpdate() >= 1;
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    // TODO: 18.11.2021 метод апдейта корзины а все остальное сервис
 }

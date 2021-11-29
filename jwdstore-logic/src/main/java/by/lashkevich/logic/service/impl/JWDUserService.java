@@ -3,6 +3,8 @@ package by.lashkevich.logic.service.impl;
 import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.DaoFactory;
 import by.lashkevich.logic.dao.UserDao;
+import by.lashkevich.logic.dao.transaction.Transaction;
+import by.lashkevich.logic.dao.transaction.TransactionFactory;
 import by.lashkevich.logic.entity.Basket;
 import by.lashkevich.logic.entity.User;
 import by.lashkevich.logic.service.ServiceException;
@@ -11,6 +13,7 @@ import by.lashkevich.logic.service.checker.UserAddingDuplicationChecker;
 import by.lashkevich.logic.service.checker.UserUpdatingDuplicationChecker;
 import by.lashkevich.logic.service.validator.UserValidator;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -133,7 +136,35 @@ public class JWDUserService implements UserService {
             throw new ServiceException(e);
         }
     }
-    
+
+    @Override
+    public boolean upBalance(String amount, String userId) {
+        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        try {
+            Optional<User> userOptional = userDao.findById(Long.valueOf(userId));
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                user.setBalance(user.getBalance().add(new BigDecimal(amount)));
+                boolean result = userDao.update(user);
+                if (result) {
+                    transaction.commit();
+                } else {
+                    transaction.rollback();
+                }
+
+                return result;
+            }
+
+            transaction.rollback();
+            throw new ServiceException(INVALID_USER_MESSAGE);
+        } catch (DaoException | NumberFormatException e) {
+            transaction.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transaction.closeTransaction();
+        }
+    }
+
     private void setStandardPicture(User user) {
         if (user.getProfilePictureName().equals(EMPTY_PICTURE_NAME)) {
             user.setProfilePictureName(STANDARD_USER_PICTURE_NAME);

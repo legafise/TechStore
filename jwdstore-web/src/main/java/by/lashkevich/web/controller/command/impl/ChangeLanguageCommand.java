@@ -3,6 +3,7 @@ package by.lashkevich.web.controller.command.impl;
 import by.lashkevich.web.controller.command.Command;
 import by.lashkevich.web.controller.command.CommandException;
 import by.lashkevich.web.controller.command.CommandResult;
+import by.lashkevich.web.util.CurrentPageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -22,7 +23,6 @@ public class ChangeLanguageCommand implements Command {
             request.getSession().setAttribute("locale", localeName);
         }
 
-        String currentPage = request.getHeader("referer").substring(30);
-        return new CommandResult(CommandResult.ResponseType.REDIRECT, currentPage);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, CurrentPageFinder.findCurrentPage(request));
     }
 }
