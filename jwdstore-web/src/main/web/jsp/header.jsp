@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:url value="/css/style.css" var="cssPath"/>
-<c:url value="/img/plus_in_circle.png" var="plusImg"/>
 <c:url value="/controller?command=catalog" var="catalogPath"/>
 <c:url value="/controller?command=basket" var="basketPath"/>
 <c:url value="/controller?command=change_language" var="changeLanguageCommand"/>
@@ -19,7 +18,8 @@
 
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+      integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <link rel="stylesheet" href="${cssPath}">
 </head>
 <body>
@@ -32,9 +32,10 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
-            <c:if test="${role != 'guest'}">
+            <c:if test="${role == 'user'}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${replenishmentPageCommand}"><fmt:message key="balance"/> ${balance} <fmt:message key="currency.sign"/></a>
+                    <a class="nav-link" href="${replenishmentPageCommand}"><fmt:message key="balance"/> ${balance}
+                        <fmt:message key="currency.sign"/></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"></a>
@@ -46,9 +47,11 @@
             <li class="nav-item ${currentPage == 'catalog' ? 'active' : ''}">
                 <a class="nav-link" href="${catalogPath}"><fmt:message key="catalog"/></a>
             </li>
-            <li class="nav-item ${currentPage == 'basket' ? 'active' : ''}">
-                <a class="nav-link" href="${basketPath}"><fmt:message key="basket"/></a>
-            </li>
+            <c:if test="${role == 'guest' || role == 'user'}">
+                <li class="nav-item ${currentPage == 'basket' ? 'active' : ''}">
+                    <a class="nav-link" href="${basketPath}"><fmt:message key="basket"/></a>
+                </li>
+            </c:if>
             <c:choose>
                 <c:when test="${role == 'guest'}">
                     <li class="nav-item ${currentPage == 'registration' ? 'active' : ''}">
@@ -63,10 +66,12 @@
                         <a class="nav-link ${currentPage == 'profile' ? 'active' : ''}"
                            href="${profilePageCommand}"><fmt:message key="profile"/></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link ${currentPage == 'orders' ? 'active' : ''}"
-                           href="${ordersPageCommand}"><fmt:message key="orders"/></a>
-                    </li>
+                    <c:if test="${role == 'user'}">
+                        <li class="nav-item">
+                            <a class="nav-link ${currentPage == 'orders' ? 'active' : ''}"
+                               href="${ordersPageCommand}"><fmt:message key="orders"/></a>
+                        </li>
+                    </c:if>
                     <li class="nav-item">
                         <a class="nav-link" href="${logOutCommand}"><fmt:message key="log.out"/></a>
                     </li>

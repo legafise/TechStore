@@ -9,7 +9,7 @@ import by.lashkevich.logic.service.UserService;
 import by.lashkevich.web.controller.command.Command;
 import by.lashkevich.web.controller.command.CommandException;
 import by.lashkevich.web.controller.command.CommandResult;
-import by.lashkevich.web.util.CurrentPageFinder;
+import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,7 +25,7 @@ public class HandleReviewCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            request.getSession().setAttribute("lastPage", CurrentPageFinder.findCurrentPage(request));
+            request.getSession().setAttribute("lastPage", PageFinder.findLastPage(request));
             if (!validateReview(request)) {
                 request.getSession().setAttribute("reviewAddResult", false);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT,

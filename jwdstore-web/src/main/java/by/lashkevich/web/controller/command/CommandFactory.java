@@ -33,7 +33,8 @@ public enum CommandFactory {
     PLACE_BASKET_ORDER(new PlaceOrderFromBasketCommand(), "place_basket_order", false),
     PLACE_ORDER_BY_BUY(new PlaceOrderByBuyButtonCommand(), "place_order_by_buy_button", false),
     PLACE_ORDER(new PlaceOrderCommand(), "place_order", false),
-    PLACE_ORDER_PAGE_FORWARD(new PlaceOrderPageForwardCommand(), "place_order_page", false);
+    PLACE_ORDER_PAGE_FORWARD(new PlaceOrderPageForwardCommand(), "place_order_page", false),
+    REMOVE_GOOD(new RemoveGoodCommand(), "remove_good", false);
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
     private static final String COMMAND_IS_NULL_MESSAGE = "Command is null";

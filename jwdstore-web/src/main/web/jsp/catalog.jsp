@@ -24,6 +24,17 @@
             </div>
             <%request.getSession().removeAttribute("authorizationResult");%>
         </c:if>
+        <c:if test="${isGoodRemoved == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Товар был успешно удален!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("authorizationResult");%>
+        </c:if>
         <c:if test="${logOutResult == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

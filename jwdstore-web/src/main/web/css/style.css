@@ -442,3 +442,7 @@ textarea {
 .order-card-indents {
     padding-top: 20px;
 }
+
+.good-delete-button {
+    margin: 0!important;
+}

@@ -31,12 +31,14 @@ public class JWDUserService implements UserService {
     private final Predicate<User> userValidator;
     private final Predicate<User> userAddingDuplicationChecker;
     private final Predicate<User> userUpdatingDuplicationChecker;
+    private final TransactionManager transactionManager;
 
     public JWDUserService() {
         userDao = (UserDao) DaoFactory.USER_DAO.getDao();
         userValidator = new UserValidator();
         userAddingDuplicationChecker = new UserAddingDuplicationChecker();
         userUpdatingDuplicationChecker = new UserUpdatingDuplicationChecker();
+        transactionManager = TransactionManager.getInstance();
     }
 
     @Override
@@ -138,7 +140,7 @@ public class JWDUserService implements UserService {
 
     @Override
     public boolean upBalance(String amount, String userId) {
-        Transaction transaction = TransactionManager.getInstance().createTransaction();
+        Transaction transaction = transactionManager.createTransaction();
         try {
             Optional<User> userOptional = userDao.findById(Long.valueOf(userId));
             if (userOptional.isPresent()) {
@@ -146,27 +148,27 @@ public class JWDUserService implements UserService {
                 user.setBalance(user.getBalance().add(new BigDecimal(amount)));
                 boolean result = userDao.update(user);
                 if (result) {
-                    TransactionManager.getInstance().commit(transaction);
+                    transactionManager.commit(transaction);
                 } else {
-                    TransactionManager.getInstance().rollback(transaction);
+                    transactionManager.rollback(transaction);
                 }
 
                 return result;
             }
 
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(INVALID_USER_MESSAGE);
         } catch (DaoException | NumberFormatException e) {
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            TransactionManager.getInstance().closeTransaction(transaction);
+            transactionManager.closeTransaction(transaction);
         }
     }
 
     @Override
     public boolean addGoodInBasket(String userId, String goodId) {
-        Transaction transaction = TransactionManager.getInstance().createTransaction();
+        Transaction transaction = transactionManager.createTransaction();
         try {
             Long longUserId = Long.parseLong(userId);
             long longGoodId = Long.parseLong(goodId);
@@ -186,23 +188,23 @@ public class JWDUserService implements UserService {
             }
 
             if (goodAddingResult) {
-                TransactionManager.getInstance().commit(transaction);
+                transactionManager.commit(transaction);
             } else {
-                TransactionManager.getInstance().rollback(transaction);
+                transactionManager.rollback(transaction);
             }
 
             return goodAddingResult;
         } catch (DaoException | NumberFormatException e) {
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            TransactionManager.getInstance().closeTransaction(transaction);
+            transactionManager.closeTransaction(transaction);
         }
     }
 
     @Override
     public boolean removeGoodFromBasket(String userId, String goodId) {
-        Transaction transaction = TransactionManager.getInstance().createTransaction();
+        Transaction transaction = transactionManager.createTransaction();
         try {
             Long longUserId = Long.parseLong(userId);
             long longGoodId = Long.parseLong(goodId);
@@ -216,23 +218,23 @@ public class JWDUserService implements UserService {
             boolean goodRemovingResult = userDao.removeGoodFromBasket(longUserId, longGoodId);
 
             if (goodRemovingResult) {
-                TransactionManager.getInstance().commit(transaction);
+                transactionManager.commit(transaction);
             } else {
-                TransactionManager.getInstance().rollback(transaction);
+                transactionManager.rollback(transaction);
             }
 
             return goodRemovingResult;
         } catch (DaoException | NumberFormatException e) {
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            TransactionManager.getInstance().closeTransaction(transaction);
+            transactionManager.closeTransaction(transaction);
         }
     }
 
     @Override
     public boolean changeGoodQuantityInBasket(String userId, String goodId, String quantity) {
-        Transaction transaction = TransactionManager.getInstance().createTransaction();
+        Transaction transaction = transactionManager.createTransaction();
         try {
             Long longUserId = Long.parseLong(userId);
             long longGoodId = Long.parseLong(goodId);
@@ -251,17 +253,17 @@ public class JWDUserService implements UserService {
             boolean goodUpdatingResult = userDao.changeGoodQuantity(longUserId, longGoodId, intQuantity);
 
             if (goodUpdatingResult) {
-                TransactionManager.getInstance().commit(transaction);
+                transactionManager.commit(transaction);
             } else {
-                TransactionManager.getInstance().rollback(transaction);
+                transactionManager.rollback(transaction);
             }
 
             return goodUpdatingResult;
         } catch (DaoException | NumberFormatException e) {
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            TransactionManager.getInstance().closeTransaction(transaction);
+            transactionManager.closeTransaction(transaction);
         }
     }
 

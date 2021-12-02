@@ -8,7 +8,7 @@ import by.lashkevich.logic.service.UserService;
 import by.lashkevich.web.controller.command.Command;
 import by.lashkevich.web.controller.command.CommandException;
 import by.lashkevich.web.controller.command.CommandResult;
-import by.lashkevich.web.util.CurrentPageFinder;
+import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +28,7 @@ public class RemoveReviewCommand implements Command {
             Thread.currentThread().setName(author.getId() + author.getLogin());
             request.getSession().setAttribute("isReviewRemoved",
                     reviewService.removeReviewById(request.getParameter("reviewId")));
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, CurrentPageFinder.findCurrentPage(request));
+            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageFinder.findLastPage(request));
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

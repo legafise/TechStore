@@ -23,6 +23,11 @@ public class PlaceOrderByBuyButtonCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
+            if (request.getSession().getAttribute("role").equals("guest")) {
+                request.getSession().setAttribute("authorizationInformation", true);
+                return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=authorization_page");
+            }
+
             Map<Good, Integer> goods = new HashMap<>();
             Good good = goodService.findGoodById(request.getParameter("goodId"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));

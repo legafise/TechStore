@@ -7,6 +7,7 @@
 <c:url value="/controller?command=remove_review" var="removeReviewCommand"/>
 <c:url value="/controller?command=add_good_in_basket" var="addGoodInBasket"/>
 <c:url value="/controller?command=place_order_by_buy_button" var="placeOrderByBuyButton"/>
+<c:url value="/controller?command=remove_good" var="removeGoodCommand"/>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
 
@@ -39,7 +40,7 @@
             </div>
             <%request.getSession().removeAttribute("reviewAddResult");%>
         </c:if>
-        <c:if test="${reviewAddResult == false || isReviewRemoved == false || basketAddingResult == false}">
+        <c:if test="${reviewAddResult == false || isGoodRemoved || isReviewRemoved == false || basketAddingResult == false}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
@@ -51,6 +52,7 @@
             <%request.getSession().removeAttribute("reviewAddResult");%>
             <%request.getSession().removeAttribute("isReviewRemoved");%>
             <%request.getSession().removeAttribute("basketAddingResult");%>
+            <%request.getSession().removeAttribute("isGoodRemoved");%>
         </c:if>
         <c:if test="${isReviewRemoved == true}">
             <div class="container-fluid authorization-result">
@@ -72,19 +74,37 @@
                     <img src="${imgPath}goods_${good.imgURL}" class="img-fluid img-indents" alt="iphone">
                     <p class="price"><fmt:message key="price"/>: ${good.price} <fmt:message key="currency.sign"/></p>
                     <div class="buttons-idents">
-                        <form action="${placeOrderByBuyButton}" method="post">
-                            <input type="hidden" name="goodId" value="${good.id}">
-                            <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="buy-button">
-                                <fmt:message key="buy"/>
-                            </button>
-                        </form>
-                        <form method="post" action="${addGoodInBasket}">
-                            <input type="hidden" value="${good.id}" name="goodId">
-                            <button class="basket-button" type="submit">
-                                <fmt:message key="add.to.basket"/>
-                            </button>
-                        </form>
+                        <c:choose>
+                            <c:when test="${role != 'moder' && role != 'admin'}">
+                                <form action="${placeOrderByBuyButton}" method="post">
+                                    <input type="hidden" name="goodId" value="${good.id}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="buy-button">
+                                        <fmt:message key="buy"/>
+                                    </button>
+                                </form>
+                                <form method="post" action="${addGoodInBasket}">
+                                    <input type="hidden" value="${good.id}" name="goodId">
+                                    <button class="basket-button" type="submit">
+                                        <fmt:message key="add.to.basket"/>
+                                    </button>
+                                </form>
+                            </c:when>
+                            <c:when test="${role == 'moder' || role == 'admin'}">
+                                <form action="" method="post">
+                                    <input type="hidden" name="goodId" value="${good.id}">
+                                    <button type="submit" class="buy-button">
+                                        Изменить
+                                    </button>
+                                </form>
+                                <form method="post" action="">
+                                    <input type="hidden" value="${good.id}" name="goodId">
+                                    <button class="delete-button good-delete-button" type="submit">
+                                        Удалить
+                                    </button>
+                                </form>
+                            </c:when>
+                        </c:choose>
                     </div>
                 </div>
                 <div class="col-xl-6 description">
@@ -97,7 +117,7 @@
         <div class="container-fluid">
             <p class="h2 bold" align="center"><fmt:message key="reviews"/></p>
         </div>
-        <c:if test="${role != 'guest'}">
+        <c:if test="${role == 'user'}">
             <c:choose>
                 <c:when test="${isCratedReview == false}">
                     <div class="container-fluid">
@@ -213,7 +233,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-1">
-                                                <c:if test="${review.author.id == userId}">
+                                                <c:if test="${review.author.id == userId || role == 'moder' || role == 'admin'}">
                                                     <form method="post" action="${removeReviewCommand}">
                                                         <input type="hidden" value="${review.id}" name="reviewId">
                                                         <button type="submit" class="btn delete-button"><fmt:message

@@ -1,6 +1,7 @@
 package by.lashkevich.web.controller.command.impl;
 
 import by.lashkevich.logic.entity.User;
+import by.lashkevich.logic.service.GoodService;
 import by.lashkevich.logic.service.ServiceException;
 import by.lashkevich.logic.service.ServiceFactory;
 import by.lashkevich.logic.service.UserService;
@@ -11,27 +12,25 @@ import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class AddGoodInBasketCommand implements Command {
+public class RemoveGoodCommand implements Command {
+    private final GoodService goodService;
     private final UserService userService;
 
-    public AddGoodInBasketCommand() {
+    public RemoveGoodCommand() {
+        goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
-            if (request.getSession().getAttribute("role").equals("guest")) {
-                request.getSession().setAttribute("authorizationInformation", true);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=authorization_page");
-            }
-
             User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
             Thread.currentThread().setName(user.getId() + user.getLogin());
-            boolean addingResult = userService.addGoodInBasket(String.valueOf(user.getId()),
-                    request.getParameter("goodId"));
-            request.getSession().setAttribute("basketAddingResult", addingResult);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageFinder.findLastPage(request));
+            boolean isGoodRemoved = goodService.removeGoodById(request.getParameter("goodId"));
+            request.getSession().setAttribute("isGoodRemoved", isGoodRemoved);
+            return isGoodRemoved ? new CommandResult(CommandResult.ResponseType.REDIRECT,
+                    "/controller?command=catalog") : new CommandResult(CommandResult.ResponseType.REDIRECT,
+                    PageFinder.findLastPage(request));
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

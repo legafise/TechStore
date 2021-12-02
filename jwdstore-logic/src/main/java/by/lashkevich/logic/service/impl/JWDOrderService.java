@@ -27,11 +27,13 @@ public class JWDOrderService implements OrderService {
     private final OrderDao orderDao;
     private final UserDao userDao;
     private final Predicate<Order> orderValidator;
+    private final TransactionManager transactionManager;
 
     public JWDOrderService() {
         orderDao = (OrderDao) DaoFactory.ORDER_DAO.getDao();
         userDao = (UserDao) DaoFactory.USER_DAO.getDao();
         orderValidator = new OrderValidator();
+        transactionManager = TransactionManager.getInstance();
     }
 
     @Override
@@ -60,14 +62,14 @@ public class JWDOrderService implements OrderService {
 
     @Override
     public boolean addOrder(Order order) throws ServiceException {
-        Transaction transaction = TransactionManager.getInstance().createTransaction();
+        Transaction transaction = transactionManager.createTransaction();
         try {
             if (orderValidator.test(order) && orderDao.add(order)) {
                 Long orderId = findCurrentOrderId(order);
                 if (order.getGoods().entrySet().stream()
                         .allMatch(entry -> orderDao.connectOrderToGood(orderId,
                                 entry.getKey().getId(), entry.getValue()))) {
-                    TransactionManager.getInstance().commit(transaction);
+                    transactionManager.commit(transaction);
                     return true;
                 } else {
                     transaction.rollback();
@@ -77,10 +79,10 @@ public class JWDOrderService implements OrderService {
 
             throw new ServiceException(INVALID_ORDER_MESSAGE);
         } catch (DaoException e) {
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            TransactionManager.getInstance().closeTransaction(transaction);
+            transactionManager.closeTransaction(transaction);
         }
     }
 
@@ -97,19 +99,19 @@ public class JWDOrderService implements OrderService {
 
     @Override
     public boolean removeOrderById(String id) throws ServiceException {
-        Transaction transaction = TransactionManager.getInstance().createTransaction();
+        Transaction transaction = transactionManager.createTransaction();
         try {
             Long orderId = Long.valueOf(id);
             if (orderDao.removeConnectionBetweenOrderAndGood(orderId) && orderDao.removeById(orderId)) {
-                TransactionManager.getInstance().commit(transaction);
+                transactionManager.commit(transaction);
             }
 
             return false;
         } catch (DaoException | NumberFormatException e) {
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(e.getMessage());
         } finally {
-            TransactionManager.getInstance().closeTransaction(transaction);
+            transactionManager.closeTransaction(transaction);
         }
     }
 
@@ -137,29 +139,29 @@ public class JWDOrderService implements OrderService {
 
     @Override
     public boolean placeOrder(Order order) {
-        Transaction transaction = TransactionManager.getInstance().createTransaction();
+        Transaction transaction = transactionManager.createTransaction();
         try {
             User customer = order.getCustomer();
             BigDecimal remains = customer.getBalance().subtract(order.getPrice());
 
             if (remains.compareTo(MIN_REMAINS) < 0) {
-                TransactionManager.getInstance().rollback(transaction);
+                transactionManager.rollback(transaction);
                 return false;
             }
 
             customer.setBalance(remains);
             if (addOrder(order) && userDao.update(customer)) {
-                TransactionManager.getInstance().commit(transaction);
+                transactionManager.commit(transaction);
                 return true;
             }
 
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             return false;
         } catch (DaoException | NumberFormatException e) {
-            TransactionManager.getInstance().rollback(transaction);
+            transactionManager.rollback(transaction);
             throw new ServiceException(e.getMessage());
         } finally {
-            TransactionManager.getInstance().closeTransaction(transaction);
+            transactionManager.closeTransaction(transaction);
         }
     }
 }
