@@ -3,6 +3,7 @@ package by.lashkevich.logic.dao.transaction.impl;
 import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.pool.ConnectionPool;
 import by.lashkevich.logic.dao.transaction.Transaction;
+import by.lashkevich.logic.dao.transaction.TransactionManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;

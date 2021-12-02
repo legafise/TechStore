@@ -16,7 +16,7 @@ public class OrderValidator implements Predicate<Order> {
     }
 
     private boolean validateAddress(String address) {
-        return address != null && address.length() >= 7 && address.length() <= 50;
+        return address != null && address.length() >= 7 && address.length() <= 80;
     }
 
     private boolean validateCustomer(User customer) {

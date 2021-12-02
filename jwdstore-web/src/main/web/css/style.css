@@ -260,12 +260,12 @@ a {
     margin-top: 100px;
 }
 
-.buy-button-in-basket:hover {
+.basket-buy-button:not([disabled]):hover {
     color: #E7E7E7;
     background-color: #303B44;
 }
 
-.buy-button-in-basket {
+.basket-buy-button {
     margin-top: 5px;
     background-color: #FFFFFF;
     font-size: 20px;
@@ -404,11 +404,41 @@ textarea {
 }
 
 .quantity-form {
-    width: 170px;
+    width: 265px;
+    padding-top: 10px;
+    padding-left: 15px;
 }
 
 .quantity-in-basket {
     padding-top: 6px;
     padding-left: 15px;
     padding-right: 10px;
+}
+
+.place-order-card {
+
+}
+
+.place-order-img-size {
+    height: 13vh;
+}
+
+.place-order-button {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.order-info {
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-family: "Segoe UI";
+}
+
+.order-card {
+    padding-bottom: 50px;
+}
+
+.order-card-indents {
+    padding-top: 20px;
 }

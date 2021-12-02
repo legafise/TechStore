@@ -18,4 +18,6 @@ public interface OrderService extends Service {
     boolean updateOrder(Order entity) throws ServiceException;
 
     Optional<List<Order>> findOrdersByUserId(String userId) throws DaoException;
+
+    boolean placeOrder(Order order);
 }

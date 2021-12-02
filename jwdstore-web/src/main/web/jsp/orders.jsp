@@ -12,6 +12,28 @@
     <title><fmt:message key="orders"/></title>
     <c:import url="header.jsp"/>
     <main>
+        <c:if test="${placingOrderResult == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Заказ сформирован успешно!</strong> Ожидайте его подтверждения
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("placingOrderResult");%>
+        </c:if>
+        <c:if test="${placingOrderResult == false}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("placingOrderResult");%>
+        </c:if>
         <div class="container-fluid name">
             <p class="h2 bold"><fmt:message key="your.orders"/></p>
         </div>
@@ -24,19 +46,26 @@
             <c:when test="${isEmptyOrderList == false}">
                 <c:forEach var="order" items="${orderList}">
                     <div class="container-fluid">
-                        <div class="card card-size">
-                            <h5 class="card-header"><fmt:message key="order.number"/> ${order.id}
+                        <div class="card card-size order-card">
+                            <div class="card-header order-info"><fmt:message key="order.number"/> ${order.id}
                                 <br/><fmt:message key="order.status"/> ${order.status.statusContent}
-                                <br/><fmt:message key="order.price"/> ${order.price} <fmt:message key="currency.sign"/></h5>
+                                <br/>Адрес доставки: ${order.address}
+                                <br/>Дата оформления: ${order.date}
+                                <br/><fmt:message key="order.price"/> ${order.price} <fmt:message key="currency.sign"/>
+                            </div>
                             <div class="card-body">
                                 <c:forEach var="goodEntry" items="${order.goods.entrySet()}">
                                     <div class="row">
                                         <div class="col-xl-2">
-                                            <a href="controller?command=good&goodId=${goodEntry.key.id}"><img src="${imgPath}goods_${goodEntry.key.imgURL}" class="img-fluid img-indents order-img-size" alt="good"></a>
+                                            <a href="controller?command=good&goodId=${goodEntry.key.id}"><img
+                                                    src="${imgPath}goods_${goodEntry.key.imgURL}"
+                                                    class="img-fluid img-indents order-img-size" alt="good"></a>
                                         </div>
                                         <div class="col-xl-6 order-info">
-                                            <span class="bold"><fmt:message key="good.name"/></span> <a href="controller?command=good&goodId=${goodEntry.key.id}">${goodEntry.key.name}<a/>
-                                            <br/> <span class="bold"><fmt:message key="quantity"/></span> ${goodEntry.value}
+                                            <span class="bold"><fmt:message key="good.name"/></span> <a
+                                                href="controller?command=good&goodId=${goodEntry.key.id}">${goodEntry.key.name}<a/>
+                                            <br/> <span class="bold"><fmt:message
+                                                    key="quantity"/></span> ${goodEntry.value}
                                         </div>
                                     </div>
                                     <hr/>

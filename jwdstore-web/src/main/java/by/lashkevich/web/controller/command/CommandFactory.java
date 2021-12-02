@@ -23,13 +23,17 @@ public enum CommandFactory {
     HANDLE_REVIEW(new HandleReviewCommand(), "handle_review", false),
     CHECK_REVIEW_ADD_RESULT(new CheckReviewAddResultCommand(), "check_review", true),
     REMOVE_REVIEW(new RemoveReviewCommand(), "remove_review", false),
-    REPLENISHMENT_REVIEW(new ReplenishmentPageForwardCommand(), "replenishment_page", true),
+    REPLENISHMENT_PAGE(new ReplenishmentPageForwardCommand(), "replenishment_page", true),
     PAYMENT_PAGE_COMMAND(new PaymentPageCommand(), "payment_page", false),
     PAYMENT(new PaymentCommand(), "payment", false),
     ADD_GOOD_IN_BASKET(new AddGoodInBasketCommand(), "add_good_in_basket", false),
     REMOVE_GOOD_FROM_BASKET(new RemoveGoodFromBasketCommand(), "remove_good_from_basket", false),
     CHANGE_GOOD_QUANTITY(new ChangeGoodQuantityCommand(), "change_good_quantity", false),
-    CLEAR_BASKET_COMMAND(new ClearBasketCommand(), "clear_basket", false);
+    CLEAR_BASKET_COMMAND(new ClearBasketCommand(), "clear_basket", false),
+    PLACE_BASKET_ORDER(new PlaceOrderFromBasketCommand(), "place_basket_order", false),
+    PLACE_ORDER_BY_BUY(new PlaceOrderByBuyButtonCommand(), "place_order_by_buy_button", false),
+    PLACE_ORDER(new PlaceOrderCommand(), "place_order", false),
+    PLACE_ORDER_PAGE_FORWARD(new PlaceOrderPageForwardCommand(), "place_order_page", false);
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
     private static final String COMMAND_IS_NULL_MESSAGE = "Command is null";

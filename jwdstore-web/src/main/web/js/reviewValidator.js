@@ -1,6 +1,4 @@
 window.onload = function () {
-    $(".review-button").prop("disabled", true)
-
     $("#review-inputs").on('input', function () {
         if (isValidReviewContent()) {
             $(".review-button").prop("disabled", false);

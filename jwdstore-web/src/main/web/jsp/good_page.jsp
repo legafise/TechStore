@@ -6,6 +6,7 @@
 <c:url value="/controller?command=handle_review" var="sendReviewCommand"/>
 <c:url value="/controller?command=remove_review" var="removeReviewCommand"/>
 <c:url value="/controller?command=add_good_in_basket" var="addGoodInBasket"/>
+<c:url value="/controller?command=place_order_by_buy_button" var="placeOrderByBuyButton"/>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
 
@@ -71,13 +72,17 @@
                     <img src="${imgPath}goods_${good.imgURL}" class="img-fluid img-indents" alt="iphone">
                     <p class="price"><fmt:message key="price"/>: ${good.price} <fmt:message key="currency.sign"/></p>
                     <div class="buttons-idents">
-                        <button class="buy-button">
-                            <fmt:message key="buy"/>
-                        </button>
+                        <form action="${placeOrderByBuyButton}" method="post">
+                            <input type="hidden" name="goodId" value="${good.id}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="buy-button">
+                                <fmt:message key="buy"/>
+                            </button>
+                        </form>
                         <form method="post" action="${addGoodInBasket}">
                             <input type="hidden" value="${good.id}" name="goodId">
                             <button class="basket-button" type="submit">
-                                <fmt:message key="add.to.cart"/>
+                                <fmt:message key="add.to.basket"/>
                             </button>
                         </form>
                     </div>
@@ -119,7 +124,7 @@
                                                 </div>
                                                 <div class="col-lg-1">
                                                     <button type="submit"
-                                                            class="btn btn-outline-secondary review-button">
+                                                            class="btn btn-outline-secondary review-button" disabled>
                                                         <fmt:message key="send"/>
                                                     </button>
                                                 </div>

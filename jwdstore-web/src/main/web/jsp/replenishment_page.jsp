@@ -25,10 +25,21 @@
             </div>
             <%request.getSession().removeAttribute("paymentResult");%>
         </c:if>
+        <c:if test="${isInvalidBalance == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>У вас не хватает средств!</strong> Пополните баланс
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("isInvalidBalance");%>
+        </c:if>
         <c:if test="${paymentResult == false}">
             <div class="container-fluid authorization-result">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong><fmt:message key="something.went.wrong"/>!</strong> <fmt:message key="try.again"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -55,7 +66,7 @@
                                         <span class="input-group-text"><fmt:message key="currency.sign"/></span>
                                     </div>
                                 </div>
-                                <button type="submit" id="replenishment-button" class="btn btn-secondary replenishment-button"><fmt:message key="pay"/></button>
+                                <button disabled type="submit" id="replenishment-button" class="btn btn-secondary replenishment-button"><fmt:message key="pay"/></button>
                             </form>
                         </div>
                     </div>

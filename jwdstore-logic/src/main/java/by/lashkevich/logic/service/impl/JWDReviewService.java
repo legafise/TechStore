@@ -4,7 +4,7 @@ import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.DaoFactory;
 import by.lashkevich.logic.dao.ReviewDao;
 import by.lashkevich.logic.dao.transaction.Transaction;
-import by.lashkevich.logic.dao.transaction.TransactionFactory;
+import by.lashkevich.logic.dao.transaction.TransactionManager;
 import by.lashkevich.logic.entity.Review;
 import by.lashkevich.logic.service.ReviewService;
 import by.lashkevich.logic.service.ServiceException;
@@ -53,46 +53,46 @@ public class JWDReviewService implements ReviewService {
 
     @Override
     public boolean addReview(Review review, String goodId) throws ServiceException {
-        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        Transaction transaction = TransactionManager.getInstance().createTransaction();
         try {
             if (checkReviewForDuplication(String.valueOf(review.getAuthor().getId()), goodId)
                     && reviewValidator.test(review) && reviewDao.add(review)) {
                 Long reviewId = findCurrentReviewId(review);
                 if (reviewDao.connectReviewToGood(reviewId, Long.parseLong(goodId))) {
-                    transaction.commit();
+                    TransactionManager.getInstance().commit(transaction);
                     return true;
                 } else {
-                    transaction.rollback();
+                    TransactionManager.getInstance().rollback(transaction);
                     return false;
                 }
             }
 
             throw new ServiceException(INVALID_REVIEW_MESSAGE);
         } catch (DaoException | NumberFormatException e) {
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            transaction.closeTransaction();
+            TransactionManager.getInstance().closeTransaction(transaction);
         }
     }
 
     @Override
     public boolean removeReviewById(String id) throws ServiceException {
-        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        Transaction transaction = TransactionManager.getInstance().createTransaction();
         try {
             Long reviewId = Long.valueOf(id);
             if (reviewDao.removeConnectionBetweenReviewAndGood(reviewId) && reviewDao.removeById(reviewId)) {
-                transaction.commit();
+                TransactionManager.getInstance().commit(transaction);
                 return true;
             }
 
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             return false;
         } catch (DaoException | NumberFormatException e) {
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             throw new ServiceException(e.getMessage());
         } finally {
-            transaction.closeTransaction();
+            TransactionManager.getInstance().closeTransaction(transaction);
         }
     }
 

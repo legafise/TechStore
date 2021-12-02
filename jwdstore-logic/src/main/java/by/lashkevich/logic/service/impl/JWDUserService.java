@@ -4,7 +4,7 @@ import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.DaoFactory;
 import by.lashkevich.logic.dao.UserDao;
 import by.lashkevich.logic.dao.transaction.Transaction;
-import by.lashkevich.logic.dao.transaction.TransactionFactory;
+import by.lashkevich.logic.dao.transaction.TransactionManager;
 import by.lashkevich.logic.entity.Basket;
 import by.lashkevich.logic.entity.User;
 import by.lashkevich.logic.service.ServiceException;
@@ -138,7 +138,7 @@ public class JWDUserService implements UserService {
 
     @Override
     public boolean upBalance(String amount, String userId) {
-        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        Transaction transaction = TransactionManager.getInstance().createTransaction();
         try {
             Optional<User> userOptional = userDao.findById(Long.valueOf(userId));
             if (userOptional.isPresent()) {
@@ -146,27 +146,27 @@ public class JWDUserService implements UserService {
                 user.setBalance(user.getBalance().add(new BigDecimal(amount)));
                 boolean result = userDao.update(user);
                 if (result) {
-                    transaction.commit();
+                    TransactionManager.getInstance().commit(transaction);
                 } else {
-                    transaction.rollback();
+                    TransactionManager.getInstance().rollback(transaction);
                 }
 
                 return result;
             }
 
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             throw new ServiceException(INVALID_USER_MESSAGE);
         } catch (DaoException | NumberFormatException e) {
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            transaction.closeTransaction();
+            TransactionManager.getInstance().closeTransaction(transaction);
         }
     }
 
     @Override
     public boolean addGoodInBasket(String userId, String goodId) {
-        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        Transaction transaction = TransactionManager.getInstance().createTransaction();
         try {
             Long longUserId = Long.parseLong(userId);
             long longGoodId = Long.parseLong(goodId);
@@ -186,23 +186,23 @@ public class JWDUserService implements UserService {
             }
 
             if (goodAddingResult) {
-                transaction.commit();
+                TransactionManager.getInstance().commit(transaction);
             } else {
-                transaction.rollback();
+                TransactionManager.getInstance().rollback(transaction);
             }
 
             return goodAddingResult;
         } catch (DaoException | NumberFormatException e) {
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            transaction.closeTransaction();
+            TransactionManager.getInstance().closeTransaction(transaction);
         }
     }
 
     @Override
     public boolean removeGoodFromBasket(String userId, String goodId) {
-        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        Transaction transaction = TransactionManager.getInstance().createTransaction();
         try {
             Long longUserId = Long.parseLong(userId);
             long longGoodId = Long.parseLong(goodId);
@@ -216,23 +216,23 @@ public class JWDUserService implements UserService {
             boolean goodRemovingResult = userDao.removeGoodFromBasket(longUserId, longGoodId);
 
             if (goodRemovingResult) {
-                transaction.commit();
+                TransactionManager.getInstance().commit(transaction);
             } else {
-                transaction.rollback();
+                TransactionManager.getInstance().rollback(transaction);
             }
 
             return goodRemovingResult;
         } catch (DaoException | NumberFormatException e) {
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            transaction.closeTransaction();
+            TransactionManager.getInstance().closeTransaction(transaction);
         }
     }
 
     @Override
     public boolean changeGoodQuantityInBasket(String userId, String goodId, String quantity) {
-        Transaction transaction = TransactionFactory.getInstance().createTransaction();
+        Transaction transaction = TransactionManager.getInstance().createTransaction();
         try {
             Long longUserId = Long.parseLong(userId);
             long longGoodId = Long.parseLong(goodId);
@@ -251,17 +251,17 @@ public class JWDUserService implements UserService {
             boolean goodUpdatingResult = userDao.changeGoodQuantity(longUserId, longGoodId, intQuantity);
 
             if (goodUpdatingResult) {
-                transaction.commit();
+                TransactionManager.getInstance().commit(transaction);
             } else {
-                transaction.rollback();
+                TransactionManager.getInstance().rollback(transaction);
             }
 
             return goodUpdatingResult;
         } catch (DaoException | NumberFormatException e) {
-            transaction.rollback();
+            TransactionManager.getInstance().rollback(transaction);
             throw new ServiceException(e);
         } finally {
-            transaction.closeTransaction();
+            TransactionManager.getInstance().closeTransaction(transaction);
         }
     }
 

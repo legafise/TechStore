@@ -64,7 +64,7 @@
                                     <label for="password" class="authorization"><fmt:message key="password"/></label>
                                     <input type="password" class="form-control" id="password" name="password">
                                 </div>
-                                <button type="submit" class="btn btn-secondary authorization authorization-button">
+                                <button disabled type="submit" class="btn btn-secondary authorization authorization-button">
                                     <fmt:message key="sign.in"/>
                                 </button>
                             </form>

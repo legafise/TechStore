@@ -224,8 +224,6 @@ public class JWDUserDao implements UserDao {
         }
     }
 
-    // TODO: 28.11.2021 Метод добавления \ метод изменения количества
-
     private void fillUpdatingUserData(User user, PreparedStatement statement) throws SQLException {
         fillAddingUserData(user, statement);
         statement.setBigDecimal(8, user.getBalance());

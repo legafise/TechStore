@@ -9,7 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 public class PaymentPageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
-        request.setAttribute("amount", request.getParameter("amount"));
+        String amount = request.getParameter("amount");
+        if (amount.isEmpty()) {
+            request.getSession().setAttribute("paymentResult", false);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=replenishment_page");
+        }
+
+        request.setAttribute("amount", amount);
         return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/card_page.jsp");
     }
 }

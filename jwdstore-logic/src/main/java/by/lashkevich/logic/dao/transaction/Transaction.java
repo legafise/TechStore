@@ -8,6 +8,4 @@ public interface Transaction {
     void closeTransaction() throws DaoException;
 
     // TODO: 18.11.2021 Уровни изоляций транзакций
-    // TODO: 18.11.2021 ASID
-    // TODO: 18.11.2021 Dirty Read, Repeatable Read etc 
 }

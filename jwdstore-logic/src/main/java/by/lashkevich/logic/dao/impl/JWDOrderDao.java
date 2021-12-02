@@ -60,7 +60,7 @@ public class JWDOrderDao implements OrderDao {
             " ON ordered_goods.good_id = goods.id LEFT JOIN goods_types ON goods.type_id = goods_types.id LEFT JOIN" +
             " goods_reviews ON goods_reviews.good_id = goods.id LEFT JOIN reviews ON goods_reviews.review_id = reviews.id" +
             " LEFT JOIN users AS users_from_reviews ON users_from_reviews.id = reviews.user_id WHERE users_from_orders.id = ?" +
-            " ORDER BY orders.id, goods.id";
+            " ORDER BY orders.id DESC, goods.id";
     private static final String REMOVE_ORDER_BY_ID_SQL = "DELETE FROM orders WHERE id = ?";
     private static final String CREATE_ORDER_SQL = "INSERT INTO orders (status, price, user_id, address, date) VALUES" +
             " (?, ?, ?, ?, ?)";
@@ -167,6 +167,7 @@ public class JWDOrderDao implements OrderDao {
         }
     }
 
+    @Override
     public boolean connectOrderToGood(Long orderId, Long goodId, int quantity) {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(CONNECT_ORDER_TO_GOOD)) {
@@ -180,6 +181,7 @@ public class JWDOrderDao implements OrderDao {
         }
     }
 
+    @Override
     public boolean removeConnectionBetweenOrderAndGood(Long orderId) {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(REMOVE_CONNECTION_BETWEEN_ORDER_AND_GOODS)) {
