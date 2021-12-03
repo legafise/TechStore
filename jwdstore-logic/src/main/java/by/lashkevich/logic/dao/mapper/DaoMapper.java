@@ -169,7 +169,7 @@ public class DaoMapper {
         good.setPrice(resultSet.getBigDecimal(GOOD_PRICE));
         good.setDescription(resultSet.getString(GOOD_DESCRIPTION));
         good.setType(resultSet.getString(GOOD_TYPE));
-        good.setImgURL(resultSet.getString(GOOD_PICTURE));
+        good.setImgName(resultSet.getString(GOOD_PICTURE));
     }
 
     private void fillOrderData(Order order, ResultSet resultSet) throws SQLException, OrderStatusException {

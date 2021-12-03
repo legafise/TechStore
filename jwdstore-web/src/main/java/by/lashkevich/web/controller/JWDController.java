@@ -11,16 +11,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/controller")
 @MultipartConfig(location = "C:\\IdeaProjects\\JWDStore\\jwdstore-web\\target\\jwdstore-web-1.0-SNAPSHOT\\download")
 public class JWDController extends HttpServlet {
     private static final Logger LOGGER = LogManager.getRootLogger();
+    private static final String UNKNOWN_ACTION_MESSAGE = "Unknown action!";
 
     @Override
     public void init() {
@@ -47,6 +46,7 @@ public class JWDController extends HttpServlet {
             handleRequest(req, resp, CommandFactory.findCommandByRequest(req, true));
         } catch (CommandException e) {
             LOGGER.error(e);
+            req.getSession().setAttribute("errorMessage", UNKNOWN_ACTION_MESSAGE);
             handleRequest(req, resp, CommandFactory.ERROR.getCommand());
         }
     }
@@ -57,6 +57,7 @@ public class JWDController extends HttpServlet {
             handleRequest(req, resp, CommandFactory.findCommandByRequest(req, false));
         } catch (CommandException e) {
             LOGGER.error(e);
+            req.getSession().setAttribute("errorMessage", UNKNOWN_ACTION_MESSAGE);
             handleRequest(req, resp, CommandFactory.ERROR.getCommand());
         }
     }
@@ -72,6 +73,7 @@ public class JWDController extends HttpServlet {
             }
         } catch (ServletException | IOException | CommandException e) {
             LOGGER.error(e);
+            req.getSession().setAttribute("errorMessage", e.getMessage());
             resp.sendRedirect(req.getContextPath() + "/controller?command=error");
         }
     }

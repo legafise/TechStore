@@ -31,10 +31,13 @@ public enum CommandFactory {
     CHANGE_GOOD_QUANTITY(new ChangeGoodQuantityCommand(), "change_good_quantity", false),
     CLEAR_BASKET_COMMAND(new ClearBasketCommand(), "clear_basket", false),
     PLACE_BASKET_ORDER(new PlaceOrderFromBasketCommand(), "place_basket_order", false),
-    PLACE_ORDER_BY_BUY(new PlaceOrderByBuyButtonCommand(), "place_order_by_buy_button", false),
+    PLACE_ORDER_BY_BUY_BUTTON(new PlaceOrderByBuyButtonCommand(), "place_order_by_buy_button", false),
     PLACE_ORDER(new PlaceOrderCommand(), "place_order", false),
     PLACE_ORDER_PAGE_FORWARD(new PlaceOrderPageForwardCommand(), "place_order_page", false),
-    REMOVE_GOOD(new RemoveGoodCommand(), "remove_good", false);
+    REMOVE_GOOD(new RemoveGoodCommand(), "remove_good", false),
+    UPDATE_GOOD_PAGE(new UpdateGoodPageForwardCommand(), "update_good_page", false),
+    UPDATE_GOOD(new UpdateGoodCommand(), "update_good", false),
+    ADD_GOOD(new AddGoodPageForwardCommand(), "add_good_page", true);
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
     private static final String COMMAND_IS_NULL_MESSAGE = "Command is null";

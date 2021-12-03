@@ -80,7 +80,7 @@
                             <div class="card-body">
                                 <div class="row basket-description-text">
                                     <div class="col-xl-3">
-                                        <img src="${imgPath}goods_${entry.key.imgURL}"
+                                        <img src="${imgPath}goods_${entry.key.imgName}"
                                              class="img-fluid img-indents img-size" alt="">
                                     </div>
                                     <div class="col-xl-9">

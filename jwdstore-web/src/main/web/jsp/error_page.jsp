@@ -19,7 +19,15 @@
                 <div class="col-xl-4">
                     <div class="card text-center registration-form-idents">
                         <div class="card-header authorization bold">
-                            <fmt:message key="something.went.wrong"/>
+                            <c:choose>
+                                <c:when test="${(!empty errorMessage)}">
+                                    <c:out value="${errorMessage}"/>
+                                </c:when>
+                                <c:when test="${empty errorMessage}">
+                                    <fmt:message key="something.went.wrong"/>
+                                </c:when>
+                            </c:choose>
+                            <%request.getSession().removeAttribute("errorMessage");%>
                         </div>
                         <div class="card-body authorization">
                             <fmt:message key="return.to.catalog"/>

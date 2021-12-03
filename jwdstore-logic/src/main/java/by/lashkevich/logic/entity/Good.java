@@ -11,7 +11,7 @@ public class Good implements Entity {
     private BigDecimal price;
     private String description;
     private String type;
-    private String imgURL;
+    private String imgName;
     private List<Review> reviews;
 
     public Good() {
@@ -19,22 +19,22 @@ public class Good implements Entity {
     }
 
     public Good(long id, String name, BigDecimal price, String description,
-                String type, String imgURL) {
+                String type, String imgName) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
         this.type = type;
-        this.imgURL = imgURL;
+        this.imgName = imgName;
     }
 
     public Good(String name, BigDecimal price, String description,
-                String type, String imgURL) {
+                String type, String imgName) {
         this.name = name;
         this.price = price;
         this.description = description;
         this.type = type;
-        this.imgURL = imgURL;
+        this.imgName = imgName;
         this.reviews = new ArrayList<>();
     }
 
@@ -78,12 +78,12 @@ public class Good implements Entity {
         this.type = type;
     }
 
-    public String getImgURL() {
-        return imgURL;
+    public String getImgName() {
+        return imgName;
     }
 
-    public void setImgURL(String imgURL) {
-        this.imgURL = imgURL;
+    public void setImgName(String imgURL) {
+        this.imgName = imgURL;
     }
 
     public List<Review> getReviews() {
@@ -104,13 +104,13 @@ public class Good implements Entity {
                 Objects.equals(price, good.price) &&
                 Objects.equals(description, good.description) &&
                 Objects.equals(type, good.type) &&
-                Objects.equals(imgURL, good.imgURL) &&
+                Objects.equals(imgName, good.imgName) &&
                 Objects.equals(reviews, good.reviews);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, description, type, imgURL, reviews);
+        return Objects.hash(id, name, price, description, type, imgName, reviews);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class Good implements Entity {
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
-                ", imgURL='" + imgURL + '\'' +
+                ", imgURL='" + imgName + '\'' +
                 ", reviews=" + reviews +
                 '}';
     }

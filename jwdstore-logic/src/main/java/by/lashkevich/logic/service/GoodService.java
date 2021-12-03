@@ -7,6 +7,8 @@ import java.util.List;
 public interface GoodService extends Service {
     List<Good> findAllGoods() throws ServiceException;
 
+    List<String> findAllGoodTypes() throws ServiceException;
+
     Good findGoodById(String id) throws ServiceException;
 
     boolean addGood(Good good) throws ServiceException;

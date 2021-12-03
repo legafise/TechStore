@@ -8,6 +8,7 @@
 <c:url value="/controller?command=add_good_in_basket" var="addGoodInBasket"/>
 <c:url value="/controller?command=place_order_by_buy_button" var="placeOrderByBuyButton"/>
 <c:url value="/controller?command=remove_good" var="removeGoodCommand"/>
+<c:url value="/controller?command=update_good_page" var="updateGoodPageCommand"/>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
 
@@ -28,6 +29,17 @@
             </div>
             <%request.getSession().removeAttribute("basketAddingResult");%>
         </c:if>
+        <c:if test="${isGoodUpdated == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Товар изменен!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("isGoodUpdated");%>
+        </c:if>
         <c:if test="${reviewAddResult == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -40,10 +52,11 @@
             </div>
             <%request.getSession().removeAttribute("reviewAddResult");%>
         </c:if>
-        <c:if test="${reviewAddResult == false || isGoodRemoved || isReviewRemoved == false || basketAddingResult == false}">
+        <c:if test="${reviewAddResult == false || isGoodRemoved == false || isReviewRemoved == false
+         || basketAddingResult == false || isGoodUpdated == false}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
+                    <strong><fmt:message key="something.went.wrong"/>!</strong> <fmt:message key="try.again"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -53,6 +66,7 @@
             <%request.getSession().removeAttribute("isReviewRemoved");%>
             <%request.getSession().removeAttribute("basketAddingResult");%>
             <%request.getSession().removeAttribute("isGoodRemoved");%>
+            <%request.getSession().removeAttribute("isGoodUpdated");%>
         </c:if>
         <c:if test="${isReviewRemoved == true}">
             <div class="container-fluid authorization-result">
@@ -71,7 +85,7 @@
         <div class="container-fluid good-idents">
             <div class="row">
                 <div class="col-xl-4">
-                    <img src="${imgPath}goods_${good.imgURL}" class="img-fluid img-indents" alt="iphone">
+                    <img src="${imgPath}goods_${good.imgName}" class="img-fluid img-indents" alt="iphone">
                     <p class="price"><fmt:message key="price"/>: ${good.price} <fmt:message key="currency.sign"/></p>
                     <div class="buttons-idents">
                         <c:choose>
@@ -91,13 +105,13 @@
                                 </form>
                             </c:when>
                             <c:when test="${role == 'moder' || role == 'admin'}">
-                                <form action="" method="post">
+                                <form action="${updateGoodPageCommand}" method="post">
                                     <input type="hidden" name="goodId" value="${good.id}">
                                     <button type="submit" class="buy-button">
                                         Изменить
                                     </button>
                                 </form>
-                                <form method="post" action="">
+                                <form method="post" action="${removeGoodCommand}">
                                     <input type="hidden" value="${good.id}" name="goodId">
                                     <button class="delete-button good-delete-button" type="submit">
                                         Удалить

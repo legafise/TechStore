@@ -45,7 +45,7 @@
                                     <div class="row">
                                         <div class="col-xl-3">
                                             <a href="controller?command=good&goodId=${goodEntry.key.id}"><img
-                                                    src="${imgPath}goods_${goodEntry.key.imgURL}"
+                                                    src="${imgPath}goods_${goodEntry.key.imgName}"
                                                     class="img-fluid img-indents place-order-img-size" alt="good"></a>
                                         </div>
                                         <div class="col-xl-6 order-info">

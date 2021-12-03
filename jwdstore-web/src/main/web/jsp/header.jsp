@@ -44,6 +44,16 @@
                     <a class="nav-link"></a>
                 </li>
             </c:if>
+            <c:if test="${role == 'admin'}">
+                <li class="nav-item ${currentPage == 'orderList' ? 'active' : ''}">
+                    <a class="nav-link" href="${orderListPath}">Список пользователей</a>
+                </li>
+            </c:if>
+            <c:if test="${role == 'moder' || role == 'admin'}">
+                <li class="nav-item ${currentPage == 'orderList' ? 'active' : ''}">
+                    <a class="nav-link" href="${orderListPath}">Список заказов</a>
+                </li>
+            </c:if>
             <li class="nav-item ${currentPage == 'catalog' ? 'active' : ''}">
                 <a class="nav-link" href="${catalogPath}"><fmt:message key="catalog"/></a>
             </li>

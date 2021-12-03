@@ -43,6 +43,15 @@ public class JWDGoodService implements GoodService {
     }
 
     @Override
+    public List<String> findAllGoodTypes() throws ServiceException {
+        try {
+            return goodDao.findAllTypes();
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
     public Good findGoodById(String id) throws ServiceException {
         try {
             Optional<Good> goodOptional = goodDao.findById(Long.parseLong(id));
@@ -108,8 +117,8 @@ public class JWDGoodService implements GoodService {
     }
 
     private void setStandardPicture(Good good) {
-        if (good.getImgURL().equals(EMPTY_PICTURE_NAME)) {
-            good.setImgURL(STANDARD_GOOD_PICTURE);
+        if (good.getImgName().equals(EMPTY_PICTURE_NAME)) {
+            good.setImgName(STANDARD_GOOD_PICTURE);
         }
     }
 }

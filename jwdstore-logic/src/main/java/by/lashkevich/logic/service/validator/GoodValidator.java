@@ -13,7 +13,7 @@ public class GoodValidator implements Predicate<Good> {
     public boolean test(Good good) {
         return good != null && validateGoodName(good.getName()) && validateGoodPrice(good.getPrice())
                 && validateGoodDescription(good.getDescription()) && validateGoodType(good.getType())
-                && good.getImgURL() != null;
+                && good.getImgName() != null;
     }
 
     private boolean validateGoodType(String type) {
@@ -21,7 +21,7 @@ public class GoodValidator implements Predicate<Good> {
     }
 
     private boolean validateGoodDescription(String description) {
-        return description != null && description.length() > 10 && description.length() < 200;
+        return description != null && description.length() > 10 && description.length() < 400;
     }
 
     private boolean validateGoodName(String goodName) {

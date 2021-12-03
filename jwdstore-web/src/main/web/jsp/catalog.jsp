@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:url value="/download/" var="imgPath"/>
+<c:url value="/controller?command=add_good_page" var="addGoodPageCommand"/>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
 
@@ -33,7 +34,7 @@
                     </button>
                 </div>
             </div>
-            <%request.getSession().removeAttribute("authorizationResult");%>
+            <%request.getSession().removeAttribute("isGoodRemoved");%>
         </c:if>
         <c:if test="${logOutResult == true}">
             <div class="container-fluid authorization-result">
@@ -50,6 +51,13 @@
             <p class="h2 bold"><fmt:message key="catalog"/></p>
         </div>
         <div class="container-fluid">
+            <c:if test="${role == 'moder' || role == 'admin'}">
+                <a href="${addGoodPageCommand}">
+                    <button class="more-button">
+                        Добавить товар
+                    </button>
+                </a>
+            </c:if>
             <div class="row">
                 <c:forEach var="good" items="${goodList}">
                     <div class="col-xl-3">
@@ -60,7 +68,7 @@
                                 </h5>
                                 <p class="card-text">
                                     <a href="controller?command=good&goodId=${good.id}">
-                                        <img src="${imgPath}goods_${good.imgURL}" class="img-fluid img-indents img-size"
+                                        <img src="${imgPath}goods_${good.imgName}" class="img-fluid img-indents img-size"
                                              alt="${good.name}">
                                     </a>
                                 </p>

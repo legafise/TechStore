@@ -60,7 +60,7 @@
                             <p><fmt:message key="enter.amount"/> </p>
                             <form action="${paymentPageCommand}" method="post" id="replenishment-inputs">
                                 <div class="input-group mb-3">
-                                    <input id="amount" type="number" step="0.01" min="0" placeholder="0,00"
+                                    <input id="amount" type="number" step="0.10" min="0" placeholder="0,00"
                                            class="form-control" aria-label="Amount" name="amount">
                                     <div class="input-group-append">
                                         <span class="input-group-text"><fmt:message key="currency.sign"/></span>

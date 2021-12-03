@@ -12,6 +12,7 @@ import by.lashkevich.web.controller.command.CommandResult;
 import javax.servlet.http.HttpServletRequest;
 
 public class GoodPageForwardCommand implements Command {
+    private static final String GOOD_DOESNT_EXIST_MESSAGE = "This good does not exist";
     private final GoodService goodService;
     private final ReviewService reviewService;
 
@@ -33,7 +34,7 @@ public class GoodPageForwardCommand implements Command {
             request.setAttribute("good", good);
             return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/good_page.jsp");
         } catch (ServiceException e) {
-            throw new CommandException(e);
+            throw new CommandException(GOOD_DOESNT_EXIST_MESSAGE, e);
         }
     }
 }

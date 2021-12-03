@@ -6,21 +6,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
 
 public class ChangeLanguageCommand implements Command {
-    private static final List<String> localeNames;
-
-    static {
-        localeNames = Arrays.asList("ru_ru", "en_us");
-    }
+    private static final String UNKNOWN_LANGUAGE_MESSAGE = "Unknown language";
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         String localeName = request.getParameter("locale");
-        if (localeNames.contains(localeName.toLowerCase())) {
+        if (Languages.isExistentLocale(localeName)) {
             request.getSession().setAttribute("locale", localeName);
+        } else {
+            throw new CommandException(UNKNOWN_LANGUAGE_MESSAGE);
         }
 
         return new CommandResult(CommandResult.ResponseType.REDIRECT, PageFinder.findLastPage(request));

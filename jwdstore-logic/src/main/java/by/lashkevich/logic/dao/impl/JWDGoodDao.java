@@ -38,7 +38,9 @@ public class JWDGoodDao implements GoodDao {
             " VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE_GOOD_SQL = "UPDATE goods SET name = ?, price = ?, type_id = ?, description = ?, " +
             "picture = ? WHERE id = ?";
+    private static final String FIND_ALL_TYPES_SQL = "SELECT goods_types.name AS type FROM goods_types";
     private static final String GOOD_TYPE_ID = "good_type_id";
+    private static final String GOOD_TYPE = "type";
     private final DaoMapper daoMapper;
 
     public JWDGoodDao() {
@@ -100,6 +102,23 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
+    public List<String> findAllTypes() {
+        try (Connection connection = ConnectionPool.getInstance().acquireConnection();
+             Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(FIND_ALL_TYPES_SQL);
+            List<String> types = new ArrayList<>();
+
+            while (resultSet.next()) {
+                types.add(resultSet.getString(GOOD_TYPE));
+            }
+
+            return types;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public boolean update(Good good) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_GOOD_SQL)) {
@@ -138,6 +157,6 @@ public class JWDGoodDao implements GoodDao {
         statement.setBigDecimal(2, good.getPrice());
         statement.setInt(3, typeID);
         statement.setString(4, good.getDescription());
-        statement.setString(5, good.getImgURL());
+        statement.setString(5, good.getImgName());
     }
 }
