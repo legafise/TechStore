@@ -68,9 +68,13 @@ public class JWDUserService implements UserService {
     @Override
     public boolean addUser(User user) throws ServiceException {
         try {
-            if (userValidator.test(user) && userAddingDuplicationChecker.test(user)) {
-                setStandardPicture(user);
-                return userDao.add(user);
+            if (userValidator.test(user)) {
+                if(userAddingDuplicationChecker.test(user)) {
+                    setStandardPicture(user);
+                    return userDao.add(user);
+                } else {
+                    return false;
+                }
             }
 
             throw new ServiceException(INVALID_USER_MESSAGE);

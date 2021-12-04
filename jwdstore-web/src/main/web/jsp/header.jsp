@@ -12,6 +12,7 @@
 <c:url value="/controller?command=profile" var="profilePageCommand"/>
 <c:url value="/controller?command=orders_page" var="ordersPageCommand"/>
 <c:url value="/controller?command=replenishment_page" var="replenishmentPageCommand"/>
+<c:url value="/controller?command=manage_orders" var="orderListPath"/>
 
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
@@ -45,8 +46,8 @@
                 </li>
             </c:if>
             <c:if test="${role == 'admin'}">
-                <li class="nav-item ${currentPage == 'orderList' ? 'active' : ''}">
-                    <a class="nav-link" href="${orderListPath}">Список пользователей</a>
+                <li class="nav-item ${currentPage == 'userList' ? 'active' : ''}">
+                    <a class="nav-link" href="${userListPath}">Список пользователей</a>
                 </li>
             </c:if>
             <c:if test="${role == 'moder' || role == 'admin'}">

@@ -39,7 +39,9 @@ public enum CommandFactory {
     UPDATE_GOOD(new UpdateGoodCommand(), "update_good", false),
     ADD_GOOD_PAGE(new AddGoodPageForwardCommand(), "add_good_page", true),
     ADD_GOOD(new AddGoodCommand(), "add_good", false),
-    CHECK_GOOD_ADDING_RESULT(new CheckGoodAddingResultCommand(),"check_good_adding_result",true);
+    CHECK_GOOD_ADDING_RESULT(new CheckGoodAddingResultCommand(),"check_good_adding_result",true),
+    MANAGE_ORDERS_COMMAND(new ManageOrdersPageForwardCommand(), "manage_orders", true),
+    UPDATE_ORDER_STATUS(new ChangeOrderStatusCommand(), "update_order_status", false);
 
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";

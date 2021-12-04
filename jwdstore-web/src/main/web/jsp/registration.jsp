@@ -17,7 +17,7 @@
     <main>
         <c:if test="${registrationResult == false}">
             <div class="container-fluid authorization-result">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <strong><fmt:message key="bad.registration.result"/> </strong> <fmt:message key="bad.registration.result.info"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times</span>

@@ -28,7 +28,8 @@
                 </div>
             </div>
             <%request.getSession().removeAttribute("goodUpdatingResult");%>
-        </c:if><c:if test="${clearingBasketResult == true}">
+        </c:if>
+        <c:if test="${clearingBasketResult == true}">
         <div class="container-fluid authorization-result">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong><fmt:message key="basket.cleaned"/></strong>

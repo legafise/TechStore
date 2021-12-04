@@ -3,8 +3,8 @@ package by.lashkevich.logic.entity;
 import java.util.Arrays;
 
 public enum OrderStatus {
-    IN_PROCESSING("The order is being processed"),
     EXECUTING("The order is being executed"),
+    IN_PROCESSING("The order is being processed"),
     COMPLETED("The order is completed");
 
     private static final String UNKNOWN_STATUS_MESSAGE = "Unknown order status";
