@@ -7,13 +7,15 @@ import by.lashkevich.web.controller.command.CommandResult;
 import javax.servlet.http.HttpServletRequest;
 
 public class CheckAuthorizationCommand implements Command {
+    private static final String YOU_CANT_DO_IT_NOW_MESSAGE = "You can't do it now";
+
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         CommandResult commandResult = new CommandResult();
         Boolean authorizationResult = (Boolean) request.getSession().getAttribute("authorizationResult");
 
         commandResult.setResponseType(CommandResult.ResponseType.REDIRECT);
-        checkAuthorizationResultToNull(authorizationResult, commandResult);
+        checkAuthorizationResultToNull(authorizationResult, commandResult, request);
 
         if (commandResult.getPage().isEmpty()) {
             if (authorizationResult) {
@@ -26,8 +28,10 @@ public class CheckAuthorizationCommand implements Command {
         return commandResult;
     }
 
-    private void checkAuthorizationResultToNull(Boolean result, CommandResult commandResult) {
+    private void checkAuthorizationResultToNull(Boolean result, CommandResult commandResult,
+                                                HttpServletRequest request) {
         if (result == null) {
+            request.getSession().setAttribute("errorMessage", YOU_CANT_DO_IT_NOW_MESSAGE);
             commandResult.setPage("/controller?command=error");
         }
     }

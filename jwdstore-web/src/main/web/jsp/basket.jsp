@@ -76,7 +76,7 @@
                 <div class="container-fluid">
                     <c:forEach var="entry" items="${basketGoods}">
                         <div class="card card-size">
-                            <h5 class="card-header basket-good-header">${entry.key.name}</h5>
+                            <h5 class="card-header basket-good-header"><c:out value="${entry.key.name}"/></h5>
                             <div class="card-body">
                                 <div class="row basket-description-text">
                                     <div class="col-xl-3">
@@ -85,8 +85,10 @@
                                     </div>
                                     <div class="col-xl-9">
                                         <span class="bold"><fmt:message
-                                                key="description"/></span> ${entry.key.description} <br>
-                                        <span class="bold"><fmt:message key="type"/></span> ${entry.key.type} <br><br>
+                                                key="description"/></span> <c:out value="${entry.key.description}"/>
+                                        <br>
+                                        <span class="bold"><fmt:message key="type"/></span> <c:out
+                                            value="${entry.key.type.name}"/> <br><br>
                                         <form method="post" action="${changeGoodQuantityCommand}">
                                             <div class="row">
                                                 <div class="input-group mb-3 quantity-form">
@@ -96,11 +98,13 @@
                                                     </div>
                                                     <input type="hidden" value="${entry.key.id}" name="goodId">
                                                     <input type="number" min="1" step="1" value="${entry.value}"
-                                                           class="form-control" name="quantity" placeholder="Количество"
+                                                           class="form-control" name="quantity"
+                                                           placeholder="Количество"
                                                            aria-describedby="button-addon2">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-outline-secondary" type="submit"
-                                                                id="button-addon2"><fmt:message key="change"/></button>
+                                                                id="button-addon2"><fmt:message
+                                                                key="change"/></button>
                                                     </div>
                                                 </div>
                                             </div>

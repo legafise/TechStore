@@ -27,7 +27,7 @@
             <%request.getSession().removeAttribute("isInvalidCardData");%>
         </c:if>
         <div class="container-fluid name">
-            <p align="center" class="h3 bold"><fmt:message key="top.up.amount"/> ${amount} <fmt:message key="currency.sign"/></p>
+            <p align="center" class="h3 bold"><fmt:message key="top.up.amount"/> <c:out value="${amount}"/> <fmt:message key="currency.sign"/></p>
         </div>
         <form action="${paymentCommand}" method="post">
             <div class="wrapper" id="app">

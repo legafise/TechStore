@@ -18,11 +18,11 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
-public class UpdateGoodCommand implements Command {
+public class AddGoodCommand implements Command {
     private static final String INVALID_GOOD_DATA_MESSAGE = "Invalid good data";
     private final GoodService goodService;
 
-    public UpdateGoodCommand() {
+    public AddGoodCommand() {
         goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
     }
 
@@ -30,9 +30,9 @@ public class UpdateGoodCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             if (!validateGoodData(request)) {
-                request.getSession().setAttribute("isGoodUpdated", false);
+                request.getSession().setAttribute("isGoodAdded", false);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT,
-                        "/controller?command=good&goodId=" + request.getParameter("goodId"));
+                        "/controller?command=check_good_adding_result");
             }
 
             Good good = mapGood(request);
@@ -49,15 +49,13 @@ public class UpdateGoodCommand implements Command {
                         good.setImgName(pictureName);
                         pictureName = "goods_" + good.getName() + "_" + part.getSubmittedFileName();
                         part.write(pictureName);
-                    } else {
-                        good.setImgName(goodService.findGoodById(request.getParameter("goodId")).getImgName());
                     }
                 }
             }
 
-            request.getSession().setAttribute("isGoodUpdated", goodService.updateGood(good));
+            request.getSession().setAttribute("isGoodAdded", goodService.addGood(good));
             return new CommandResult(CommandResult.ResponseType.REDIRECT,
-                    "/controller?command=good&goodId=" + request.getParameter("goodId"));
+                    "/controller?command=check_good_adding_result");
         } catch (ServiceException | IOException | ServletException e) {
             throw new CommandException(INVALID_GOOD_DATA_MESSAGE, e);
         }
@@ -65,7 +63,6 @@ public class UpdateGoodCommand implements Command {
 
     private Good mapGood(HttpServletRequest request) {
         Good good = new Good();
-        good.setId(Integer.parseInt(request.getParameter("goodId")));
         good.setType(goodService.findTypeById(request.getParameter("typeId")));
         good.setDescription(request.getParameter("description"));
         good.setPrice(new BigDecimal(request.getParameter("price")));
@@ -76,10 +73,9 @@ public class UpdateGoodCommand implements Command {
     private boolean validateGoodData(HttpServletRequest request) {
         String name = request.getParameter("name");
         String price = request.getParameter("price");
-        String id = request.getParameter("goodId");
         String typeId = request.getParameter("typeId");
         String description = request.getParameter("description");
-        return id != null && name != null && price != null && typeId != null && description != null && !name.isEmpty()
-                && !price.isEmpty() && !typeId.isEmpty() && !description.isEmpty() && !id.isEmpty();
+        return name != null && price != null && typeId != null && description != null && !name.isEmpty()
+                && !price.isEmpty() && !typeId.isEmpty() && !description.isEmpty();
     }
 }

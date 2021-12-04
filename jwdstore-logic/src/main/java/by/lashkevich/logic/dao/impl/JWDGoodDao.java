@@ -5,6 +5,7 @@ import by.lashkevich.logic.dao.GoodDao;
 import by.lashkevich.logic.dao.mapper.DaoMapper;
 import by.lashkevich.logic.dao.pool.ConnectionPool;
 import by.lashkevich.logic.entity.Good;
+import by.lashkevich.logic.entity.GoodType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,10 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class JWDGoodDao implements GoodDao {
-    private static final String UNKNOWN_TYPE_ERROR_MESSAGE = "Unknown good type(%s) was received";
     private static final String FIND_ALL_GOODS_SQL = "SELECT goods.id AS good_id, goods.name AS good_name," +
             " goods.price AS good_price, goods.description AS good_description, goods.picture AS good_picture," +
-            " goods_types.name AS good_type_name, reviews.id AS review_id, reviews.rate AS review_rate," +
+            " goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id AS review_id, reviews.rate AS review_rate," +
             " reviews.content AS review_content, users.id AS review_user_id, users.name AS review_user_name, users.surname" +
             " AS review_user_surname,users.login AS review_user_login, users.password AS review_user_password, users.email AS review_user_email," +
             " users.profile_picture AS review_user_profile_picture, users.birth_date AS review_user_birth_date,users.balance AS" +
@@ -24,7 +24,7 @@ public class JWDGoodDao implements GoodDao {
             " goods_reviews.review_id = reviews.id LEFT JOIN users ON users.id = reviews.user_id ORDER BY goods.id";
     private static final String FIND_GOOD_BY_ID_SQL = "SELECT goods.id AS good_id, goods.name AS good_name," +
             " goods.price AS good_price, goods.description AS good_description, goods.picture AS good_picture," +
-            " goods_types.name AS good_type_name, reviews.id AS review_id, reviews.rate AS review_rate," +
+            " goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id AS review_id, reviews.rate AS review_rate," +
             " reviews.content AS review_content, users.id AS review_user_id, users.name AS review_user_name, users.surname" +
             " AS review_user_surname,users.login AS review_user_login, users.password AS review_user_password, users.email AS review_user_email," +
             " users.profile_picture AS review_user_profile_picture, users.birth_date AS review_user_birth_date,users.balance AS" +
@@ -32,15 +32,14 @@ public class JWDGoodDao implements GoodDao {
             " LEFT JOIN goods_reviews ON goods.id = goods_reviews.good_id LEFT JOIN reviews ON" +
             " goods_reviews.review_id = reviews.id LEFT JOIN users ON users.id = reviews.user_id WHERE goods.id = ?";
     private static final String REMOVE_GOOD_BY_ID_SQL = "DELETE FROM goods WHERE id = ?";
-    private static final String FIND_TYPE_BY_NAME_SQL = "SELECT goods_types.id AS good_type_id" +
-            " FROM goods_types WHERE name = ?";
+    private static final String FIND_TYPE_BY_ID_SQL = "SELECT goods_types.id AS good_type_id, goods_types.name AS" +
+            " good_type_name FROM goods_types WHERE goods_types.id = ?";
     private static final String CREATE_GOOD_SQL = "INSERT INTO goods (name, price, type_id, description, picture)" +
             " VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE_GOOD_SQL = "UPDATE goods SET name = ?, price = ?, type_id = ?, description = ?, " +
-            "picture = ? WHERE id = ?";
-    private static final String FIND_ALL_TYPES_SQL = "SELECT goods_types.name AS type FROM goods_types";
-    private static final String GOOD_TYPE_ID = "good_type_id";
-    private static final String GOOD_TYPE = "type";
+    private static final String UPDATE_GOOD_SQL = "UPDATE goods SET name = ?, price = ?, type_id = ?, description = ?," +
+            " picture = ? WHERE id = ?";
+    private static final String FIND_ALL_TYPES_SQL = "SELECT goods_types.name AS good_type_name, goods_types.id AS good_type_id" +
+            " FROM goods_types";
     private final DaoMapper daoMapper;
 
     public JWDGoodDao() {
@@ -102,14 +101,14 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
-    public List<String> findAllTypes() {
+    public List<GoodType> findAllTypes() {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_TYPES_SQL);
-            List<String> types = new ArrayList<>();
+            List<GoodType> types = new ArrayList<>();
 
             while (resultSet.next()) {
-                types.add(resultSet.getString(GOOD_TYPE));
+                types.add(daoMapper.mapGoodType(resultSet));
             }
 
             return types;
@@ -131,31 +130,28 @@ public class JWDGoodDao implements GoodDao {
         }
     }
 
-
-    private int findTypeIDByName(String typeName) throws DaoException, SQLException {
+    @Override
+    public GoodType findTypeById(int typeId) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_TYPE_BY_NAME_SQL)) {
-            statement.setString(1, typeName);
+             PreparedStatement statement = connection.prepareStatement(FIND_TYPE_BY_ID_SQL)) {
+            statement.setInt(1, typeId);
             ResultSet resultSet = statement.executeQuery();
-            int typeId = 0;
+            GoodType goodType = new GoodType();
 
             while (resultSet.next()) {
-                typeId = resultSet.getInt(GOOD_TYPE_ID);
+                goodType = daoMapper.mapGoodType(resultSet);
             }
 
-            if (typeId == 0) {
-                throw new DaoException(String.format(UNKNOWN_TYPE_ERROR_MESSAGE, typeName));
-            }
-
-            return typeId;
+            return goodType;
+        } catch (SQLException e) {
+            throw new DaoException(e);
         }
     }
 
     private void fillGoodData(Good good, PreparedStatement statement) throws SQLException, DaoException {
-        int typeID = findTypeIDByName(good.getType());
         statement.setString(1, good.getName());
         statement.setBigDecimal(2, good.getPrice());
-        statement.setInt(3, typeID);
+        statement.setInt(3, good.getType().getId());
         statement.setString(4, good.getDescription());
         statement.setString(5, good.getImgName());
     }

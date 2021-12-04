@@ -10,16 +10,17 @@ public class Good implements Entity {
     private String name;
     private BigDecimal price;
     private String description;
-    private String type;
+    private GoodType type;
     private String imgName;
     private List<Review> reviews;
 
     public Good() {
         reviews = new ArrayList<>();
+        imgName = "";
     }
 
     public Good(long id, String name, BigDecimal price, String description,
-                String type, String imgName) {
+                GoodType type, String imgName) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -29,7 +30,7 @@ public class Good implements Entity {
     }
 
     public Good(String name, BigDecimal price, String description,
-                String type, String imgName) {
+                GoodType type, String imgName) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -70,11 +71,11 @@ public class Good implements Entity {
         this.description = description;
     }
 
-    public String getType() {
+    public GoodType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(GoodType type) {
         this.type = type;
     }
 

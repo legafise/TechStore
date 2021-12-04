@@ -6,6 +6,7 @@ import by.lashkevich.logic.dao.GoodDao;
 import by.lashkevich.logic.dao.transaction.Transaction;
 import by.lashkevich.logic.dao.transaction.TransactionManager;
 import by.lashkevich.logic.entity.Good;
+import by.lashkevich.logic.entity.GoodType;
 import by.lashkevich.logic.service.GoodService;
 import by.lashkevich.logic.service.ReviewService;
 import by.lashkevich.logic.service.ServiceException;
@@ -20,7 +21,7 @@ public class JWDGoodService implements GoodService {
     private static final String EMPTY_PICTURE_NAME = "";
     private static final String NONEXISTENT_GOOD_ID_MESSAGE = "Nonexistent good id was received";
     private static final String INVALID_GOOD_MESSAGE = "Invalid good was received";
-    private static final String STANDARD_GOOD_PICTURE = "goods_default.jpg";
+    private static final String STANDARD_GOOD_PICTURE = "default.jpg";
     private final ReviewService reviewService;
     private final Predicate<Good> goodValidator;
     private final GoodDao goodDao;
@@ -43,7 +44,7 @@ public class JWDGoodService implements GoodService {
     }
 
     @Override
-    public List<String> findAllGoodTypes() throws ServiceException {
+    public List<GoodType> findAllGoodTypes() throws ServiceException {
         try {
             return goodDao.findAllTypes();
         } catch (DaoException e) {
@@ -61,6 +62,15 @@ public class JWDGoodService implements GoodService {
             }
 
             throw new ServiceException(NONEXISTENT_GOOD_ID_MESSAGE);
+        } catch (DaoException | NumberFormatException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public GoodType findTypeById(String typeId) {
+        try {
+            return goodDao.findTypeById(Integer.parseInt(typeId));
         } catch (DaoException | NumberFormatException e) {
             throw new ServiceException(e.getMessage());
         }

@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.util.stream.Collectors;
 
 public class RegistrationCommand implements Command {
+    private static final String INVALID_GOOD_DATA_MESSAGE = "Invalid good data";
     private final UserService userService;
 
     public RegistrationCommand() {

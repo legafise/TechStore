@@ -50,16 +50,16 @@
                                         </div>
                                         <div class="col-xl-6 order-info">
                                             <span class="bold"><fmt:message key="good.name"/></span> <a
-                                                href="controller?command=good&goodId=${goodEntry.key.id}">${goodEntry.key.name}<a/>
+                                                href="controller?command=good&goodId=${goodEntry.key.id}"> <c:out value="${goodEntry.key.name}"/></a>
                                             <br/> <span class="bold"><fmt:message
-                                                    key="quantity"/></span> ${goodEntry.value}
+                                                    key="quantity"/></span>  <c:out value="${goodEntry.value}"/>
                                         </div>
                                     </div>
                                     <hr/>
                                 </c:forEach>
                                 <br/>
                                 <input type="hidden" value="${price}" name="price">
-                                <h5 align="center"><fmt:message key="order.price"/> ${price} <fmt:message
+                                <h5 align="center"><fmt:message key="order.price"/>  <c:out value="${price}"/> <fmt:message
                                         key="currency.sign"/></h5>
                                 <button type="submit" id="place-order-button" disabled class="btn basket-buy-button place-order-button">Оформить заказ
                                 </button>

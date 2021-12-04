@@ -12,7 +12,6 @@ function isValidReviewContent() {
     return $("#review-content").val().length > 2 && $("#review-content").val().length < 400;
 }
 
-// function showRange() {
-//     console.log("test")
-//     document.getElementById("rate-value").innerHTML = document.getElementById("customRange3").value
-// }
+function showRange() {
+    document.getElementById("rate-value").innerHTML = document.getElementById("customRange3").value
+}

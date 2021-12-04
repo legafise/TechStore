@@ -184,7 +184,6 @@ a {
     overflow: hidden;
     margin-bottom: 15px;
     margin-top: 15px;
-    min-height: 45vh;
 }
 
 .authorization-form-indents {
@@ -241,6 +240,7 @@ a {
 .user-info {
     font-family: "Segoe UI";
     font-size: 1.45rem;
+    display: inline;
 }
 
 .user-info-card {
@@ -445,4 +445,14 @@ textarea {
 
 .good-delete-button {
     margin: 0!important;
+}
+
+#review-star {
+    color: gold;
+    font-size: 32px;
+}
+
+#rate-value {
+    font-size: 27px;
+    margin-top: 19px;
 }

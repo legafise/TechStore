@@ -9,5 +9,5 @@ window.onload = function () {
 };
 
 function isValidAmount() {
-    return $("#amount").val() > 1 && $("#amount").val() <= 10000;
+    return $("#amount").val() > 1 && $("#amount").val() <= 150000;
 }

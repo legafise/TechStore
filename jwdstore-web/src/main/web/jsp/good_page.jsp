@@ -80,7 +80,7 @@
             <%request.getSession().removeAttribute("isReviewRemoved");%>
         </c:if>
         <div class="container-fluid name">
-            <p class="h2 bold">${good.name}</p>
+            <p class="h2 bold"><c:out value="${good.name}"/></p>
         </div>
         <div class="container-fluid good-idents">
             <div class="row">
@@ -122,8 +122,8 @@
                     </div>
                 </div>
                 <div class="col-xl-6 description">
-                    <span class="bold"><fmt:message key="type"/> </span>${good.type} <br>
-                    <span class="bold"><fmt:message key="description"/> </span>${good.description}
+                    <span class="bold"><fmt:message key="type"/> </span><c:out value="${good.type.name}"/> <br>
+                    <span class="bold"><fmt:message key="description"/> </span><c:out value="${good.description}"/>
                 </div>
             </div>
         </div>
@@ -149,12 +149,15 @@
                                         <input type="hidden" value="${good.id}" name="goodId">
                                         <div class="card-footer">
                                             <div class="row">
-                                                <div class="col-lg-11">
+                                                <div class="col-lg-10">
                                                     <label for="customRange3" class="bold"><fmt:message
-                                                            key="rate.the.good"/></label>
+                                                        key="rate.the.good"/></label>
                                                     <input type="range" class="custom-range" min="1" max="5"
                                                            step="1"
-                                                           id="customRange3" name="rate">
+                                                    id="customRange3" name="rate" onchange="showRange()">
+                                                </div>
+                                                <div class="col-lg-1">
+                                                    <span id="rate"><span id="rate-value">3</span><span id="review-star">&#9733;</span></span>
                                                 </div>
                                                 <div class="col-lg-1">
                                                     <button type="submit"
@@ -192,7 +195,7 @@
                                 <div class="card-body">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <p class="h4">${review.author.login}</p>
+                                            <p class="h4"><c:out value="${review.author.login}"/></p>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-2">
@@ -201,7 +204,7 @@
                                                      alt="profile picture"/>
                                             </div>
                                             <div class="col-lg-8">
-                                                <div class="review-content">${review.content}</div>
+                                                <div class="review-content"><c:out value="${review.content}"/></div>
                                             </div>
                                         </div>
                                         <div class="row">

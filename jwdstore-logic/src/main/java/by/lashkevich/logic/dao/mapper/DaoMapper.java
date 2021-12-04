@@ -40,6 +40,7 @@ public class DaoMapper {
     private static final String ORDER_ADDRESS = "order_address";
     private static final String GOOD_DESCRIPTION = "good_description";
     private static final String GOOD_TYPE = "good_type_name";
+    private static final String GOOD_TYPE_ID = "good_type_id";
     private static final String GOOD_PICTURE = "good_picture";
     private static final String GOOD_QUANTITY = "good_quantity";
 
@@ -168,8 +169,15 @@ public class DaoMapper {
         good.setName(resultSet.getString(GOOD_NAME));
         good.setPrice(resultSet.getBigDecimal(GOOD_PRICE));
         good.setDescription(resultSet.getString(GOOD_DESCRIPTION));
-        good.setType(resultSet.getString(GOOD_TYPE));
+        good.setType(mapGoodType(resultSet));
         good.setImgName(resultSet.getString(GOOD_PICTURE));
+    }
+
+    public GoodType mapGoodType(ResultSet resultSet) throws SQLException {
+        GoodType goodType = new GoodType();
+        goodType.setId(resultSet.getInt(GOOD_TYPE_ID));
+        goodType.setName(resultSet.getString(GOOD_TYPE));
+        return goodType;
     }
 
     private void fillOrderData(Order order, ResultSet resultSet) throws SQLException, OrderStatusException {

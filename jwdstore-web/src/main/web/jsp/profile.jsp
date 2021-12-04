@@ -31,11 +31,11 @@
                                     <div class="col-xl-6">
                                         <p class="h4 bold"><fmt:message key="personal.information"/> </p>
                                         <div class="user-info">
-                                            <fmt:message key="name"/>: ${user.name} <br>
-                                            <fmt:message key="surname"/>: ${user.surname} <br>
-                                            <fmt:message key="login"/>: ${user.login} <br>
-                                            Email: ${user.email} <br>
-                                            <fmt:message key="birth.date"/>: ${user.birthDate}
+                                            <p><fmt:message key="name"/>:  <c:out value="${user.name}"/></p>
+                                            <p><fmt:message key="surname"/>:  <c:out value="${user.surname}"/></p>
+                                            <p><fmt:message key="login"/>:  <c:out value="${user.login}"/></p>
+                                            <p>Email: <c:out value="${user.email}"/></p>
+                                            <p><fmt:message key="birth.date"/>:  <c:out value="${user.birthDate}"/></p>
                                         </div>
                                     </div>
                                 </div>

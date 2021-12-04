@@ -48,10 +48,10 @@
                     <div class="container-fluid">
                         <div class="card card-size order-card">
                             <div class="card-header order-info"><fmt:message key="order.number"/> ${order.id}
-                                <br/><fmt:message key="order.status"/> ${order.status.statusContent}
-                                <br/>Адрес доставки: ${order.address}
-                                <br/>Дата оформления: ${order.date}
-                                <br/><fmt:message key="order.price"/> ${order.price} <fmt:message key="currency.sign"/>
+                                <br/><fmt:message key="order.status"/> <c:out value="${order.status.statusContent}"/>
+                                <br/>Адрес доставки:  <c:out value="${order.address}"/>
+                                <br/>Дата оформления:  <c:out value="${order.date}"/>
+                                <br/><fmt:message key="order.price"/>  <c:out value="${order.price}"/> <fmt:message key="currency.sign"/>
                             </div>
                             <div class="card-body">
                                 <c:forEach var="goodEntry" items="${order.goods.entrySet()}">
@@ -63,9 +63,9 @@
                                         </div>
                                         <div class="col-xl-6 order-info">
                                             <span class="bold"><fmt:message key="good.name"/></span> <a
-                                                href="controller?command=good&goodId=${goodEntry.key.id}">${goodEntry.key.name}<a/>
+                                                href="controller?command=good&goodId=${goodEntry.key.id}"><c:out value="${goodEntry.key.name}"/></a>
                                             <br/> <span class="bold"><fmt:message
-                                                    key="quantity"/></span> ${goodEntry.value}
+                                                    key="quantity"/></span> <c:out value="${goodEntry.value}"/>
                                         </div>
                                     </div>
                                     <hr/>

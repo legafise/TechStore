@@ -19,7 +19,7 @@ public class JWDOrderDao implements OrderDao {
             " users_from_orders.profile_picture AS user_profile_picture, users_from_orders.birth_date AS user_birth_date, users_from_orders.balance AS" +
             " user_balance, users_from_orders.role AS user_role, goods.id AS good_id, goods.name AS good_name, goods.price AS" +
             " good_price, goods.description AS good_description,goods.picture AS good_picture, goods_types.name AS" +
-            " good_type_name, ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
+            " good_type_name, goods_types.id AS good_type_id,ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
             " review_rate, reviews.content AS review_content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
             " review_user_surname, users_from_reviews.login AS review_user_login, users_from_reviews.password AS review_user_password, users_from_reviews.email AS review_user_email," +
             " users_from_reviews.profile_picture AS review_user_profile_picture, users_from_reviews.birth_date AS review_user_birth_date, users_from_reviews.balance AS" +
@@ -35,7 +35,7 @@ public class JWDOrderDao implements OrderDao {
             " users_from_orders.profile_picture AS user_profile_picture, users_from_orders.birth_date AS user_birth_date, users_from_orders.balance AS" +
             " user_balance, users_from_orders.role AS user_role, goods.id AS good_id, goods.name AS good_name, goods.price AS" +
             " good_price, goods.description AS good_description,goods.picture AS good_picture, goods_types.name AS" +
-            " good_type_name, ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
+            " good_type_name, goods_types.id AS good_type_id, ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
             " review_rate, reviews.content AS review_content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
             " review_user_surname, users_from_reviews.login AS review_user_login, users_from_reviews.password AS review_user_password, users_from_reviews.email AS review_user_email," +
             " users_from_reviews.profile_picture AS review_user_profile_picture, users_from_reviews.birth_date AS review_user_birth_date, users_from_reviews.balance AS" +
@@ -51,7 +51,7 @@ public class JWDOrderDao implements OrderDao {
             " users_from_orders.profile_picture AS user_profile_picture, users_from_orders.birth_date AS user_birth_date, users_from_orders.balance AS" +
             " user_balance, users_from_orders.role AS user_role, goods.id AS good_id, goods.name AS good_name, goods.price AS" +
             " good_price, goods.description AS good_description,goods.picture AS good_picture, goods_types.name AS" +
-            " good_type_name, ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
+            " good_type_name, goods_types.id AS good_type_id, ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
             " review_rate, reviews.content AS review_content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
             " review_user_surname, users_from_reviews.login AS review_user_login, users_from_reviews.password AS review_user_password, users_from_reviews.email AS review_user_email," +
             " users_from_reviews.profile_picture AS review_user_profile_picture, users_from_reviews.birth_date AS review_user_birth_date, users_from_reviews.balance AS" +

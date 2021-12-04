@@ -6,29 +6,34 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class CheckReviewAddResultCommand implements Command {
+public class CheckGoodAddingResultCommand implements Command {
     private static final String YOU_CANT_DO_IT_NOW_MESSAGE = "You can't do it now";
 
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         CommandResult commandResult = new CommandResult();
-        Boolean registrationResult = (Boolean) request.getSession().getAttribute("reviewAddResult");
+        Boolean addingResult = (Boolean) request.getSession().getAttribute("isGoodAdded");
 
         commandResult.setResponseType(CommandResult.ResponseType.REDIRECT);
-        checkReviewAddResultToNull(registrationResult, commandResult, request);
+        checkGoodAddingResultResultToNull(addingResult, commandResult, request);
 
         if (commandResult.getPage().isEmpty()) {
-            commandResult.setPage((String) request.getSession().getAttribute("lastPage"));
-            request.getSession().removeAttribute("lastPage");
+            if (addingResult) {
+                commandResult.setPage("/controller?command=catalog");
+            } else {
+                commandResult.setPage("/controller?command=add_good_page");
+            }
         }
 
         return commandResult;
     }
 
-    private void checkReviewAddResultToNull(Boolean result, CommandResult commandResult, HttpServletRequest request) {
-        if (result == null) {
+    private void checkGoodAddingResultResultToNull(Boolean addingResult, CommandResult commandResult,
+                                                   HttpServletRequest request) {
+        if (addingResult == null) {
             request.getSession().setAttribute("errorMessage", YOU_CANT_DO_IT_NOW_MESSAGE);
             commandResult.setPage("/controller?command=error");
         }
     }
+
 }

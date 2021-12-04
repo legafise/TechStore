@@ -56,7 +56,7 @@
                             <p class="h4 bold replenishment-card-header"><fmt:message key="balance.replenishment"/> </p>
                         </div>
                         <div class="card-body replenishment-card-body">
-                            <p><fmt:message key="current.balance"/> ${balance} <fmt:message key="currency.sign"/></p><br>
+                            <p><fmt:message key="current.balance"/> <c:out value="${balance}"/> <fmt:message key="currency.sign"/></p><br>
                             <p><fmt:message key="enter.amount"/> </p>
                             <form action="${paymentPageCommand}" method="post" id="replenishment-inputs">
                                 <div class="input-group mb-3">

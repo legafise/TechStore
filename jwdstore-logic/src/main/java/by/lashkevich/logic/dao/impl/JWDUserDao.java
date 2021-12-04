@@ -44,7 +44,7 @@ public class JWDUserDao implements UserDao {
             " baskets_owners.profile_picture AS user_profile_picture, baskets_owners.birth_date AS user_birth_date," +
             " baskets_owners.balance AS user_balance, baskets_owners.role AS user_role, baskets.good_id AS good_id," +
             " baskets.quantity AS good_quantity, goods.name AS good_name, goods.price AS good_price, goods.description" +
-            " AS good_description, goods.picture AS good_picture, goods_types.name AS good_type_name, reviews.id" +
+            " AS good_description, goods.picture AS good_picture, goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id" +
             " AS review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
             " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login," +
             " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +

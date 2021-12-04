@@ -1,6 +1,7 @@
 package by.lashkevich.logic.service.validator;
 
 import by.lashkevich.logic.entity.Good;
+import by.lashkevich.logic.entity.GoodType;
 
 import java.math.BigDecimal;
 import java.util.function.Predicate;
@@ -16,8 +17,8 @@ public class GoodValidator implements Predicate<Good> {
                 && good.getImgName() != null;
     }
 
-    private boolean validateGoodType(String type) {
-        return type != null && type.length() > 1 && type.length() < 20;
+    private boolean validateGoodType(GoodType type) {
+        return type != null && type.getName().length() > 1 && type.getName().length() < 20;
     }
 
     private boolean validateGoodDescription(String description) {

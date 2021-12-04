@@ -17,13 +17,25 @@
         <c:if test="${authorizationResult == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong><fmt:message key="positive.authorization.result"/> </strong> <fmt:message key="positive.authorization.result.info"/>
+                    <strong><fmt:message key="positive.authorization.result"/> </strong> <fmt:message
+                        key="positive.authorization.result.info"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
             </div>
             <%request.getSession().removeAttribute("authorizationResult");%>
+        </c:if>
+        <c:if test="${isGoodAdded == true}">
+            <div class="container-fluid authorization-result">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Товар успешно добавлен!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <%request.getSession().removeAttribute("isGoodAdded");%>
         </c:if>
         <c:if test="${isGoodRemoved == true}">
             <div class="container-fluid authorization-result">
@@ -61,14 +73,17 @@
             <div class="row">
                 <c:forEach var="good" items="${goodList}">
                     <div class="col-xl-3">
+
                         <div class="card text-center card-size">
                             <div class="card-body">
                                 <h5 class="card-title short-description"><a
-                                        href="controller?command=good&goodId=${good.id}">${good.name}</a>
+                                        href="controller?command=good&goodId=${good.id}"><c:out
+                                        value="${good.name}"/></a>
                                 </h5>
                                 <p class="card-text">
                                     <a href="controller?command=good&goodId=${good.id}">
-                                        <img src="${imgPath}goods_${good.imgName}" class="img-fluid img-indents img-size"
+                                        <img src="${imgPath}goods_${good.imgName}"
+                                             class="img-fluid img-indents img-size"
                                              alt="${good.name}">
                                     </a>
                                 </p>
