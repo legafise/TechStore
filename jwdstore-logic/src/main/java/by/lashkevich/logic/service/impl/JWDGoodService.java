@@ -7,12 +7,12 @@ import by.lashkevich.logic.dao.transaction.Transaction;
 import by.lashkevich.logic.dao.transaction.TransactionManager;
 import by.lashkevich.logic.entity.Good;
 import by.lashkevich.logic.entity.GoodType;
-import by.lashkevich.logic.service.GoodService;
-import by.lashkevich.logic.service.ReviewService;
-import by.lashkevich.logic.service.ServiceException;
-import by.lashkevich.logic.service.ServiceFactory;
+import by.lashkevich.logic.entity.Order;
+import by.lashkevich.logic.entity.OrderStatus;
+import by.lashkevich.logic.service.*;
 import by.lashkevich.logic.service.validator.GoodValidator;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -23,6 +23,7 @@ public class JWDGoodService implements GoodService {
     private static final String INVALID_GOOD_MESSAGE = "Invalid good was received";
     private static final String STANDARD_GOOD_PICTURE = "default.jpg";
     private final ReviewService reviewService;
+    private final OrderService orderService;
     private final Predicate<Good> goodValidator;
     private final GoodDao goodDao;
     private final TransactionManager transactionManager;
@@ -32,6 +33,7 @@ public class JWDGoodService implements GoodService {
         goodValidator = new GoodValidator();
         goodDao = (GoodDao) DaoFactory.GOOD_DAO.getDao();
         reviewService = (ReviewService) ServiceFactory.REVIEW_SERVICE.getService();
+        orderService = (OrderService) ServiceFactory.ORDER_SERVICE.getService();
     }
 
     @Override
@@ -73,6 +75,18 @@ public class JWDGoodService implements GoodService {
             return goodDao.findTypeById(Integer.parseInt(typeId));
         } catch (DaoException | NumberFormatException e) {
             throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean isBoughtGood(String goodId, String userId) {
+        try {
+            return orderService.findOrdersByUserId(userId).map(orderList -> orderList.stream()
+                    .filter(order -> order.getStatus() == OrderStatus.COMPLETED)
+                    .anyMatch(order -> order.getGoods().keySet().stream()
+                            .anyMatch(good -> good.getId() == Integer.parseInt(goodId)))).orElse(false);
+        } catch (DaoException | NumberFormatException e) {
+            throw new ServiceException(e);
         }
     }
 

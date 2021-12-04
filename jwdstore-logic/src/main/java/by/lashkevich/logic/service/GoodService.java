@@ -19,4 +19,6 @@ public interface GoodService extends Service {
     boolean updateGood(Good good) throws ServiceException;
 
     GoodType findTypeById(String typeId);
+
+    boolean isBoughtGood(String goodId, String userId);
 }

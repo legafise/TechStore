@@ -25,11 +25,13 @@ public class GoodPageForwardCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             Good good = goodService.findGoodById(request.getParameter("goodId"));
-            Object userId = request.getSession().getAttribute("userId");
-            if (userId != null) {
+            String role = String.valueOf(request.getSession().getAttribute("role"));
+            if (!role.equals("guest")) {
                 request.setAttribute("isCratedReview",
-                        !reviewService.checkReviewForDuplication(String.valueOf(userId),
-                                request.getParameter("goodId")));
+                        !reviewService.checkReviewForDuplication(String.valueOf(request.getSession()
+                                .getAttribute("userId")), request.getParameter("goodId")));
+                request.setAttribute("isBoughtGood", goodService.isBoughtGood(request.getParameter("goodId"),
+                        String.valueOf(request.getSession().getAttribute("userId"))));
             }
             request.setAttribute("good", good);
             return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/good_page.jsp");

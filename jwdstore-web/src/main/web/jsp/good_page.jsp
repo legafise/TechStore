@@ -132,57 +132,64 @@
             <p class="h2 bold" align="center"><fmt:message key="reviews"/></p>
         </div>
         <c:if test="${role == 'user'}">
-            <c:choose>
-                <c:when test="${isCratedReview == false}">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-10">
-                                <form action="${sendReviewCommand}" method="post" class="review-indents review-inputs"
-                                      id="review-inputs">
-                                    <div class="card">
-                                        <div class="input-group">
-                                            <textarea name="reviewContent" id="review-content"
-                                                      class="form-control review-area" aria-label="With textarea"
-                                                      placeholder="Оставьте свой отзыв!" maxlength="400"></textarea>
-                                        </div>
-                                        <input type="hidden" value="${good.id}" name="goodId">
-                                        <div class="card-footer">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label for="customRange3" class="bold"><fmt:message
-                                                        key="rate.the.good"/></label>
-                                                    <input type="range" class="custom-range" min="1" max="5"
-                                                           step="1"
-                                                    id="customRange3" name="rate" onchange="showRange()">
-                                                </div>
-                                                <div class="col-lg-1">
-                                                    <span id="rate"><span id="rate-value">3</span><span id="review-star">&#9733;</span></span>
-                                                </div>
-                                                <div class="col-lg-1">
-                                                    <button type="submit"
-                                                            class="btn btn-outline-secondary review-button" disabled>
-                                                        <fmt:message key="send"/>
-                                                    </button>
+            <c:if test="${isBoughtGood == false}">
+                <div class="container-fluid">
+                    <p class="h3 bold" align="center">Чтобы оставить отзыв вам нужно приобрести товар!</p>
+                </div>
+            </c:if>
+            <c:if test="${isBoughtGood == true}">
+                <c:choose>
+                    <c:when test="${isCratedReview == false}">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10">
+                                    <form action="${sendReviewCommand}" method="post" class="review-indents review-inputs"
+                                          id="review-inputs">
+                                        <div class="card">
+                                            <div class="input-group">
+                                                <textarea name="reviewContent" id="review-content"
+                                                          class="form-control review-area" aria-label="With textarea"
+                                                          placeholder="Оставьте свой отзыв!" maxlength="400"></textarea>
+                                            </div>
+                                            <input type="hidden" value="${good.id}" name="goodId">
+                                            <div class="card-footer">
+                                                <div class="row">
+                                                    <div class="col-lg-10">
+                                                        <label for="customRange3" class="bold"><fmt:message
+                                                            key="rate.the.good"/></label>
+                                                        <input type="range" class="custom-range" min="1" max="5"
+                                                               step="1"
+                                                        id="customRange3" name="rate" onchange="showRange()">
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                        <span id="rate"><span id="rate-value">3</span><span id="review-star">&#9733;</span></span>
+                                                    </div>
+                                                    <div class="col-lg-1">
+                                                        <button type="submit"
+                                                                class="btn btn-outline-secondary review-button" disabled>
+                                                            <fmt:message key="send"/>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </c:when>
-                <c:when test="${isCratedReview == true}">
-                    <div class="container-fluid">
-                        <p class="h2 bold" align="center"><fmt:message key="review.already.exists"/></p>
-                    </div>
-                </c:when>
-            </c:choose>
+                    </c:when>
+                    <c:when test="${isCratedReview == true}">
+                        <div class="container-fluid">
+                            <p class="h2 bold" align="center"><fmt:message key="review.already.exists"/></p>
+                        </div>
+                    </c:when>
+                </c:choose>
+            </c:if>
         </c:if>
         <c:if test="${good.reviews.size() == 0}">
             <div class="container-fluid">
-                <p class="h2 bold" align="center"><fmt:message key="no.reviews"/></p>
+                <p class="h3 bold" align="center"><fmt:message key="no.reviews"/></p>
             </div>
         </c:if>
         <c:if test="${good.reviews.size() != 0}">
