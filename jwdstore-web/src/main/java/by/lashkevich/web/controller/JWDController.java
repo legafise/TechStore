@@ -20,12 +20,15 @@ import java.io.IOException;
 public class JWDController extends HttpServlet {
     private static final Logger LOGGER = LogManager.getRootLogger();
     private static final String UNKNOWN_ACTION_MESSAGE = "Unknown action!";
+    private static final String CONNECTIONS_NUMBER_INIT_PARAMETER = "connectionsNumber";
 
     @Override
     public void init() {
         try {
             LOGGER.debug("init");
-            ConnectionPool.getInstance().initializeConnectionPool(3);
+            ConnectionPool.getInstance()
+                    .initializeConnectionPool(Integer.parseInt(getServletConfig()
+                            .getInitParameter(CONNECTIONS_NUMBER_INIT_PARAMETER)));
         } catch (ConnectionPoolException e) {
             LOGGER.error(e);
         }

@@ -1,12 +1,12 @@
 package by.lashkevich.web.controller.command.impl;
 
 import by.lashkevich.logic.entity.User;
+import by.lashkevich.logic.service.ServiceException;
 import by.lashkevich.logic.service.ServiceFactory;
 import by.lashkevich.logic.service.UserService;
 import by.lashkevich.web.controller.command.Command;
 import by.lashkevich.web.controller.command.CommandException;
 import by.lashkevich.web.controller.command.CommandResult;
-import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,10 +18,11 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
-public class RegistrationCommand implements Command {
+public class UpdateProfileCommand implements Command {
+    private static final String INVALID_USER_DATA = "Invalid user data";
     private final UserService userService;
 
-    public RegistrationCommand() {
+    public UpdateProfileCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }
 
@@ -29,12 +30,13 @@ public class RegistrationCommand implements Command {
     public CommandResult execute(HttpServletRequest request) throws CommandException {
         try {
             if (!validateUserData(request)) {
-                request.getSession().setAttribute("registrationResult", false);
+                request.getSession().setAttribute("isUserUpdated", false);
                 return new CommandResult(CommandResult.ResponseType.REDIRECT,
-                        "/controller?command=check_registration");
+                        "/controller?command=profile");
             }
 
-            User user = mapUser(request);
+            User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+            updateUserData((user), request);
 
             for (Part part : request.getParts()) {
                 if (part.getName().equals("profilePhoto")) {
@@ -44,43 +46,36 @@ public class RegistrationCommand implements Command {
                             .lines()
                             .collect(Collectors.joining("\n"));
                     if (!part.getSubmittedFileName().isEmpty()) {
-                        String pictureName = user.getLogin() + "_" + part.getSubmittedFileName();
+                        String pictureName = user.getName() + "_" + part.getSubmittedFileName();
                         user.setProfilePictureName(pictureName);
-                        pictureName = "users_" + user.getLogin() + "_" + part.getSubmittedFileName();
+                        pictureName = "users_" + user.getName() + "_" + part.getSubmittedFileName();
                         part.write(pictureName);
                     }
                 }
             }
 
-            request.getSession().setAttribute("registrationResult", userService.addUser(user));
+            request.getSession().setAttribute("isUserUpdated", userService.updateUser(user));
             return new CommandResult(CommandResult.ResponseType.REDIRECT,
-                    "/controller?command=check_registration");
-        } catch (IOException | ServletException e) {
-            throw new CommandException(e);
+                    "/controller?command=profile");
+        } catch (ServiceException | IOException | ServletException e) {
+            throw new CommandException(INVALID_USER_DATA, e);
         }
     }
 
     private boolean validateUserData(HttpServletRequest request) {
-        String login = request.getParameter("login");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
         String birthDate = request.getParameter("birthDate");
+        String email = request.getParameter("email");
 
-        return login != null && name != null && surname != null && email != null && password != null
-                && birthDate != null && !login.isEmpty() && !name.isEmpty() && !surname.isEmpty() && !email.isEmpty()
-                && !password.isEmpty() && !birthDate.isEmpty();
+        return name != null && surname != null && email != null && birthDate != null && !name.isEmpty()
+                && !surname.isEmpty() && !email.isEmpty() && !birthDate.isEmpty();
     }
 
-    private User mapUser(HttpServletRequest request) {
-        User user = new User();
-        user.setLogin(request.getParameter("login"));
-        user.setName(request.getParameter("name"));
-        user.setSurname(request.getParameter("surname"));
+    private void updateUserData(User user, HttpServletRequest request) {
         user.setEmail(request.getParameter("email"));
-        user.setPassword(BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt()));
+        user.setSurname(request.getParameter("surname"));
+        user.setName(request.getParameter("name"));
         user.setBirthDate(LocalDate.parse(request.getParameter("birthDate")));
-        return user;
     }
 }

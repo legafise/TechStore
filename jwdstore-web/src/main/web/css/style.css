@@ -246,11 +246,11 @@ a {
 .user-info {
     font-family: "Segoe UI";
     font-size: 1.45rem;
-    display: inline;
 }
 
 .user-info-card {
     margin-top: 5%;
+    min-width: 50vh;
 }
 
 .basket-description-text {
@@ -321,7 +321,7 @@ a {
 .review-img {
     margin: 10px;
     width: 17vh;
-    height: 17vh;
+    min-height: 17vh;
 }
 
 .rating-mini {

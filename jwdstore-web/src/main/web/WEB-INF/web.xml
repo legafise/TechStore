@@ -7,6 +7,10 @@
     <servlet>
         <servlet-name>Controller</servlet-name>
         <servlet-class>by.lashkevich.web.controller.JWDController</servlet-class>
+        <init-param>
+            <param-name>connectionsNumber</param-name>
+            <param-value>3</param-value>
+        </init-param>
     </servlet>
 
     <servlet-mapping>

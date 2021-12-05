@@ -21,7 +21,7 @@ public enum CommandFactory {
     BASKET_PAGE(new BasketForwardCommand(), "basket", true),
     ORDERS_PAGE(new OrdersPageForwardCommand(), "orders_page", true),
     HANDLE_REVIEW(new HandleReviewCommand(), "handle_review", false),
-    CHECK_REVIEW_ADD_RESULT(new CheckReviewAddResultCommand(), "check_review", true),
+    CHECK_REVIEW_ADD_RESULT(new CheckReviewAddingResultCommand(), "check_review", true),
     REMOVE_REVIEW(new RemoveReviewCommand(), "remove_review", false),
     REPLENISHMENT_PAGE(new ReplenishmentPageForwardCommand(), "replenishment_page", true),
     PAYMENT_PAGE_COMMAND(new PaymentPageCommand(), "payment_page", false),
@@ -41,12 +41,13 @@ public enum CommandFactory {
     ADD_GOOD(new AddGoodCommand(), "add_good", false),
     CHECK_GOOD_ADDING_RESULT(new CheckGoodAddingResultCommand(),"check_good_adding_result",true),
     MANAGE_ORDERS_COMMAND(new ManageOrdersPageForwardCommand(), "manage_orders", true),
-    UPDATE_ORDER_STATUS(new ChangeOrderStatusCommand(), "update_order_status", false);
+    UPDATE_ORDER_STATUS(new ChangeOrderStatusCommand(), "update_order_status", false),
+    UPDATE_PROFILE_PAGE(new UpdateProfilePageForwardCommand(), "update_profile_page", true),
+    UPDATE_PROFILE(new UpdateProfileCommand(), "update_profile", false);
 
 
     private static final String UNKNOWN_COMMAND_ERROR_MESSAGE = "Unknown command: %s";
     private static final String COMMAND_IS_NULL_MESSAGE = "Command is null";
-    private static final String COMMAND_PARAMETER_NAME = "command";
     private final Command command;
     private final String commandName;
     private final boolean isGetMethodCommand;
@@ -71,7 +72,7 @@ public enum CommandFactory {
 
     public static Command findCommandByRequest(HttpServletRequest request,
                                                boolean isGetMethodCommand) throws CommandException {
-        String commandName = request.getParameter(COMMAND_PARAMETER_NAME);
+        String commandName = request.getParameter("command");
         if (commandName == null) {
             throw new CommandException(COMMAND_IS_NULL_MESSAGE);
         }
