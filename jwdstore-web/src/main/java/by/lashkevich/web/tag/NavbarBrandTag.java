@@ -6,9 +6,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
-public class ContactsTag extends SimpleTagSupport {
+public class NavbarBrandTag extends SimpleTagSupport {
     private static final Logger LOGGER = LogManager.getRootLogger();
-    private static final String CONTACT_INFO_MESSAGE = "techstore@gmail.com / +3752993754214";
+    private static final String CONTACT_INFO_MESSAGE = "TechStore";
 
     @Override
     public void doTag() {

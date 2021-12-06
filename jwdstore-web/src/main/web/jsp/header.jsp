@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="custom" uri="customTag" %>
 
 <c:url value="/css/style.css" var="cssPath"/>
 <c:url value="/controller?command=catalog" var="catalogPath"/>
@@ -13,6 +14,7 @@
 <c:url value="/controller?command=orders_page" var="ordersPageCommand"/>
 <c:url value="/controller?command=replenishment_page" var="replenishmentPageCommand"/>
 <c:url value="/controller?command=manage_orders" var="orderListPath"/>
+<c:url value="/controller?command=user_list" var="userListCommand"/>
 
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
@@ -25,7 +27,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a class="navbar-brand" href="${catalogPath}" title="<fmt:message key="to.main"/>">TechStore</a>
+    <a class="navbar-brand" href="${catalogPath}" title="<fmt:message key="to.main"/>"><custom:navbarBrand/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -47,7 +49,7 @@
             </c:if>
             <c:if test="${role == 'admin'}">
                 <li class="nav-item ${currentPage == 'userList' ? 'active' : ''}">
-                    <a class="nav-link" href="${userListPath}">Список пользователей</a>
+                    <a class="nav-link" href="${userListCommand}">Список пользователей</a>
                 </li>
             </c:if>
             <c:if test="${role == 'moder' || role == 'admin'}">

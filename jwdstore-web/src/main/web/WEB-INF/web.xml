@@ -34,6 +34,11 @@
     </filter-mapping>
 
     <filter-mapping>
+        <filter-name>BanFilter</filter-name>
+        <servlet-name>Controller</servlet-name>
+    </filter-mapping>
+
+    <filter-mapping>
         <filter-name>PageAccessFilter</filter-name>
         <servlet-name>Controller</servlet-name>
     </filter-mapping>

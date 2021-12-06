@@ -26,8 +26,8 @@
         </c:if>
         <c:if test="${isUserUpdated == false}">
             <div class="container-fluid authorization-result">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Данные не были обновлены!</strong>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Данные не были обновлены!</strong> Пользователь с такой электронной почтой уже существует
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -53,18 +53,18 @@
                                 <div class="col-xl-6">
                                     <p class="h4 bold"><fmt:message key="personal.information"/></p>
                                     <div class="user-info">
-                                        <div><fmt:message key="name"/>: <c:out value="${user.name}"/></div>
-                                        <div><fmt:message key="surname"/>: <c:out value="${user.surname}"/></div>
-                                        <div><fmt:message key="login"/>: <c:out value="${user.login}"/></div>
-                                        <div>Email: <c:out value="${user.email}"/></div>
-                                        <div><fmt:message key="birth.date"/>: <c:out value="${user.birthDate}"/></div>
+                                        <div><span class="bold"><fmt:message key="name"/></span>: <c:out value="${user.name}"/></div>
+                                        <div><span class="bold"><fmt:message key="surname"/></span>: <c:out value="${user.surname}"/></div>
+                                        <div><span class="bold"><fmt:message key="login"/></span>: <c:out value="${user.login}"/></div>
+                                        <div><span class="bold">Email</span>: <c:out value="${user.email}"/></div>
+                                        <div><span class="bold"><fmt:message key="birth.date"/></span>: <c:out value="${user.birthDate}"/></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="container-fluid">
                                     <a href="${updateProfilePageCommand}">
-                                        <button type="submit" class="buy-button">
+                                        <button type="submit" class="btn btn-outline-secondary">
                                             Изменить
                                         </button>
                                     </a>

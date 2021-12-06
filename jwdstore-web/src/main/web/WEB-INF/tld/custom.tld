@@ -5,8 +5,8 @@
     <short-name>footerInfo</short-name>
     <uri>customTag</uri>
     <tag>
-        <name>contacts</name>
-        <tag-class>by.lashkevich.web.tag.ContactsTag</tag-class>а
+        <name>navbarBrand</name>
+        <tag-class>by.lashkevich.web.tag.NavbarBrandTag</tag-class>а
         <body-content>empty</body-content>
     </tag>
 </taglib>

@@ -46,7 +46,7 @@ public class JWDController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            handleRequest(req, resp, CommandFactory.findCommandByRequest(req, true));
+            handleRequest(req, resp, CommandFactory.findCommandByRequest(req, CommandFactory.MethodType.GET));
         } catch (CommandException e) {
             LOGGER.error(e);
             req.getSession().setAttribute("errorMessage", UNKNOWN_ACTION_MESSAGE);
@@ -57,7 +57,7 @@ public class JWDController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            handleRequest(req, resp, CommandFactory.findCommandByRequest(req, false));
+            handleRequest(req, resp, CommandFactory.findCommandByRequest(req, CommandFactory.MethodType.POST));
         } catch (CommandException e) {
             LOGGER.error(e);
             req.getSession().setAttribute("errorMessage", UNKNOWN_ACTION_MESSAGE);

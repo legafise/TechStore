@@ -120,7 +120,7 @@
                                     <input type="hidden" name="goodId" value="${entry.key.id}">
                                     <input type="hidden" name="quantity" value=${entry.value}>
                                     <button type="submit" class="btn basket-buy-button"><fmt:message
-                                            key="buy"/></button>
+                                            key="buy.basket.good"/></button>
                                 </form>
                                 <form action="${removeGoodFromBasketCommand}" method="post">
                                     <input type="hidden" value="${entry.key.id}" name="goodId"/>

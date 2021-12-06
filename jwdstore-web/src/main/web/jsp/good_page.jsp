@@ -134,7 +134,7 @@
         <c:if test="${role == 'user'}">
             <c:if test="${isBoughtGood == false}">
                 <div class="container-fluid">
-                    <p class="h3 bold" align="center">Чтобы оставить отзыв вам нужно приобрести товар!</p>
+                    <p class="h4" align="center">Чтобы оставить отзыв вам нужно приобрести товар!</p>
                 </div>
             </c:if>
             <c:if test="${isBoughtGood == true}">
@@ -144,6 +144,9 @@
                             <div class="row">
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-10">
+                                    <div class="container-fluid">
+                                        <p class="h4" align="center">Оставьте отзыв!</p>
+                                    </div>
                                     <form action="${sendReviewCommand}" method="post" class="review-indents review-inputs"
                                           id="review-inputs">
                                         <div class="card">
@@ -189,7 +192,7 @@
         </c:if>
         <c:if test="${good.reviews.size() == 0}">
             <div class="container-fluid">
-                <p class="h3 bold" align="center"><fmt:message key="no.reviews"/></p>
+                <p class="h4" align="center"><fmt:message key="no.reviews"/></p>
             </div>
         </c:if>
         <c:if test="${good.reviews.size() != 0}">

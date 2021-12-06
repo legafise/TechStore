@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="custom" uri="customTag" %>
 
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
@@ -10,7 +9,7 @@
     <div class="container-fluid">
         <div class="footer-indents">
             <fmt:message key="about.us"/> <br>
-            <fmt:message key="contacts"/> <custom:contacts/>
+            techstore@gmail.com / +3752993754214
         </div>
     </div>
 </footer>

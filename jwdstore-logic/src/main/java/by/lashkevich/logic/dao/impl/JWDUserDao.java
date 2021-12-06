@@ -227,7 +227,7 @@ public class JWDUserDao implements UserDao {
     private void fillUpdatingUserData(User user, PreparedStatement statement) throws SQLException {
         fillAddingUserData(user, statement);
         statement.setBigDecimal(8, user.getBalance());
-        statement.setInt(9, user.getRole().getRoleNumber());
+        statement.setInt(9, user.getRole().getNumber());
 
     }
 

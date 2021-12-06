@@ -75,8 +75,8 @@
                                     <hr/>
                                 </c:forEach>
                                 <form method="post" action="${changeOrderStatusCommand}">
-                                <div class="row">
-                                    <span class="status-message"><fmt:message key="order.status"/></span>
+                                    <div class="row">
+                                        <span class="status-message"><fmt:message key="order.status"/></span>
                                         <div class="col-lg-2">
                                             <select class="custom-select" name="status">
                                                 <c:forEach var="status" items="${statuses}">
@@ -88,10 +88,11 @@
                                         <button class="btn btn-outline-secondary" type="submit"
                                                 id="button-addon2"><fmt:message
                                                 key="change"/></button>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </c:forEach>
             </c:when>

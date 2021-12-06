@@ -1,5 +1,6 @@
 package by.lashkevich.web.controller.command.impl;
 
+import by.lashkevich.logic.entity.Role;
 import by.lashkevich.logic.entity.User;
 import by.lashkevich.logic.service.ServiceException;
 import by.lashkevich.logic.service.ServiceFactory;
@@ -32,9 +33,12 @@ public class AuthorizationCommand implements Command {
             User user = userOptional.get();
 
             if (BCrypt.checkpw(request.getParameter("password"), user.getPassword())) {
-                request.getSession().setAttribute("role", user.getRole().getRoleName());
+                request.getSession().setAttribute("role", user.getRole().getName());
                 request.getSession().setAttribute("userId", user.getId());
                 request.getSession().setAttribute("balance", user.getBalance());
+                if (user.getRole() == Role.BANNED) {
+                    return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=ban_page");
+                }
                 request.getSession().setAttribute("authorizationResult", true);
             } else {
                 request.getSession().setAttribute("authorizationResult", false);

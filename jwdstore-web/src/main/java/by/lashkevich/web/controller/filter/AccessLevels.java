@@ -14,7 +14,7 @@ public enum AccessLevels {
             CHECK_AUTHORIZATION, CHECK_REGISTRATION)),
     ADMIN("admin", Arrays.asList(LOG_OUT, PROFILE_FORWARD, REMOVE_REVIEW, REMOVE_GOOD,
             UPDATE_GOOD_PAGE, UPDATE_GOOD, ADD_GOOD_PAGE, ADD_GOOD, CHECK_GOOD_ADDING_RESULT, MANAGE_ORDERS_COMMAND,
-            UPDATE_ORDER_STATUS, UPDATE_PROFILE_PAGE, UPDATE_PROFILE)),
+            UPDATE_ORDER_STATUS, UPDATE_PROFILE_PAGE, UPDATE_PROFILE, USER_LIST, UPDATE_USER_ROLE, BAN_USER, UNBLOCK_USER)),
     MODER("moder", Arrays.asList(REMOVE_GOOD, LOG_OUT, PROFILE_FORWARD, REMOVE_REVIEW, REMOVE_GOOD,
             UPDATE_GOOD_PAGE, UPDATE_GOOD, ADD_GOOD_PAGE, ADD_GOOD, CHECK_GOOD_ADDING_RESULT, MANAGE_ORDERS_COMMAND,
             UPDATE_ORDER_STATUS, UPDATE_PROFILE_PAGE, UPDATE_PROFILE)),
@@ -24,7 +24,8 @@ public enum AccessLevels {
             PLACE_ORDER_BY_BUY_BUTTON, PLACE_ORDER, PLACE_ORDER_PAGE_FORWARD, REPLENISHMENT_PAGE, UPDATE_PROFILE_PAGE,
             UPDATE_PROFILE)),
     GUEST("guest", Arrays.asList(REGISTRATION, AUTHORIZATION_PAGE_FORWARD, AUTHORIZATION, REGISTRATION_PAGE,
-            ADD_GOOD_IN_BASKET, PLACE_ORDER_BY_BUY_BUTTON, BASKET_PAGE));
+            ADD_GOOD_IN_BASKET, PLACE_ORDER_BY_BUY_BUTTON, BASKET_PAGE)),
+    BANNED("banned", Arrays.asList(BAN_PAGE, LOG_OUT, CHANGE_LANGUAGE));
 
     private final String role;
     private final List<CommandFactory> commands;
@@ -50,6 +51,14 @@ public enum AccessLevels {
 
         String role = (String) request.getSession().getAttribute("role");
         String commandInLowerCase = command.toLowerCase();
+
+        if (role.equals("banned")) {
+            return BANNED.getCommands().stream()
+                    .map(CommandFactory::getCommandName)
+                    .collect(Collectors.toList())
+                    .contains(command);
+        }
+
         List<AccessLevels> levels = Arrays.stream(AccessLevels.values())
                 .filter(level -> level.getCommands().stream()
                         .map(CommandFactory::getCommandName)

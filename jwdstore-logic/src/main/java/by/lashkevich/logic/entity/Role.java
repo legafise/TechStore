@@ -5,27 +5,35 @@ import java.util.Arrays;
 public enum Role {
     ADMIN(1, "admin"),
     MODER(2, "moder"),
-    USER(3, "user");
+    USER(3, "user"),
+    BANNED(4, "banned");
 
-    private final int roleNumber;
-    private final String roleName;
+    private final int number;
+    private final String name;
 
-    Role(int roleNumber, String roleName) {
-        this.roleNumber = roleNumber;
-        this.roleName = roleName;
+    Role(int number, String name) {
+        this.number = number;
+        this.name = name;
     }
 
-    public int getRoleNumber() {
-        return roleNumber;
+    public int getNumber() {
+        return number;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public static Role findRole(int roleNumber) {
+    public static Role findRoleByNumber(int roleNumber) {
         return Arrays.stream(Role.values())
-                .filter(currentRole -> currentRole.getRoleNumber() == roleNumber)
+                .filter(currentRole -> currentRole.getNumber() == roleNumber)
+                .findFirst()
+                .orElse(USER);
+    }
+
+    public static Role findRoleByName(String roleName) {
+        return Arrays.stream(Role.values())
+                .filter(currentRole -> currentRole.getName().equals(roleName.toLowerCase()))
                 .findFirst()
                 .orElse(USER);
     }

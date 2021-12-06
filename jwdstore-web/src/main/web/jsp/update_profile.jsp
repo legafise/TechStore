@@ -59,7 +59,8 @@
                                                aria-describedby="emailHelp">
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-secondary authorization authorization-button">
+                                <br/>
+                                <button type="submit" class="btn btn-secondary authorization authorization-button ">
                                     Изменить
                                 </button>
                             </form>

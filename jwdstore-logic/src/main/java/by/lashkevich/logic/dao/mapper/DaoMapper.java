@@ -201,7 +201,7 @@ public class DaoMapper {
         user.setBirthDate(resultSet.getDate(birthDateColumn).toLocalDate());
         user.setProfilePictureName(resultSet.getString(pictureColumn));
         user.setBalance(resultSet.getBigDecimal(balanceColumn));
-        user.setRole(Role.findRole(resultSet.getInt(roleColumn)));
+        user.setRole(Role.findRoleByNumber(resultSet.getInt(roleColumn)));
         return user;
     }
 
