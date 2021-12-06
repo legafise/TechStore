@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The type Security filter.
+ * @author Roman Lashkevich
+ */
 @WebFilter(filterName = "SecurityFilter")
 public class SecurityFilter implements Filter {
     private static final String SESSION_ROLE_PARAMETER = "role";

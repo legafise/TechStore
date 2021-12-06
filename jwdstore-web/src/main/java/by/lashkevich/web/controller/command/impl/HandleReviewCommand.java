@@ -13,10 +13,18 @@ import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Handle review command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class HandleReviewCommand implements Command {
     private final ReviewService reviewService;
     private final UserService userService;
 
+    /**
+     * Instantiates a new Handle review command.
+     */
     public HandleReviewCommand() {
         reviewService = (ReviewService) ServiceFactory.REVIEW_SERVICE.getService();
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();

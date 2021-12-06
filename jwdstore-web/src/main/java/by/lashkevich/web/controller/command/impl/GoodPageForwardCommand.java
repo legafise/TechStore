@@ -11,11 +11,19 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Good page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class GoodPageForwardCommand implements Command {
     private static final String GOOD_DOESNT_EXIST_MESSAGE = "This good does not exist";
     private final GoodService goodService;
     private final ReviewService reviewService;
 
+    /**
+     * Instantiates a new Good page forward command.
+     */
     public GoodPageForwardCommand() {
         goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
         reviewService = (ReviewService) ServiceFactory.REVIEW_SERVICE.getService();

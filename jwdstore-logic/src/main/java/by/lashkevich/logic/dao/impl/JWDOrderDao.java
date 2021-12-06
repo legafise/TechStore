@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Jwd order dao.
+ * @author Roman Lashkevich
+ * @see OrderDao
+ */
 public class JWDOrderDao implements OrderDao {
     private static final String FIND_ALL_ORDERS_SQL = "SELECT orders.id AS order_id, orders.status AS order_status, orders.price AS order_price, orders.address AS" +
             " order_address, orders.date AS order_date, users_from_orders.id AS user_id, users_from_orders.name AS user_name, users_from_orders.surname AS" +
@@ -72,6 +77,9 @@ public class JWDOrderDao implements OrderDao {
     private static final String UNKNOWN_USER_MESSAGE = "Unknown user id";
     private final DaoMapper daoMapper;
 
+    /**
+     * Instantiates a new Jwd order dao.
+     */
     public JWDOrderDao() {
         daoMapper = new DaoMapper();
     }

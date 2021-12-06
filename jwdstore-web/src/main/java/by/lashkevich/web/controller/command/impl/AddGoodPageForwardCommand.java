@@ -8,9 +8,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Add good page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class AddGoodPageForwardCommand implements Command {
     private final GoodService goodService;
 
+    /**
+     * Instantiates a new Add good page forward command.
+     */
     public AddGoodPageForwardCommand() {
         goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
     }

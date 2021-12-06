@@ -17,6 +17,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+/**
+ * The type Jwd good service.
+ * @author Roman Lashkevich
+ * @see GoodService
+ */
 public class JWDGoodService implements GoodService {
     private static final String EMPTY_PICTURE_NAME = "";
     private static final String NONEXISTENT_GOOD_ID_MESSAGE = "Nonexistent good id was received";

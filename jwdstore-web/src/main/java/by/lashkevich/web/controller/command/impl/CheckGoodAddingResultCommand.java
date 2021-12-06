@@ -6,6 +6,11 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Check good adding result command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class CheckGoodAddingResultCommand implements Command {
     private static final String YOU_CANT_DO_IT_NOW_MESSAGE = "You can't do it now";
 

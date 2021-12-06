@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * Class for mapping objects in dao.
+ * @author Roman Lashkevich
+ */
 public class DaoMapper {
     private static final String GOOD_ID = "good_id";
     private static final String ORDER_ID = "order_id";
@@ -44,11 +48,25 @@ public class DaoMapper {
     private static final String GOOD_PICTURE = "good_picture";
     private static final String GOOD_QUANTITY = "good_quantity";
 
+    /**
+     * Map user user.
+     *
+     * @param resultSet the result set
+     * @return the user
+     * @throws SQLException the sql exception
+     */
     public User mapUser(ResultSet resultSet) throws SQLException {
         return fillUserData(resultSet, USER_ID, USER_NAME, USER_SURNAME, USER_LOGIN, USER_PASSWORD,
                 USER_EMAIL, USER_BIRTH_DATE, USER_PROFILE_PICTURE, USER_BALANCE, USER_ROLE);
     }
 
+    /**
+     * Map review review.
+     *
+     * @param resultSet the result set
+     * @return the review
+     * @throws SQLException the sql exception
+     */
     public Review mapReview(ResultSet resultSet) throws SQLException {
         Review review = new Review();
         review.setId(resultSet.getLong(REVIEW_ID));
@@ -64,6 +82,13 @@ public class DaoMapper {
                 REVIEW_USER_BALANCE, REVIEW_USER_ROLE);
     }
 
+    /**
+     * Map good good.
+     *
+     * @param resultSet the result set
+     * @return the good
+     * @throws SQLException the sql exception
+     */
     public Good mapGood(ResultSet resultSet) throws SQLException {
         Good good = new Good();
 
@@ -103,6 +128,14 @@ public class DaoMapper {
         return good;
     }
 
+    /**
+     * Map order order.
+     *
+     * @param resultSet the result set
+     * @return the order
+     * @throws SQLException         the sql exception
+     * @throws OrderStatusException the order status exception
+     */
     public Order mapOrder(ResultSet resultSet) throws SQLException, OrderStatusException {
         Order order = new Order();
 
@@ -151,6 +184,13 @@ public class DaoMapper {
         return good;
     }
 
+    /**
+     * Map basket basket.
+     *
+     * @param resultSet the result set
+     * @return the basket
+     * @throws SQLException the sql exception
+     */
     public Basket mapBasket(ResultSet resultSet) throws SQLException {
         Basket basket = new Basket();
         resultSet.next();
@@ -173,6 +213,13 @@ public class DaoMapper {
         good.setImgName(resultSet.getString(GOOD_PICTURE));
     }
 
+    /**
+     * Map good type good type.
+     *
+     * @param resultSet the result set
+     * @return the good type
+     * @throws SQLException the sql exception
+     */
     public GoodType mapGoodType(ResultSet resultSet) throws SQLException {
         GoodType goodType = new GoodType();
         goodType.setId(resultSet.getInt(GOOD_TYPE_ID));

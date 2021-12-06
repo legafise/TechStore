@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * The type Order.
+ * @author Roman Lashkevich
+ */
 public class Order implements Entity {
     private long id;
     private OrderStatus status;
@@ -15,10 +19,24 @@ public class Order implements Entity {
     private User customer;
     private Map<Good, Integer> goods;
 
+    /**
+     * Instantiates a new Order.
+     */
     public Order() {
         goods = new HashMap<>();
     }
 
+    /**
+     * Instantiates a new Order.
+     *
+     * @param id       the id
+     * @param status   the status
+     * @param address  the address
+     * @param goods    the goods
+     * @param price    the price
+     * @param date     the date
+     * @param customer the customer
+     */
     public Order(long id, OrderStatus status, String address, Map<Good, Integer> goods,
                  BigDecimal price, LocalDate date, User customer) {
         this.id = id;
@@ -30,6 +48,16 @@ public class Order implements Entity {
         this.customer = customer;
     }
 
+    /**
+     * Instantiates a new Order.
+     *
+     * @param status   the status
+     * @param address  the address
+     * @param goods    the goods
+     * @param price    the price
+     * @param date     the date
+     * @param customer the customer
+     */
     public Order(OrderStatus status, String address, Map<Good, Integer> goods, BigDecimal price,
                  LocalDate date, User customer) {
         this.status = status;
@@ -40,6 +68,16 @@ public class Order implements Entity {
         this.customer = customer;
     }
 
+    /**
+     * Instantiates a new Order.
+     *
+     * @param id       the id
+     * @param status   the status
+     * @param address  the address
+     * @param price    the price
+     * @param date     the date
+     * @param customer the customer
+     */
     public Order(long id, OrderStatus status, String address, BigDecimal price, LocalDate date, User customer) {
         this.id = id;
         this.status = status;
@@ -50,6 +88,15 @@ public class Order implements Entity {
         goods = new HashMap<>();
     }
 
+    /**
+     * Instantiates a new Order.
+     *
+     * @param status   the status
+     * @param address  the address
+     * @param price    the price
+     * @param date     the date
+     * @param customer the customer
+     */
     public Order(OrderStatus status, String address, BigDecimal price, LocalDate date, User customer) {
         this.status = status;
         this.address = address;
@@ -59,58 +106,128 @@ public class Order implements Entity {
         goods = new HashMap<>();
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Gets status.
+     *
+     * @return the status
+     */
     public OrderStatus getStatus() {
         return status;
     }
 
+    /**
+     * Sets status.
+     *
+     * @param status the status
+     */
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
+    /**
+     * Gets address.
+     *
+     * @return the address
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Sets address.
+     *
+     * @param address the address
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * Gets goods.
+     *
+     * @return the goods
+     */
     public Map<Good, Integer> getGoods() {
         return goods;
     }
 
+    /**
+     * Sets goods.
+     *
+     * @param goods the goods
+     */
     public void setGoods(Map<Good, Integer> goods) {
         this.goods = goods;
     }
 
+    /**
+     * Gets price.
+     *
+     * @return the price
+     */
     public BigDecimal getPrice() {
         return price;
     }
 
+    /**
+     * Sets price.
+     *
+     * @param price the price
+     */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    /**
+     * Gets customer.
+     *
+     * @return the customer
+     */
     public User getCustomer() {
         return customer;
     }
 
+    /**
+     * Sets customer.
+     *
+     * @param customer the customer
+     */
     public void setCustomer(User customer) {
         this.customer = customer;
     }

@@ -11,9 +11,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
+/**
+ * The type Basket forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class BasketForwardCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Basket forward command.
+     */
     public BasketForwardCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

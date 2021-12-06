@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Jwd good dao.
+ * @author Roman Lashkevich
+ * @see GoodDao
+ */
 public class JWDGoodDao implements GoodDao {
     private static final String FIND_ALL_GOODS_SQL = "SELECT goods.id AS good_id, goods.name AS good_name," +
             " goods.price AS good_price, goods.description AS good_description, goods.picture AS good_picture," +
@@ -42,6 +47,9 @@ public class JWDGoodDao implements GoodDao {
             " FROM goods_types";
     private final DaoMapper daoMapper;
 
+    /**
+     * Instantiates a new Jwd good dao.
+     */
     public JWDGoodDao() {
         daoMapper = new DaoMapper();
     }

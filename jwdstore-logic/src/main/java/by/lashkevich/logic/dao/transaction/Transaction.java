@@ -2,10 +2,29 @@ package by.lashkevich.logic.dao.transaction;
 
 import by.lashkevich.logic.dao.DaoException;
 
+/**
+ * The interface Transaction.
+ * @author Roman Lashkevich
+ */
 public interface Transaction {
+    /**
+     * Commit.
+     *
+     * @throws DaoException the dao exception
+     */
     void commit() throws DaoException;
-    void rollback() throws DaoException;
-    void closeTransaction() throws DaoException;
 
-    // TODO: 18.11.2021 Уровни изоляций транзакций
+    /**
+     * Rollback.
+     *
+     * @throws DaoException the dao exception
+     */
+    void rollback() throws DaoException;
+
+    /**
+     * Close transaction.
+     *
+     * @throws DaoException the dao exception
+     */
+    void closeTransaction() throws DaoException;
 }

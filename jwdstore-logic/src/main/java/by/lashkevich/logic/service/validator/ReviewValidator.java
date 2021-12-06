@@ -5,6 +5,10 @@ import by.lashkevich.logic.entity.User;
 
 import java.util.function.Predicate;
 
+/**
+ * The type Review validator.
+ * @author Roman Lashkevich
+ */
 public class ReviewValidator implements Predicate<Review> {
     @Override
     public boolean test(Review review) {

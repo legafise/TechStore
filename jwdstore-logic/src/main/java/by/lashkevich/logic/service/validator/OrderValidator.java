@@ -7,6 +7,10 @@ import by.lashkevich.logic.entity.User;
 import java.util.Map;
 import java.util.function.Predicate;
 
+/**
+ * The type Order validator.
+ * @author Roman Lashkevich
+ */
 public class OrderValidator implements Predicate<Order> {
     @Override
     public boolean test(Order order) {

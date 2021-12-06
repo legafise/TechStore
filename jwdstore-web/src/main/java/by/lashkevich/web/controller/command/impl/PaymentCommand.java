@@ -10,9 +10,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Payment command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class PaymentCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Payment command.
+     */
     public PaymentCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

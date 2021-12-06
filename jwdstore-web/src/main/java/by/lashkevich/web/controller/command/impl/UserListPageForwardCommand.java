@@ -11,9 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * The type User list page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class UserListPageForwardCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new User list page forward command.
+     */
     public UserListPageForwardCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

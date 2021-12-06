@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Page redirect security filter.
+ * @author Roman Lashkevich
+ */
 @WebFilter(filterName = "PageRedirectSecurityFilter", initParams = {
         @WebInitParam(name = "ERROR-PAGE-PATH", value = "/controller?command=error")
 })

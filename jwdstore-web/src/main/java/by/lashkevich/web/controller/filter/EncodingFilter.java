@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Encoding filter.
+ * @author Roman Lashkevich
+ */
 @WebFilter(filterName = "EncodingFilter", initParams = {
         @WebInitParam(name = "ENCODING", value = "UTF-8", description = "Encoding param")
 })

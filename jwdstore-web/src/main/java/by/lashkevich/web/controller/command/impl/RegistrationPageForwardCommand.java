@@ -6,6 +6,11 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Registration page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class RegistrationPageForwardCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {

@@ -11,6 +11,11 @@ import by.lashkevich.web.controller.command.CommandResult;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * The type Catalog forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class CatalogForwardCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {

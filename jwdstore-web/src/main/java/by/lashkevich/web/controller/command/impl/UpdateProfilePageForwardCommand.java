@@ -9,9 +9,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Update profile page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class UpdateProfilePageForwardCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Update profile page forward command.
+     */
     public UpdateProfilePageForwardCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

@@ -6,6 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Ban filter.
+ * @author Roman Lashkevich
+ */
 @WebFilter(filterName = "BanFilter")
 public class BanFilter implements Filter {
     private static final String BANNED_ROLE = "banned";

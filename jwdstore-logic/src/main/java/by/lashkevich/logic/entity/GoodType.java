@@ -2,30 +2,63 @@ package by.lashkevich.logic.entity;
 
 import java.util.Objects;
 
+/**
+ * The type Good type.
+ * @author Roman Lashkevich
+ */
 public class GoodType {
     private int id;
     private String name;
 
+    /**
+     * Instantiates a new Good type.
+     *
+     * @param id   the id
+     * @param name the name
+     */
     public GoodType(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Instantiates a new Good type.
+     */
     public GoodType() {
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }

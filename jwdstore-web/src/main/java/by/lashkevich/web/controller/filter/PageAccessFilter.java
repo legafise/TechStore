@@ -6,6 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Page access filter.
+ * @author Roman Lashkevich
+ */
 @WebFilter(filterName = "PageAccessFilter")
 public class PageAccessFilter implements Filter {
     private static final String UNKNOWN_ACTION_MESSAGE = "Unknown action!";

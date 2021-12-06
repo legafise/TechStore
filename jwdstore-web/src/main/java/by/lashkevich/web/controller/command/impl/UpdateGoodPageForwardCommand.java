@@ -9,10 +9,18 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Update good page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class UpdateGoodPageForwardCommand implements Command {
     private static final String INVALID_GOOD_MESSAGE = "The good is not exist";
     private final GoodService goodService;
 
+    /**
+     * Instantiates a new Update good page forward command.
+     */
     public UpdateGoodPageForwardCommand() {
         goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
     }

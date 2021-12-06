@@ -19,6 +19,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+/**
+ * The type Jwd user service.
+ * @author Roman Lashkevich
+ * @see UserService
+ */
 public class JWDUserService implements UserService {
     private static final String EMPTY_PICTURE_NAME = "";
     private static final String STANDARD_USER_PICTURE_NAME = "default.jpg";

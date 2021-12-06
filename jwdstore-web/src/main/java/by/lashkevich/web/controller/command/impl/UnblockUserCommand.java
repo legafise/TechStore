@@ -11,9 +11,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Unblock user command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class UnblockUserCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Unblock user command.
+     */
     public UnblockUserCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

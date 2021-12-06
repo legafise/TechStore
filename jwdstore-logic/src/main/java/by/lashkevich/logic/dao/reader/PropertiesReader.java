@@ -6,9 +6,26 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * The interface Properties reader.
+ * @author Roman Lashkevich
+ */
 public interface PropertiesReader {
+    /**
+     * Read properties properties.
+     *
+     * @return the properties
+     * @throws PropertiesReaderException the properties reader exception
+     */
     Properties readProperties() throws PropertiesReaderException;
 
+    /**
+     * Read properties properties.
+     *
+     * @param path the path
+     * @return the properties
+     * @throws PropertiesReaderException the properties reader exception
+     */
     default Properties readProperties(String path) throws PropertiesReaderException {
         Properties properties = new Properties();
         try {

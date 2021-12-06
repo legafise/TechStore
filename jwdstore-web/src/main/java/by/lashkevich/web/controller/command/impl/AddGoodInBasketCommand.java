@@ -11,9 +11,17 @@ import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Add good in basket command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class AddGoodInBasketCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Add good in basket command.
+     */
     public AddGoodInBasketCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

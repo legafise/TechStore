@@ -18,10 +18,18 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
+/**
+ * The type Add good command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class AddGoodCommand implements Command {
     private static final String INVALID_GOOD_DATA_MESSAGE = "Invalid good data";
     private final GoodService goodService;
 
+    /**
+     * Instantiates a new Add good command.
+     */
     public AddGoodCommand() {
         goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
     }

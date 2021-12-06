@@ -19,6 +19,11 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * The type Jwd order service.
+ * @author Roman Lashkevich
+ * @see OrderService
+ */
 public class JWDOrderService implements OrderService {
     private static final String NONEXISTENT_ORDER_ID_MESSAGE = "Nonexistent order id was received";
     private static final String INVALID_ORDER_MESSAGE = "Invalid order was received";

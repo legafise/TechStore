@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Class that controls all requests and executes command
+ * @author Roman Lashkevich
+ */
 @MultipartConfig(location = "C:\\IdeaProjects\\JWDStore\\jwdstore-web\\target\\jwdstore-web-1.0-SNAPSHOT\\download")
 public class JWDController extends HttpServlet {
     private static final Logger LOGGER = LogManager.getRootLogger();

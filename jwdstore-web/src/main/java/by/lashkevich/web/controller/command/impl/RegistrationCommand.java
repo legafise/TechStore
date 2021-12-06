@@ -18,9 +18,17 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
+/**
+ * The type Registration command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class RegistrationCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Registration command.
+     */
     public RegistrationCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Jwd user dao.
+ * @author Roman Lashkevich
+ * @see UserDao
+ */
 public class JWDUserDao implements UserDao {
     private static final String FIND_ALL_USERS_SQL = "SELECT users.id AS user_id, users.name AS user_name," +
             " users.surname AS user_surname, users.login AS user_login, users.password AS user_password, users.email" +
@@ -58,6 +63,9 @@ public class JWDUserDao implements UserDao {
             " WHERE baskets.user_id = ? AND baskets.good_id = ?";
     private final DaoMapper daoMapper;
 
+    /**
+     * Instantiates a new Jwd user dao.
+     */
     public JWDUserDao() {
         daoMapper = new DaoMapper();
     }

@@ -6,6 +6,10 @@ import by.lashkevich.logic.entity.GoodType;
 import java.math.BigDecimal;
 import java.util.function.Predicate;
 
+/**
+ * The type Good validator.
+ * @author Roman Lashkevich
+ */
 public class GoodValidator implements Predicate<Good> {
     private static final BigDecimal MAX_PRICE_VALUE = new BigDecimal("100000");
     private static final BigDecimal MIN_PRICE_VALUE = new BigDecimal("1");

@@ -10,9 +10,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Remove good from basket command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class RemoveGoodFromBasketCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Remove good from basket command.
+     */
     public RemoveGoodFromBasketCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

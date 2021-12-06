@@ -6,6 +6,11 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Replenishment page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class ReplenishmentPageForwardCommand implements Command {
     private static final String NO_ACCESS_MESSAGE = "No access";
 

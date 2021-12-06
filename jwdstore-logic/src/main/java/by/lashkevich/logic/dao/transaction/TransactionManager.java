@@ -12,6 +12,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Class that manages transactions.
+ * @author Roman Lashkevich
+ */
 public class TransactionManager {
     private static final Lock INSTANCE_LOCK = new ReentrantLock();
     private static final AtomicBoolean IS_INSTANCE_CREATED = new AtomicBoolean(false);
@@ -21,6 +25,11 @@ public class TransactionManager {
     private TransactionManager() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static TransactionManager getInstance() {
         if (!IS_INSTANCE_CREATED.get()) {
             try {
@@ -37,6 +46,12 @@ public class TransactionManager {
         return instance;
     }
 
+    /**
+     * Create transaction transaction.
+     *
+     * @return the transaction
+     * @throws DaoException the dao exception
+     */
     public Transaction createTransaction() throws DaoException {
         try {
             Connection connection;
@@ -56,6 +71,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Close transaction.
+     *
+     * @param transaction the transaction
+     */
     public void closeTransaction(Transaction transaction) {
         Integer transactionUsedNumber = TransactionManager.TRANSACTION_USERS.get(Thread.currentThread().getName());
         if (transactionUsedNumber == 1) {
@@ -66,12 +86,22 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Rollback.
+     *
+     * @param transaction the transaction
+     */
     public void rollback(Transaction transaction) {
         if (TransactionManager.TRANSACTION_USERS.get(Thread.currentThread().getName()) == 1) {
             transaction.rollback();
         }
     }
 
+    /**
+     * Commit.
+     *
+     * @param transaction the transaction
+     */
     public void commit(Transaction transaction) {
         if (TransactionManager.TRANSACTION_USERS.get(Thread.currentThread().getName()) == 1) {
             transaction.commit();

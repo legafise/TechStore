@@ -7,6 +7,11 @@ import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Change language command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class ChangeLanguageCommand implements Command {
     private static final String UNKNOWN_LANGUAGE_MESSAGE = "Unknown language";
 

@@ -14,9 +14,17 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * The type Place order from basket command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class PlaceOrderFromBasketCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Place order from basket command.
+     */
     public PlaceOrderFromBasketCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

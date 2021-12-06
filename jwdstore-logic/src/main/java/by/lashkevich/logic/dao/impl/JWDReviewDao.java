@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Jwd review dao.
+ * @author Roman Lashkevich
+ * @see ReviewDao
+ */
 public class JWDReviewDao implements ReviewDao {
     private static final String FIND_ALL_REVIEWS_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
             " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
@@ -54,6 +59,9 @@ public class JWDReviewDao implements ReviewDao {
             " WHERE goods_reviews.review_id = ?";
     private final DaoMapper mapper;
 
+    /**
+     * Instantiates a new Jwd review dao.
+     */
     public JWDReviewDao() {
         this.mapper = new DaoMapper();
     }

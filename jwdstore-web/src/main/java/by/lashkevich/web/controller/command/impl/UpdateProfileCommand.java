@@ -18,6 +18,11 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
+/**
+ * The type Update profile command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class UpdateProfileCommand implements Command {
     private static final String INVALID_USER_DATA = "Invalid user data";
     private final UserService userService;

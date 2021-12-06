@@ -12,10 +12,18 @@ import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Remove good command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class RemoveGoodCommand implements Command {
     private final GoodService goodService;
     private final UserService userService;
 
+    /**
+     * Instantiates a new Remove good command.
+     */
     public RemoveGoodCommand() {
         goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();

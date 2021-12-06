@@ -16,6 +16,11 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * The type Jwd review service.
+ * @author Roman Lashkevich
+ * @see ReviewService
+ */
 public class JWDReviewService implements ReviewService {
     private static final String NONEXISTENT_REVIEW_ID_MESSAGE = "Nonexistent review id was received";
     private static final String INVALID_REVIEW_MESSAGE = "Invalid review was received";

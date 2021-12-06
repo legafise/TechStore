@@ -6,6 +6,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
+/**
+ * The type Navbar brand tag.
+ */
 public class NavbarBrandTag extends SimpleTagSupport {
     private static final Logger LOGGER = LogManager.getRootLogger();
     private static final String CONTACT_INFO_MESSAGE = "TechStore";

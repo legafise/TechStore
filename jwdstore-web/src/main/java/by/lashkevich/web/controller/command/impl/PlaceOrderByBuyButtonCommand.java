@@ -11,10 +11,18 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Place order by buy button command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class PlaceOrderByBuyButtonCommand implements Command {
     private final GoodService goodService;
     private final UserService userService;
 
+    /**
+     * Instantiates a new Place order by buy button command.
+     */
     public PlaceOrderByBuyButtonCommand() {
         goodService = (GoodService) ServiceFactory.GOOD_SERVICE.getService();
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();

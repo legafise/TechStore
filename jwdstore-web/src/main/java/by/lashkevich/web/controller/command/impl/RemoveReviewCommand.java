@@ -12,10 +12,18 @@ import by.lashkevich.web.util.PageFinder;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Remove review command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class RemoveReviewCommand implements Command {
     private final ReviewService reviewService;
     private final UserService userService;
 
+    /**
+     * Instantiates a new Remove review command.
+     */
     public RemoveReviewCommand() {
         reviewService = (ReviewService) ServiceFactory.REVIEW_SERVICE.getService();
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();

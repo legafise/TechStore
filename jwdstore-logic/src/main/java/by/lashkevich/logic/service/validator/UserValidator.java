@@ -6,6 +6,10 @@ import java.time.LocalDate;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
+/**
+ * The type User validator.
+ * @author Roman Lashkevich
+ */
 public class UserValidator implements Predicate<User> {
     private static final String EMAIL_PATTERN = "^([а-яa-z0-9_-]+\\.)*[а-яa-z0-9_-]+@[а-яa-z0-9_-]" +
             "+(\\.[а-яa-z0-9_-]+)*\\.[а-яa-z]{2,6}$";

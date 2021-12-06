@@ -12,10 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Orders page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class OrdersPageForwardCommand implements Command {
     private static final String ACTION_IS_BLOCKED = "This action is blocked";
     private final OrderService orderService;
 
+    /**
+     * Instantiates a new Orders page forward command.
+     */
     public OrdersPageForwardCommand() {
         orderService = (OrderService) ServiceFactory.ORDER_SERVICE.getService();
     }

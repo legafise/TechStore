@@ -12,10 +12,18 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Change order status command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class ChangeOrderStatusCommand implements Command {
     private static final String INCORRECT_CHANGES_IN_ORDER = "Order was updated incorrect!";
     private final OrderService orderService;
 
+    /**
+     * Instantiates a new Change order status command.
+     */
     public ChangeOrderStatusCommand() {
         orderService = (OrderService) ServiceFactory.ORDER_SERVICE.getService();
     }

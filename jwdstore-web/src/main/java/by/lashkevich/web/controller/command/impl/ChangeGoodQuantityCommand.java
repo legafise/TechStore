@@ -10,9 +10,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Change good quantity command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class ChangeGoodQuantityCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Change good quantity command.
+     */
     public ChangeGoodQuantityCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

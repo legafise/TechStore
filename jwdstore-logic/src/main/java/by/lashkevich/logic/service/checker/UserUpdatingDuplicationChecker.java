@@ -7,9 +7,15 @@ import by.lashkevich.logic.entity.User;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+/**
+ * The type User updating duplication checker.
+ */
 public class UserUpdatingDuplicationChecker implements Predicate<User> {
     private final UserDao userDao;
 
+    /**
+     * Instantiates a new User updating duplication checker.
+     */
     public UserUpdatingDuplicationChecker() {
         userDao = (UserDao) DaoFactory.USER_DAO.getDao();
     }

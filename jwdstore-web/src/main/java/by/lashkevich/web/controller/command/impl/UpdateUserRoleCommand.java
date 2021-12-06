@@ -11,9 +11,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Update user role command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class UpdateUserRoleCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Update user role command.
+     */
     public UpdateUserRoleCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

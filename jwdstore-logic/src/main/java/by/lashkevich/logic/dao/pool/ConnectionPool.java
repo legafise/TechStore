@@ -17,6 +17,10 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Object that contains all created connections and manages them.
+ * @author Roman Lashkevich
+ */
 public class ConnectionPool {
     private static final AtomicBoolean IS_INSTANCE_CREATED = new AtomicBoolean(false);
     private static final String CONNECTION_IS_NULL_ENTER_MESSAGE = "Connection cannot be null";
@@ -38,18 +42,38 @@ public class ConnectionPool {
         busyTransactionalConnections = new HashMap<>();
     }
 
+    /**
+     * Sets properties reader.
+     *
+     * @param propertiesReader the properties reader
+     */
     public void setPropertiesReader(DataBasePropertiesReader propertiesReader) {
         this.propertiesReader = propertiesReader;
     }
 
+    /**
+     * Gets free connections size.
+     *
+     * @return the free connections size
+     */
     public int getFreeConnectionsSize() {
         return freeConnections.size();
     }
 
+    /**
+     * Gets busy connections size.
+     *
+     * @return the busy connections size
+     */
     public int getBusyConnectionsSize() {
         return busyConnections.size();
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static ConnectionPool getInstance() {
         // TODO: 18.11.2021 Почтиать про реализации синглтонов +\-
         if (!IS_INSTANCE_CREATED.get()) {
@@ -67,6 +91,12 @@ public class ConnectionPool {
         return instance;
     }
 
+    /**
+     * Initialize connection pool.
+     *
+     * @param connectionsNumber the connections number
+     * @throws ConnectionPoolException the connection pool exception
+     */
     public void initializeConnectionPool(int connectionsNumber) throws ConnectionPoolException {
         try {
             closeConnections();
@@ -84,6 +114,12 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Acquire connection connection.
+     *
+     * @return the connection
+     * @throws ConnectionPoolException the connection pool exception
+     */
     public Connection acquireConnection() throws ConnectionPoolException {
         try {
             CONNECTION_LOCK.lock();
@@ -99,6 +135,12 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Reserve transactional connection connection.
+     *
+     * @return the connection
+     * @throws ConnectionPoolException the connection pool exception
+     */
     public Connection reserveTransactionalConnection() throws ConnectionPoolException {
         Connection connection = takeConnection();
         busyTransactionalConnections.put(Thread.currentThread().getName(), connection);
@@ -106,6 +148,12 @@ public class ConnectionPool {
         return connection;
     }
 
+    /**
+     * Put back connection.
+     *
+     * @param connection the connection
+     * @throws ConnectionPoolException the connection pool exception
+     */
     public void putBackConnection(Connection connection) throws ConnectionPoolException {
         if (connection == null) {
             throw new ConnectionPoolException(CONNECTION_IS_NULL_ENTER_MESSAGE);
@@ -128,6 +176,11 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Close connections.
+     *
+     * @throws ConnectionPoolException the connection pool exception
+     */
     public void closeConnections() throws ConnectionPoolException {
         try {
             CONNECTION_LOCK.lock();
@@ -147,6 +200,9 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Put back transactional connection.
+     */
     public void putBackTransactionalConnection() {
         Connection transactionalConnection = busyTransactionalConnections.remove(Thread.currentThread().getName());
         putBackConnection(transactionalConnection);

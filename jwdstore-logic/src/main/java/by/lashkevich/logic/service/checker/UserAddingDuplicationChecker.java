@@ -6,9 +6,16 @@ import by.lashkevich.logic.entity.User;
 
 import java.util.function.Predicate;
 
+/**
+ * The type User adding duplication checker.
+ * @author Roman Lashkevich
+ */
 public class UserAddingDuplicationChecker implements Predicate<User> {
     private final UserDao userDao;
 
+    /**
+     * Instantiates a new User adding duplication checker.
+     */
     public UserAddingDuplicationChecker() {
         userDao = (UserDao) DaoFactory.USER_DAO.getDao();
     }

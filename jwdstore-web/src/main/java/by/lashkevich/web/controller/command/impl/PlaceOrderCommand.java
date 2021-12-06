@@ -17,12 +17,20 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Map;
 
+/**
+ * The type Place order command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class PlaceOrderCommand implements Command {
     private static final String BUY_BUTTON = "buyButton";
     private static final String PLACE_ORDER_BUTTON = "placeOrderButton";
     private final UserService userService;
     private final OrderService orderService;
 
+    /**
+     * Instantiates a new Place order command.
+     */
     public PlaceOrderCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
         orderService = (OrderService) ServiceFactory.ORDER_SERVICE.getService();

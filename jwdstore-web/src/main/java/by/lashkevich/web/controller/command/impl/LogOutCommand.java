@@ -6,6 +6,11 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Log out command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class LogOutCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request) throws CommandException {

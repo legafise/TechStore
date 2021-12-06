@@ -11,9 +11,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
 
+/**
+ * The type Manage orders page forward command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class ManageOrdersPageForwardCommand implements Command {
     private final OrderService orderService;
 
+    /**
+     * Instantiates a new Manage orders page forward command.
+     */
     public ManageOrdersPageForwardCommand() {
         orderService = (OrderService) ServiceFactory.ORDER_SERVICE.getService();
     }

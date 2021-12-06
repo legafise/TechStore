@@ -8,9 +8,17 @@ import by.lashkevich.web.controller.command.CommandResult;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Clear basket command.
+ * @author Roman Lashkevich
+ * @see Command
+ */
 public class ClearBasketCommand implements Command {
     private final UserService userService;
 
+    /**
+     * Instantiates a new Clear basket command.
+     */
     public ClearBasketCommand() {
         userService = (UserService) ServiceFactory.USER_SERVICE.getService();
     }

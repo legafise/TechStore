@@ -5,6 +5,11 @@ import by.lashkevich.logic.entity.Review;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The interface Review dao.
+ * @author Roman Lashkevich
+ * @see BaseDao
+ */
 public interface ReviewDao extends BaseDao<Long, Review> {
     boolean connectReviewToGood(Long reviewId, Long goodId);
     List<Review> findByUserId(Long userId);

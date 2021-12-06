@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * The type User.
+ * @author Roman Lashkevich
+ */
 public class User implements Entity {
     private long id;
     private String name;
@@ -16,10 +20,27 @@ public class User implements Entity {
     private BigDecimal balance;
     private Role role;
 
+    /**
+     * Instantiates a new User.
+     */
     public User() {
         profilePictureName = "";
     }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param id                 the id
+     * @param name               the name
+     * @param surname            the surname
+     * @param login              the login
+     * @param password           the password
+     * @param email              the email
+     * @param birthDate          the birth date
+     * @param profilePictureName the profile picture name
+     * @param balance            the balance
+     * @param role               the role
+     */
     public User(long id, String name, String surname, String login, String password, String email, LocalDate birthDate,
                 String profilePictureName, BigDecimal balance, Role role) {
         this.id = id;
@@ -34,6 +55,17 @@ public class User implements Entity {
         this.role = role;
     }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param name               the name
+     * @param surname            the surname
+     * @param login              the login
+     * @param password           the password
+     * @param email              the email
+     * @param birthDate          the birth date
+     * @param profilePictureName the profile picture name
+     */
     public User(String name, String surname, String login, String password, String email, LocalDate birthDate,
                 String profilePictureName) {
         this.name = name;
@@ -45,6 +77,19 @@ public class User implements Entity {
         this.profilePictureName = profilePictureName;
     }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param name               the name
+     * @param surname            the surname
+     * @param login              the login
+     * @param password           the password
+     * @param email              the email
+     * @param birthDate          the birth date
+     * @param profilePictureName the profile picture name
+     * @param balance            the balance
+     * @param role               the role
+     */
     public User(String name, String surname, String login, String password, String email, LocalDate birthDate,
                 String profilePictureName, BigDecimal balance, Role role) {
         this.name = name;
@@ -58,82 +103,182 @@ public class User implements Entity {
         this.role = role;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets surname.
+     *
+     * @return the surname
+     */
     public String getSurname() {
         return surname;
     }
 
+    /**
+     * Sets surname.
+     *
+     * @param surname the surname
+     */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     * Gets login.
+     *
+     * @return the login
+     */
     public String getLogin() {
         return login;
     }
 
+    /**
+     * Sets login.
+     *
+     * @param login the login
+     */
     public void setLogin(String login) {
         this.login = login;
     }
 
+    /**
+     * Gets password.
+     *
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets password.
+     *
+     * @param password the password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets email.
+     *
+     * @param email the email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets birth date.
+     *
+     * @return the birth date
+     */
     public LocalDate getBirthDate() {
         return birthDate;
     }
 
+    /**
+     * Sets birth date.
+     *
+     * @param birthDate the birth date
+     */
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
+    /**
+     * Gets profile picture name.
+     *
+     * @return the profile picture name
+     */
     public String getProfilePictureName() {
         return profilePictureName;
     }
 
+    /**
+     * Sets profile picture name.
+     *
+     * @param profilePictureName the profile picture name
+     */
     public void setProfilePictureName(String profilePictureName) {
         this.profilePictureName = profilePictureName;
     }
 
+    /**
+     * Gets balance.
+     *
+     * @return the balance
+     */
     public BigDecimal getBalance() {
         return balance;
     }
 
+    /**
+     * Sets balance.
+     *
+     * @param balance the balance
+     */
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
+    /**
+     * Gets role.
+     *
+     * @return the role
+     */
     public Role getRole() {
         return role;
     }
 
+    /**
+     * Sets role.
+     *
+     * @param role the role
+     */
     public void setRole(Role role) {
         this.role = role;
     }
