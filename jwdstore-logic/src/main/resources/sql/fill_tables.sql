@@ -71,7 +71,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (1,4.5,'So good',2),(2,4.8,'Best laptop!',4),(4,4.2,'Coll item',4),(5,4,'Ok, but it could have been better for the money',5);
+INSERT INTO `reviews` VALUES (1,4,'So good',2),(2,5,'Best laptop!',4),(4,4,'Coll item',4),(5,4,'Ok, but it could have been better for the money',5);
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +81,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'Roman','Lash','legafise','12340987','tapoc04@yandex.ru','default.jpg','2004-02-12',126,3),(3,'Admin','Admin','Admin','Admin','techstore@gmail.com','default.jpg','2001-01-01',0,1),(4,'Moder','Moder','Moder','Mpder','techstore.suport@gmail.com','default.jpg','2002-02-02',0,2),(5,'Vasya','Pupkin','PupVasi','12345678','vasyapup@yandex.ru','default.jpg','2003-05-16',65,3),(6,'Gleb','Kirienko','SirPakun','zim','floppa@mail.ru','default.jpg','2003-07-31',243,3);
+INSERT INTO `users` VALUES (2,'Roman','Lash','legafise','12340987','tapoc04@yandex.ru','default.jpg','2004-02-12',126,3),(5,'Vasya','Pupkin','PupVasi','12345678','vasyapup@yandex.ru','default.jpg','2003-05-16',65,3),(6,'Gleb','Kirienko','SirPakun','zim','floppa@mail.ru','default.jpg','2003-07-31',243,3);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
