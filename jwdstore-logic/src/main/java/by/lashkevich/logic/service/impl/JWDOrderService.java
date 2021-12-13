@@ -29,16 +29,24 @@ public class JWDOrderService implements OrderService {
     private static final String INVALID_ORDER_MESSAGE = "Invalid order was received";
     private static final String USER_DOES_NOT_HAVE_ORDERS_MESSAGE = "User does not have orders";
     private static final BigDecimal MIN_REMAINS = new BigDecimal("0.0");
-    private final OrderDao orderDao;
     private final UserDao userDao;
-    private final Predicate<Order> orderValidator;
     private final TransactionManager transactionManager;
+    private Predicate<Order> orderValidator;
+    private OrderDao orderDao;
 
     public JWDOrderService() {
         orderDao = (OrderDao) DaoFactory.ORDER_DAO.getDao();
         userDao = (UserDao) DaoFactory.USER_DAO.getDao();
         orderValidator = new OrderValidator();
         transactionManager = TransactionManager.getInstance();
+    }
+
+    public void setOrderDao(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
+
+    public void setOrderValidator(Predicate<Order> orderValidator) {
+        this.orderValidator = orderValidator;
     }
 
     @Override

@@ -28,10 +28,10 @@ public class JWDGoodService implements GoodService {
     private static final String INVALID_GOOD_MESSAGE = "Invalid good was received";
     private static final String STANDARD_GOOD_PICTURE = "default.jpg";
     private final ReviewService reviewService;
-    private final OrderService orderService;
-    private final Predicate<Good> goodValidator;
-    private final GoodDao goodDao;
     private final TransactionManager transactionManager;
+    private OrderService orderService;
+    private Predicate<Good> goodValidator;
+    private GoodDao goodDao;
 
     public JWDGoodService() {
         transactionManager = TransactionManager.getInstance();
@@ -39,6 +39,18 @@ public class JWDGoodService implements GoodService {
         goodDao = (GoodDao) DaoFactory.GOOD_DAO.getDao();
         reviewService = (ReviewService) ServiceFactory.REVIEW_SERVICE.getService();
         orderService = (OrderService) ServiceFactory.ORDER_SERVICE.getService();
+    }
+
+    public void setGoodDao(GoodDao goodDao) {
+        this.goodDao = goodDao;
+    }
+
+    public void setGoodValidator(Predicate<Good> goodValidator) {
+        this.goodValidator = goodValidator;
+    }
+
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @Override

@@ -11,7 +11,11 @@ import java.util.function.Predicate;
  * The type User updating duplication checker.
  */
 public class UserUpdatingDuplicationChecker implements Predicate<User> {
-    private final UserDao userDao;
+    private UserDao userDao;
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     /**
      * Instantiates a new User updating duplication checker.

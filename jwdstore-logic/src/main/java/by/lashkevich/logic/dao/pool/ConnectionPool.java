@@ -75,7 +75,6 @@ public class ConnectionPool {
      * @return the instance
      */
     public static ConnectionPool getInstance() {
-        // TODO: 18.11.2021 Почтиать про реализации синглтонов +\-
         if (!IS_INSTANCE_CREATED.get()) {
             try {
                 INSTANCE_LOCK.lock();

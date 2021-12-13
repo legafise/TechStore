@@ -25,13 +25,17 @@ public class JWDReviewService implements ReviewService {
     private static final String NONEXISTENT_REVIEW_ID_MESSAGE = "Nonexistent review id was received";
     private static final String INVALID_REVIEW_MESSAGE = "Invalid review was received";
     private final Predicate<Review> reviewValidator;
-    private final ReviewDao reviewDao;
     private final TransactionManager transactionManager;
+    private ReviewDao reviewDao;
 
     public JWDReviewService() {
         reviewDao = (ReviewDao) DaoFactory.REVIEW_DAO.getDao();
         reviewValidator = new ReviewValidator();
         transactionManager = TransactionManager.getInstance();
+    }
+
+    public void setReviewDao(ReviewDao reviewDao) {
+        this.reviewDao = reviewDao;
     }
 
     @Override
@@ -62,7 +66,7 @@ public class JWDReviewService implements ReviewService {
     public boolean addReview(Review review, String goodId) throws ServiceException {
         Transaction transaction = transactionManager.createTransaction();
         try {
-            if (checkReviewForDuplication(String.valueOf(review.getAuthor().getId()), goodId)
+            if (isCreatedReview(String.valueOf(review.getAuthor().getId()), goodId)
                     && reviewValidator.test(review) && reviewDao.add(review)) {
                 Long reviewId = findCurrentReviewId(review);
                 if (reviewDao.connectReviewToGood(reviewId, Long.parseLong(goodId))) {
@@ -116,7 +120,7 @@ public class JWDReviewService implements ReviewService {
         }
     }
 
-    public boolean checkReviewForDuplication(String userId, String goodId) {
+    public boolean isCreatedReview(String userId, String goodId) {
         try {
             return !reviewDao.findReviewByUserAndGoodId(Long.parseLong(userId), Long.parseLong(goodId)).isPresent();
         } catch (DaoException | NumberFormatException e) {

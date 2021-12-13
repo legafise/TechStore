@@ -36,7 +36,7 @@ public class GoodPageForwardCommand implements Command {
             String role = String.valueOf(request.getSession().getAttribute("role"));
             if (!role.equals("guest")) {
                 request.setAttribute("isCratedReview",
-                        !reviewService.checkReviewForDuplication(String.valueOf(request.getSession()
+                        !reviewService.isCreatedReview(String.valueOf(request.getSession()
                                 .getAttribute("userId")), request.getParameter("goodId")));
                 request.setAttribute("isBoughtGood", goodService.isBoughtGood(request.getParameter("goodId"),
                         String.valueOf(request.getSession().getAttribute("userId"))));

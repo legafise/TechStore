@@ -32,11 +32,11 @@ public class JWDUserService implements UserService {
     private static final String INVALID_GOOD_ID_MESSAGE = "Invalid good id was received";
     private static final String GOOD_THERE_IS_NOT_MESSAGE = "The good there isn't in basket";
     private static final String INVALID_GOOD_QUANTITY = "Invalid good quantity %d";
-    private final UserDao userDao;
-    private final Predicate<User> userValidator;
-    private final Predicate<User> userAddingDuplicationChecker;
-    private final Predicate<User> userUpdatingDuplicationChecker;
     private final TransactionManager transactionManager;
+    private Predicate<User> userValidator;
+    private Predicate<User> userAddingDuplicationChecker;
+    private Predicate<User> userUpdatingDuplicationChecker;
+    private UserDao userDao;
 
     public JWDUserService() {
         userDao = (UserDao) DaoFactory.USER_DAO.getDao();
@@ -44,6 +44,22 @@ public class JWDUserService implements UserService {
         userAddingDuplicationChecker = new UserAddingDuplicationChecker();
         userUpdatingDuplicationChecker = new UserUpdatingDuplicationChecker();
         transactionManager = TransactionManager.getInstance();
+    }
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setUserValidator(Predicate<User> userValidator) {
+        this.userValidator = userValidator;
+    }
+
+    public void setUserAddingDuplicationChecker(Predicate<User> userAddingDuplicationChecker) {
+        this.userAddingDuplicationChecker = userAddingDuplicationChecker;
+    }
+
+    public void setUserUpdatingDuplicationChecker(Predicate<User> userUpdatingDuplicationChecker) {
+        this.userUpdatingDuplicationChecker = userUpdatingDuplicationChecker;
     }
 
     @Override

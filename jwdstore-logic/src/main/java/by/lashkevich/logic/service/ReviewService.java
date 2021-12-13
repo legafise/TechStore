@@ -61,5 +61,5 @@ public interface ReviewService extends Service {
      * @param goodId the good id
      * @return the boolean
      */
-    boolean checkReviewForDuplication(String userId, String goodId);
+    boolean isCreatedReview(String userId, String goodId);
 }

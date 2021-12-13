@@ -19,7 +19,7 @@ public class UserValidator implements Predicate<User> {
         return user != null && validateName(user.getName()) && validateSurname(user.getSurname())
                 && validateLogin(user.getLogin()) && validatePassword(user.getPassword())
                 && validateBirthDate(user.getBirthDate()) && validateEmail(user.getEmail())
-                && user.getProfilePictureName() != null;
+                && user.getProfilePictureName() != null && user.getRole() != null;
     }
 
     private boolean validateBirthDate(LocalDate birthDate) {

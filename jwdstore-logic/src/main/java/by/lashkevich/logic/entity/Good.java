@@ -44,6 +44,7 @@ public class Good implements Entity {
         this.description = description;
         this.type = type;
         this.imgName = imgName;
+        reviews = new ArrayList<>();
     }
 
     /**
@@ -63,6 +64,7 @@ public class Good implements Entity {
         this.type = type;
         this.imgName = imgName;
         this.reviews = new ArrayList<>();
+        reviews = new ArrayList<>();
     }
 
     /**
