@@ -16,6 +16,7 @@ import java.util.Optional;
 
 /**
  * The type Place order from basket command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -30,35 +31,31 @@ public class PlaceOrderFromBasketCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            Optional<Basket> basketOptional = userService.findBasketByUserId(String.valueOf(request.getSession()
-                    .getAttribute("userId")));
-            if (!basketOptional.isPresent()) {
-                return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=error");
-            }
-
-            Map<Good, Integer> goods = basketOptional.get().getGoods();
-
-            BigDecimal price = new BigDecimal("0.0");
-            for (Map.Entry<Good, Integer> entry : goods.entrySet()) {
-                BigDecimal priceCopy = new BigDecimal(String.valueOf(price));
-                price = priceCopy.add(entry.getKey().getPrice().multiply(new BigDecimal(entry.getValue())));
-            }
-
-            if (userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")))
-                    .getBalance().compareTo(price) < 0) {
-                request.getSession().setAttribute("isInvalidBalance", true);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT,
-                        "/controller?command=replenishment_page");
-            }
-
-            request.setAttribute("goods", goods);
-            request.setAttribute("price", price);
-            request.getSession().setAttribute("orderButtonName", "placeOrderButton");
-            return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=place_order_page");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+    public CommandResult execute(HttpServletRequest request) {
+        Optional<Basket> basketOptional = userService.findBasketByUserId(String.valueOf(request.getSession()
+                .getAttribute("userId")));
+        if (!basketOptional.isPresent()) {
+            return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=error");
         }
+
+        Map<Good, Short> goods = basketOptional.get().getGoods();
+
+        BigDecimal price = new BigDecimal("0.0");
+        for (Map.Entry<Good, Short> entry : goods.entrySet()) {
+            BigDecimal priceCopy = new BigDecimal(String.valueOf(price));
+            price = priceCopy.add(entry.getKey().getPrice().multiply(new BigDecimal(entry.getValue())));
+        }
+
+        if (userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")))
+                .getBalance().compareTo(price) < 0) {
+            request.getSession().setAttribute("isInvalidBalance", true);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT,
+                    "/controller?command=replenishment_page");
+        }
+
+        request.setAttribute("goods", goods);
+        request.setAttribute("price", price);
+        request.getSession().setAttribute("orderButtonName", "placeOrderButton");
+        return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=place_order_page");
     }
 }

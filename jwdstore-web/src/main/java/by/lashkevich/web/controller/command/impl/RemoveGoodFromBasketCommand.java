@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Remove good from basket command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -26,16 +27,12 @@ public class RemoveGoodFromBasketCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
-            Thread.currentThread().setName(user.getId() + user.getLogin());
-            boolean removingResult = userService.removeGoodFromBasket(String.valueOf(user.getId()),
-                    request.getParameter("goodId"));
-            request.getSession().setAttribute("goodRemovingResult", removingResult);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=basket");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+        Thread.currentThread().setName(user.getId() + user.getLogin());
+        boolean removingResult = userService.removeGoodFromBasket(String.valueOf(user.getId()),
+                request.getParameter("goodId"));
+        request.getSession().setAttribute("goodRemovingResult", removingResult);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=basket");
     }
 }

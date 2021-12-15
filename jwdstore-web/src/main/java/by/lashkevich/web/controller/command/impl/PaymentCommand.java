@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Payment command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -26,24 +27,20 @@ public class PaymentCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            if (!cardDataValidator(request)) {
-                request.setAttribute("amount", request.getParameter("amount"));
-                request.setAttribute("isInvalidCardData", true);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/card_page.jsp");
-            }
-
-            User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
-            Thread.currentThread().setName(user.getId() + user.getLogin());
-            boolean paymentResult = userService.upBalance(String.valueOf(request.getParameter("amount")),
-                    String.valueOf(user.getId()));
-            changeBalance(request, paymentResult);
-            request.getSession().setAttribute("paymentResult", paymentResult);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=replenishment_page");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+    public CommandResult execute(HttpServletRequest request) {
+        if (!cardDataValidator(request)) {
+            request.setAttribute("amount", request.getParameter("amount"));
+            request.setAttribute("isInvalidCardData", true);
+            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/card_page.jsp");
         }
+
+        User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+        Thread.currentThread().setName(user.getId() + user.getLogin());
+        boolean paymentResult = userService.upBalance(String.valueOf(request.getParameter("amount")),
+                String.valueOf(user.getId()));
+        changeBalance(request, paymentResult);
+        request.getSession().setAttribute("paymentResult", paymentResult);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=replenishment_page");
     }
 
     private void changeBalance(HttpServletRequest request, boolean paymentResult) {

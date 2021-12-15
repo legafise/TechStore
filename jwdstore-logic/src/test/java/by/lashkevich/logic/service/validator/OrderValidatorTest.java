@@ -20,17 +20,17 @@ class OrderValidatorTest {
     void setUp() {
         orderValidator = new OrderValidator();
 
-        GoodType firstTestType = new GoodType(1, "Phone");
-        GoodType secondTestType = new GoodType(2, "Console");
+        GoodType firstTestType = new GoodType((short) 1, "Phone");
+        GoodType secondTestType = new GoodType((short) 2, "Console");
 
         Good firstTestGood = new Good(1, "Iphone", new BigDecimal("1500"), "Iphone",
                 firstTestType, "default.jpg");
         Good secondTestGood = new Good(2, "Play Station 5", new BigDecimal("2000"),
                 "Play Station 5", secondTestType, "default.jpg");
 
-        Map<Good, Integer> firstTestGoods = new HashMap<>();
-        firstTestGoods.put(firstTestGood, 1);
-        firstTestGoods.put(secondTestGood, 1);
+        Map<Good, Short> firstTestGoods = new HashMap<>();
+        firstTestGoods.put(firstTestGood, (short) 1);
+        firstTestGoods.put(secondTestGood, (short) 1);
 
         User customer = new User(1, "Roman", "Lash", "legafise", "12345678",
                 "lash@ya.ru", LocalDate.now(), "default.jpg", new BigDecimal("50.34"), Role.USER);
@@ -41,42 +41,42 @@ class OrderValidatorTest {
 
     @Test
     void validateRightOrderTest() {
-        Assert.assertTrue(orderValidator.test(testOrder));
+        Assert.assertTrue(orderValidator.validate(testOrder));
     }
 
     @Test
     void validateOrderWithNullUserTest() {
         testOrder.setCustomer(null);
-        Assert.assertFalse(orderValidator.test(testOrder));
+        Assert.assertFalse(orderValidator.validate(testOrder));
     }
 
     @Test
     void validateOrderWithNullStatusTest() {
         testOrder.setStatus(null);
-        Assert.assertFalse(orderValidator.test(testOrder));
+        Assert.assertFalse(orderValidator.validate(testOrder));
     }
 
     @Test
     void validateOrderWithNullDateTest() {
         testOrder.setDate(null);
-        Assert.assertFalse(orderValidator.test(testOrder));
+        Assert.assertFalse(orderValidator.validate(testOrder));
     }
 
     @Test
     void validateOrderWithEmptyGoodsTest() {
         testOrder.setGoods(new HashMap<>());
-        Assert.assertFalse(orderValidator.test(testOrder));
+        Assert.assertFalse(orderValidator.validate(testOrder));
     }
 
     @Test
     void validateOrderWithNullPriceTest() {
         testOrder.setPrice(null);
-        Assert.assertFalse(orderValidator.test(testOrder));
+        Assert.assertFalse(orderValidator.validate(testOrder));
     }
 
     @Test
     void validateOrderWithInvalidAddressTest() {
         testOrder.setAddress("Grodno");
-        Assert.assertFalse(orderValidator.test(testOrder));
+        Assert.assertFalse(orderValidator.validate(testOrder));
     }
 }

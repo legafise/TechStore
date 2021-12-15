@@ -1,6 +1,8 @@
 package by.lashkevich.logic.dao;
 
-public class DaoException extends RuntimeException {
+import by.lashkevich.logic.entity.JWDException;
+
+public class DaoException extends JWDException {
     public DaoException() {
     }
 

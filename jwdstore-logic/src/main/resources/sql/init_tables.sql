@@ -24,7 +24,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (3,'Admin','Admin','Admin','Admin','techstore@gmail.com','default.jpg','2001-01-01',0,1),(4,'Moder','Moder','Moder','Mpder','techstore.suport@gmail.com','default.jpg','2002-02-02',0,2);
+INSERT INTO `users` VALUES (3,'Admin','Admin','Admin','$2a$10$ILgnDFMM5PNGdT9dR9PgKeqb0az8HS7gdaMiKhzPC9vSrVGI3rT2m','techstore@gmail.com','default.jpg','2001-01-01',0,1),(4,'Moder','Moder','Moder','$2a$10$kcCBzNXK5pcrzujg0t7d4.Tih3vyyXcx5Mv/84BPttVBvACLk8Ryu','techstore.suport@gmail.com','default.jpg','2002-02-02',0,2);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

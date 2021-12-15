@@ -49,12 +49,12 @@
             </c:if>
             <c:if test="${role == 'admin'}">
                 <li class="nav-item ${currentPage == 'userList' ? 'active' : ''}">
-                    <a class="nav-link" href="${userListCommand}">Список пользователей</a>
+                    <a class="nav-link" href="${userListCommand}"><fmt:message key="user.list"/> </a>
                 </li>
             </c:if>
             <c:if test="${role == 'moder' || role == 'admin'}">
                 <li class="nav-item ${currentPage == 'orderList' ? 'active' : ''}">
-                    <a class="nav-link" href="${orderListPath}">Список заказов</a>
+                    <a class="nav-link" href="${orderListPath}"><fmt:message key="order.list"/> </a>
                 </li>
             </c:if>
             <li class="nav-item ${currentPage == 'catalog' ? 'active' : ''}">

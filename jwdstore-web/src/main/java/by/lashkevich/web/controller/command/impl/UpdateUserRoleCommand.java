@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Update user role command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -27,14 +28,10 @@ public class UpdateUserRoleCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            User user = userService.findUserById(request.getParameter("userId"));
-            user.setRole(Role.findRoleByNumber(Integer.parseInt(request.getParameter("roleNumber"))));
-            request.getSession().setAttribute("isRoleUpdated", userService.updateUser(user));
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=user_list");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        User user = userService.findUserById(request.getParameter("userId"));
+        user.setRole(Role.findRoleByNumber(Integer.parseInt(request.getParameter("roleNumber"))));
+        request.getSession().setAttribute("isRoleUpdated", userService.updateUser(user));
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=user_list");
     }
 }

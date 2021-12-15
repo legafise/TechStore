@@ -35,7 +35,7 @@ public class AddGoodCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         try {
             if (!validateGoodData(request)) {
                 request.getSession().setAttribute("isGoodAdded", false);
@@ -64,7 +64,7 @@ public class AddGoodCommand implements Command {
             request.getSession().setAttribute("isGoodAdded", goodService.addGood(good));
             return new CommandResult(CommandResult.ResponseType.REDIRECT,
                     "/controller?command=check_good_adding_result");
-        } catch (ServiceException | IOException | ServletException e) {
+        } catch (IOException | ServletException e) {
             throw new CommandException(INVALID_GOOD_DATA_MESSAGE, e);
         }
     }

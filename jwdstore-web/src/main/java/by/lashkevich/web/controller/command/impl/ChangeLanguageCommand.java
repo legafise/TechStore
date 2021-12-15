@@ -16,7 +16,7 @@ public class ChangeLanguageCommand implements Command {
     private static final String UNKNOWN_LANGUAGE_MESSAGE = "Unknown language";
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         String localeName = request.getParameter("locale");
         if (Languages.isExistentLocale(localeName)) {
             request.getSession().setAttribute("locale", localeName);

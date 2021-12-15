@@ -15,7 +15,7 @@
         <c:if test="${placingOrderResult == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Заказ сформирован успешно!</strong> Ожидайте его подтверждения
+                    <strong><fmt:message key="order.was.created.successfully"/> </strong> <fmt:message key="order.was.created.successfully.info"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -48,8 +48,8 @@
                     <div class="container-fluid">
                         <div class="card order-card-size">
                             <div class="card-header order-info"><fmt:message key="order.number"/> ${order.id}
-                                <br/>Адрес доставки:  <c:out value="${order.address}"/>
-                                <br/>Дата оформления:  <c:out value="${order.date}"/>
+                                <br/><fmt:message key="delivery.address"/>:  <c:out value="${order.address}"/>
+                                <br/><fmt:message key="ordering.date"/> : <c:out value="${order.date}"/>
                                 <br/><fmt:message key="order.price"/>  <c:out value="${order.price}"/> <fmt:message key="currency.sign"/>
                             </div>
                             <div class="card-body">
@@ -61,7 +61,7 @@
                                                     class="img-fluid img-indents order-img-size" alt="good"></a>
                                         </div>
                                         <div class="col-xl-6 order-info">
-                                            <span class="bold"><fmt:message key="good.name"/></span> <a
+                                            <span class="bold"><fmt:message key="good.name"/>:</span> <a
                                                 href="controller?command=good&goodId=${goodEntry.key.id}"><c:out value="${goodEntry.key.name}"/></a>
                                             <br/> <span class="bold"><fmt:message
                                                     key="quantity"/></span> <c:out value="${goodEntry.value}"/>

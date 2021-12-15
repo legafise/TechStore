@@ -17,39 +17,33 @@ import java.util.Optional;
  * @see ReviewDao
  */
 public class JWDReviewDao implements ReviewDao {
-    private static final String FIND_ALL_REVIEWS_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
-            " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
-            " review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
+    private static final String FIND_ALL_REVIEWS_SQL = "SELECT reviews.id AS review_id, reviews.rate," +
+            " reviews.content, reviews.id AS review_id, reviews.rate, reviews.content, users.id AS review_user_id," +
             " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login, " +
             " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
             " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
             " review_user_balance, users.role AS review_user_role" +
-            " FROM reviews LEFT JOIN users ON users.id = reviews.user_id";
-    private static final String FIND_REVIEWS_BY_USER_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
-            " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
-            " review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
-            " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login, " +
-            " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
+            " FROM reviews INNER JOIN users ON users.id = reviews.user_id";
+    private static final String FIND_REVIEWS_BY_USER_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate," +
+            " reviews.content, users.id AS review_user_id, users.name AS review_user_name, users.surname AS review_user_surname," +
+            " users.login AS review_user_login, users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
             " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
             " review_user_balance, users.role AS review_user_role" +
-            " FROM reviews LEFT JOIN users ON users.id = reviews.user_id WHERE reviews.user_id = ?";
-    private static final String FIND_REVIEW_BY_USER_AND_GOOD_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
-            " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
-            " review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
-            " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login, " +
+            " FROM reviews INNER JOIN users ON users.id = reviews.user_id WHERE reviews.user_id = ?";
+    private static final String FIND_REVIEW_BY_USER_AND_GOOD_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate," +
+            " reviews.content, users.id AS review_user_id, users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login, " +
             " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
             " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
             " review_user_balance, users.role AS review_user_role, goods_reviews.good_id" +
-            " FROM reviews LEFT JOIN users ON users.id = reviews.user_id LEFT JOIN goods_reviews ON" +
+            " FROM reviews INNER JOIN users ON users.id = reviews.user_id INNER JOIN goods_reviews ON" +
             " reviews.id = goods_reviews.review_id WHERE reviews.user_id = ? AND goods_reviews.good_id = ?";
-    private static final String FIND_REVIEW_BY_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate AS" +
-            " review_rate, reviews.content AS review_content, reviews.user_id AS review_author_id, reviews.id AS" +
-            " review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
+    private static final String FIND_REVIEW_BY_ID_SQL = "SELECT reviews.id AS review_id, reviews.rate, reviews.content," +
+            " users.id AS review_user_id," +
             " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login, " +
             " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
             " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
             " review_user_balance, users.role AS review_user_role" +
-            " FROM reviews LEFT JOIN users ON users.id = reviews.user_id WHERE reviews.id = ?";
+            " FROM reviews INNER JOIN users ON users.id = reviews.user_id WHERE reviews.id = ?";
     private static final String REMOVE_REVIEW_BY_ID_SQL = "DELETE FROM reviews WHERE id = ?";
     private static final String CREATE_REVIEW_SQL = "INSERT INTO reviews (rate, content, user_id) VALUES (?, ?, ?)";
     private static final String UPDATE_REVIEW_SQL = "UPDATE reviews SET rate = ?, content = ?," +
@@ -67,7 +61,7 @@ public class JWDReviewDao implements ReviewDao {
     }
 
     @Override
-    public List<Review> findAll() throws DaoException {
+    public List<Review> findAll()  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_REVIEWS_SQL);
@@ -84,7 +78,7 @@ public class JWDReviewDao implements ReviewDao {
     }
 
     @Override
-    public Optional<Review> findById(Long id) throws DaoException {
+    public Optional<Review> findById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_REVIEW_BY_ID_SQL)) {
             statement.setLong(1, id);
@@ -102,7 +96,7 @@ public class JWDReviewDao implements ReviewDao {
     }
 
     @Override
-    public boolean add(Review review) throws DaoException {
+    public boolean add(Review review)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_REVIEW_SQL)) {
             fillReviewData(review, statement);
@@ -114,7 +108,7 @@ public class JWDReviewDao implements ReviewDao {
     }
 
     @Override
-    public boolean removeById(Long id) throws DaoException {
+    public boolean removeById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(REMOVE_REVIEW_BY_ID_SQL)) {
             statement.setLong(1, id);
@@ -126,7 +120,7 @@ public class JWDReviewDao implements ReviewDao {
     }
 
     @Override
-    public boolean update(Review review) throws DaoException {
+    public boolean update(Review review)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_REVIEW_SQL)) {
             statement.setLong(4, review.getId());

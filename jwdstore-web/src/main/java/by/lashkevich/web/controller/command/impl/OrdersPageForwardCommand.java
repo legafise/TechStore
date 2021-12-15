@@ -14,6 +14,7 @@ import java.util.Optional;
 
 /**
  * The type Orders page forward command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -29,25 +30,21 @@ public class OrdersPageForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            if (!request.getSession().getAttribute("role").equals("guest")) {
-                Optional<List<Order>> orders = orderService.findOrdersByUserId(String.valueOf(request.getSession()
-                        .getAttribute("userId")));
-                if (orders.isPresent()) {
-                    request.setAttribute("orderList", orders.get());
-                    request.setAttribute("isEmptyOrderList", false);
-                } else {
-                    request.setAttribute("isEmptyOrderList", true);
-                }
-
-                request.setAttribute("currentPage", "orders");
-                return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/orders.jsp");
+    public CommandResult execute(HttpServletRequest request) {
+        if (!request.getSession().getAttribute("role").equals("guest")) {
+            Optional<List<Order>> orders = orderService.findOrdersByUserId(String.valueOf(request.getSession()
+                    .getAttribute("userId")));
+            if (orders.isPresent()) {
+                request.setAttribute("orderList", orders.get());
+                request.setAttribute("isEmptyOrderList", false);
+            } else {
+                request.setAttribute("isEmptyOrderList", true);
             }
 
-            throw new CommandException(ACTION_IS_BLOCKED);
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+            request.setAttribute("currentPage", "orders");
+            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/orders.jsp");
         }
+
+        throw new CommandException(ACTION_IS_BLOCKED);
     }
 }

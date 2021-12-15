@@ -7,7 +7,7 @@ import java.util.Objects;
  * @author Roman Lashkevich
  */
 public class GoodType {
-    private int id;
+    private short id;
     private String name;
 
     /**
@@ -16,7 +16,7 @@ public class GoodType {
      * @param id   the id
      * @param name the name
      */
-    public GoodType(int id, String name) {
+    public GoodType(short id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -41,7 +41,7 @@ public class GoodType {
      *
      * @param id the id
      */
-    public void setId(int id) {
+    public void setId(short id) {
         this.id = id;
     }
 

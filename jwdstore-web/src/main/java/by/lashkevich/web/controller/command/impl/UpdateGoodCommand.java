@@ -35,7 +35,7 @@ public class UpdateGoodCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         try {
             if (!validateGoodData(request)) {
                 request.getSession().setAttribute("isGoodUpdated", false);
@@ -66,7 +66,7 @@ public class UpdateGoodCommand implements Command {
             request.getSession().setAttribute("isGoodUpdated", goodService.updateGood(good));
             return new CommandResult(CommandResult.ResponseType.REDIRECT,
                     "/controller?command=good&goodId=" + request.getParameter("goodId"));
-        } catch (ServiceException | IOException | ServletException e) {
+        } catch (IOException | ServletException e) {
             throw new CommandException(INVALID_GOOD_DATA_MESSAGE, e);
         }
     }

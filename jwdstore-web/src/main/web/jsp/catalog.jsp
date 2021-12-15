@@ -29,7 +29,7 @@
         <c:if test="${isGoodAdded == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Товар успешно добавлен!</strong>
+                    <strong><fmt:message key="good.added"/> </strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -40,7 +40,7 @@
         <c:if test="${isGoodRemoved == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Товар был успешно удален!</strong>
+                    <strong><fmt:message key="good.removed"/> </strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -66,7 +66,7 @@
             <c:if test="${role == 'moder' || role == 'admin'}">
                 <a href="${addGoodPageCommand}">
                     <button class="more-button">
-                        Добавить товар
+                        <fmt:message key="add.good"/>
                     </button>
                 </a>
             </c:if>

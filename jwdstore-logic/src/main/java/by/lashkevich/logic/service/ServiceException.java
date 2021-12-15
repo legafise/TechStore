@@ -1,6 +1,8 @@
 package by.lashkevich.logic.service;
 
-public class ServiceException extends RuntimeException {
+import by.lashkevich.logic.entity.JWDException;
+
+public class ServiceException extends JWDException {
     public ServiceException() {
         super();
     }

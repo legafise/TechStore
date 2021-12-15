@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Unblock user command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -27,14 +28,10 @@ public class UnblockUserCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            User user = userService.findUserById(request.getParameter("userId"));
-            user.setRole(Role.USER);
-            request.getSession().setAttribute("isUserUnblocked", userService.updateUser(user));
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=user_list");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        User user = userService.findUserById(request.getParameter("userId"));
+        user.setRole(Role.USER);
+        request.getSession().setAttribute("isUserUnblocked", userService.updateUser(user));
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=user_list");
     }
 }

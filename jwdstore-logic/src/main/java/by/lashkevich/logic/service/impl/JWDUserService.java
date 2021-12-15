@@ -1,6 +1,5 @@
 package by.lashkevich.logic.service.impl;
 
-import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.DaoFactory;
 import by.lashkevich.logic.dao.UserDao;
 import by.lashkevich.logic.dao.transaction.Transaction;
@@ -12,30 +11,31 @@ import by.lashkevich.logic.service.UserService;
 import by.lashkevich.logic.service.checker.UserAddingDuplicationChecker;
 import by.lashkevich.logic.service.checker.UserUpdatingDuplicationChecker;
 import by.lashkevich.logic.service.validator.UserValidator;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 /**
  * The type Jwd user service.
+ *
  * @author Roman Lashkevich
  * @see UserService
  */
 public class JWDUserService implements UserService {
     private static final String EMPTY_PICTURE_NAME = "";
     private static final String STANDARD_USER_PICTURE_NAME = "default.jpg";
-    private static final String NONEXISTENT_USER_MESSAGE = "Nonexistent user data was received";
-    private static final String INVALID_USER_MESSAGE = "Invalid user was received";
+    private static final String NONEXISTENT_USER_MESSAGE = "Nonexistent user";
+    private static final String INVALID_USER_MESSAGE = "Invalid user data";
     private static final String INVALID_GOOD_ID_MESSAGE = "Invalid good id was received";
     private static final String GOOD_THERE_IS_NOT_MESSAGE = "The good there isn't in basket";
     private static final String INVALID_GOOD_QUANTITY = "Invalid good quantity %d";
     private final TransactionManager transactionManager;
-    private Predicate<User> userValidator;
-    private Predicate<User> userAddingDuplicationChecker;
-    private Predicate<User> userUpdatingDuplicationChecker;
+    private UserValidator userValidator;
+    private UserAddingDuplicationChecker userAddingDuplicationChecker;
+    private UserUpdatingDuplicationChecker userUpdatingDuplicationChecker;
     private UserDao userDao;
 
     public JWDUserService() {
@@ -50,121 +50,86 @@ public class JWDUserService implements UserService {
         this.userDao = userDao;
     }
 
-    public void setUserValidator(Predicate<User> userValidator) {
+    public void setUserValidator(UserValidator userValidator) {
         this.userValidator = userValidator;
     }
 
-    public void setUserAddingDuplicationChecker(Predicate<User> userAddingDuplicationChecker) {
+    public void setUserAddingDuplicationChecker(UserAddingDuplicationChecker userAddingDuplicationChecker) {
         this.userAddingDuplicationChecker = userAddingDuplicationChecker;
     }
 
-    public void setUserUpdatingDuplicationChecker(Predicate<User> userUpdatingDuplicationChecker) {
+    public void setUserUpdatingDuplicationChecker(UserUpdatingDuplicationChecker userUpdatingDuplicationChecker) {
         this.userUpdatingDuplicationChecker = userUpdatingDuplicationChecker;
     }
 
     @Override
-    public List<User> findAllUsers() throws ServiceException {
-        try {
-            return userDao.findAll();
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+    public List<User> findAllUsers() {
+        return userDao.findAll();
     }
 
     @Override
-    public User findUserById(String id) throws ServiceException {
-        try {
-            Optional<User> userOptional = userDao.findById(Long.parseLong(id));
+    public User findUserById(String id) {
+        Optional<User> userOptional = userDao.findById(Long.parseLong(id));
 
-            if (userOptional.isPresent()) {
-                return userOptional.get();
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        }
+
+        throw new ServiceException(NONEXISTENT_USER_MESSAGE);
+    }
+
+    @Override
+    public boolean addUser(User user) {
+        if (userValidator.validate(user)) {
+            if (userAddingDuplicationChecker.check(user)) {
+                user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+                setStandardPicture(user);
+                return userDao.add(user);
+            } else {
+                return false;
             }
-
-            throw new ServiceException(NONEXISTENT_USER_MESSAGE);
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e);
         }
+
+        throw new ServiceException(INVALID_USER_MESSAGE);
     }
 
     @Override
-    public boolean addUser(User user) throws ServiceException {
-        try {
-            if (userValidator.test(user)) {
-                if(userAddingDuplicationChecker.test(user)) {
-                    setStandardPicture(user);
-                    return userDao.add(user);
-                } else {
-                    return false;
-                }
+    public boolean removeUserById(String id) {
+        return userDao.removeById(Long.parseLong(id));
+    }
+
+    @Override
+    public boolean updateUser(User user) {
+        setStandardPicture(user);
+        if (userValidator.validate(user) && user.getId() != 0) {
+            if (userUpdatingDuplicationChecker.check(user)) {
+                return userDao.update(user);
+            } else {
+                return false;
             }
-
-            throw new ServiceException(INVALID_USER_MESSAGE);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
         }
+
+        throw new ServiceException(INVALID_USER_MESSAGE);
     }
 
     @Override
-    public boolean removeUserById(String id) throws ServiceException {
-        try {
-            return userDao.removeById(Long.parseLong(id));
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e);
-        }
+    public Optional<Basket> findBasketByUserId(String userId) {
+        return userDao.findBasketByUserId(Long.parseLong(userId));
     }
 
     @Override
-    public boolean updateUser(User user) throws ServiceException {
-        try {
-            if (userValidator.test(user) && user.getId() != 0) {
-                if (userUpdatingDuplicationChecker.test(user)) {
-                    setStandardPicture(user);
-                    return userDao.update(user);
-                } else {
-                    return false;
-                }
-            }
-
-            throw new ServiceException(INVALID_USER_MESSAGE);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
+    public Optional<User> findUserByEmail(String email) {
+        return userDao.findByEmail(email);
     }
 
     @Override
-    public Optional<Basket> findBasketByUserId(String userId) throws ServiceException {
-        try {
-            return userDao.findBasketByUserId(Long.parseLong(userId));
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e);
-        }
+    public Optional<User> findUserByLogin(String login) {
+        return userDao.findByLogin(login);
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) throws ServiceException {
-        try {
-            return userDao.findByEmail(email);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public Optional<User> findUserByLogin(String login) throws ServiceException {
-        try {
-            return userDao.findByLogin(login);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-    }
-
-    @Override
-    public boolean removeBasketByUserId(String userId) throws ServiceException {
-        try {
-            return userDao.clearBasketByUserId(Long.parseLong(userId));
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e);
-        }
+    public boolean removeBasketByUserId(String userId) {
+        return userDao.clearBasketByUserId(Long.parseLong(userId));
     }
 
     @Override
@@ -187,9 +152,6 @@ public class JWDUserService implements UserService {
 
             transactionManager.rollback(transaction);
             throw new ServiceException(INVALID_USER_MESSAGE);
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e);
         } finally {
             transactionManager.closeTransaction(transaction);
         }
@@ -208,12 +170,12 @@ public class JWDUserService implements UserService {
                     .noneMatch(entry -> entry.getKey().getId() == longGoodId)) {
                 goodAddingResult = userDao.addGoodInBasket(longUserId, longGoodId);
             } else {
-                goodAddingResult = userDao.changeGoodQuantity(longUserId, longGoodId, basketOptional.get()
+                goodAddingResult = userDao.changeGoodQuantity(longUserId, longGoodId, (short) (basketOptional.get()
                         .getGoods().entrySet().stream()
                         .filter(entry -> entry.getKey().getId() == longGoodId)
                         .findFirst()
                         .map(Map.Entry::getValue)
-                        .orElseThrow(() -> new ServiceException(INVALID_GOOD_ID_MESSAGE)) + 1);
+                        .orElseThrow(() -> new ServiceException(INVALID_GOOD_ID_MESSAGE)) + 1));
             }
 
             if (goodAddingResult) {
@@ -223,9 +185,6 @@ public class JWDUserService implements UserService {
             }
 
             return goodAddingResult;
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e);
         } finally {
             transactionManager.closeTransaction(transaction);
         }
@@ -253,9 +212,6 @@ public class JWDUserService implements UserService {
             }
 
             return goodRemovingResult;
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e);
         } finally {
             transactionManager.closeTransaction(transaction);
         }
@@ -267,10 +223,10 @@ public class JWDUserService implements UserService {
         try {
             Long longUserId = Long.parseLong(userId);
             long longGoodId = Long.parseLong(goodId);
-            int intQuantity = Integer.parseInt(quantity);
+            short shortQuantity = Short.parseShort(quantity);
 
-            if (intQuantity < 1) {
-                throw new ServiceException(String.format(INVALID_GOOD_QUANTITY, intQuantity));
+            if (shortQuantity < 1 || shortQuantity > 999) {
+                throw new ServiceException(String.format(INVALID_GOOD_QUANTITY, shortQuantity));
             }
 
             Optional<Basket> basketOptional = userDao.findBasketByUserId(longUserId);
@@ -279,7 +235,7 @@ public class JWDUserService implements UserService {
                 throw new ServiceException(GOOD_THERE_IS_NOT_MESSAGE);
             }
 
-            boolean goodUpdatingResult = userDao.changeGoodQuantity(longUserId, longGoodId, intQuantity);
+            boolean goodUpdatingResult = userDao.changeGoodQuantity(longUserId, longGoodId, shortQuantity);
 
             if (goodUpdatingResult) {
                 transactionManager.commit(transaction);
@@ -288,16 +244,13 @@ public class JWDUserService implements UserService {
             }
 
             return goodUpdatingResult;
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e);
         } finally {
             transactionManager.closeTransaction(transaction);
         }
     }
 
     private void setStandardPicture(User user) {
-        if (user.getProfilePictureName().equals(EMPTY_PICTURE_NAME)) {
+        if (user != null && user.getProfilePictureName().equals(EMPTY_PICTURE_NAME)) {
             user.setProfilePictureName(STANDARD_USER_PICTURE_NAME);
         }
     }

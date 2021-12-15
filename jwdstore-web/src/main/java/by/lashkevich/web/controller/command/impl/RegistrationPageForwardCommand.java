@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class RegistrationPageForwardCommand implements Command {
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         request.setAttribute("currentPage", "registration");
         return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/registration.jsp");
     }

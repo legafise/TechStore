@@ -1,6 +1,8 @@
 package by.lashkevich.web.controller.command;
 
-public class CommandException extends Exception {
+import by.lashkevich.logic.entity.JWDException;
+
+public class CommandException extends JWDException {
     public CommandException() {
     }
 

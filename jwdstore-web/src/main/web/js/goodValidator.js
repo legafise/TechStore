@@ -22,5 +22,5 @@ function isValidPrice() {
 }
 
 function isValidDescription() {
-    return $("#description").val().length > 10 && $("#description").val().length < 400;
+    return $("#description").val().length > 10 && $("#description").val().length < 600;
 }

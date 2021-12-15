@@ -24,7 +24,7 @@ public class AddGoodPageForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         request.setAttribute("goodTypes", goodService.findAllGoodTypes());
         return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/add_good.jsp");
     }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Good page forward command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -30,21 +31,17 @@ public class GoodPageForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            Good good = goodService.findGoodById(request.getParameter("goodId"));
-            String role = String.valueOf(request.getSession().getAttribute("role"));
-            if (!role.equals("guest")) {
-                request.setAttribute("isCratedReview",
-                        !reviewService.isCreatedReview(String.valueOf(request.getSession()
-                                .getAttribute("userId")), request.getParameter("goodId")));
-                request.setAttribute("isBoughtGood", goodService.isBoughtGood(request.getParameter("goodId"),
-                        String.valueOf(request.getSession().getAttribute("userId"))));
-            }
-            request.setAttribute("good", good);
-            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/good_page.jsp");
-        } catch (ServiceException e) {
-            throw new CommandException(GOOD_DOESNT_EXIST_MESSAGE, e);
+    public CommandResult execute(HttpServletRequest request) {
+        Good good = goodService.findGoodById(request.getParameter("goodId"));
+        String role = String.valueOf(request.getSession().getAttribute("role"));
+        if (!role.equals("guest")) {
+            request.setAttribute("isCratedReview",
+                    !reviewService.isCreatedReview(String.valueOf(request.getSession()
+                            .getAttribute("userId")), request.getParameter("goodId")));
+            request.setAttribute("isBoughtGood", goodService.isBoughtGood(request.getParameter("goodId"),
+                    String.valueOf(request.getSession().getAttribute("userId"))));
         }
+        request.setAttribute("good", good);
+        return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/good_page.jsp");
     }
 }

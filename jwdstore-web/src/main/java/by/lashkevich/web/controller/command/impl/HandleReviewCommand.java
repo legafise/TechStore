@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Handle review command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -31,24 +32,20 @@ public class HandleReviewCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            request.getSession().setAttribute("lastPage", PageFinder.findLastPage(request));
-            if (!validateReview(request)) {
-                request.getSession().setAttribute("reviewAddResult", false);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT,
-                        "/controller?command=check_review");
-            }
-
-            User author = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
-            Review review = fillReviewData(request, author);
-            Thread.currentThread().setName(author.getId() + author.getLogin());
-            request.getSession().setAttribute("reviewAddResult", reviewService
-                    .addReview(review, String.valueOf(request.getParameter("goodId"))));
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=check_review");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+    public CommandResult execute(HttpServletRequest request) {
+        request.getSession().setAttribute("lastPage", PageFinder.findLastPage(request));
+        if (!validateReview(request)) {
+            request.getSession().setAttribute("reviewAddResult", false);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT,
+                    "/controller?command=check_review");
         }
+
+        User author = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+        Review review = fillReviewData(request, author);
+        Thread.currentThread().setName(author.getId() + author.getLogin());
+        request.getSession().setAttribute("reviewAddResult", reviewService
+                .addReview(review, String.valueOf(request.getParameter("goodId"))));
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=check_review");
     }
 
     private boolean validateReview(HttpServletRequest request) {

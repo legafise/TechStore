@@ -24,7 +24,7 @@ public class ClearBasketCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         boolean result = userService.removeBasketByUserId(String.valueOf(request
                 .getSession().getAttribute("userId")));
         request.getSession().setAttribute("clearingBasketResult", result);

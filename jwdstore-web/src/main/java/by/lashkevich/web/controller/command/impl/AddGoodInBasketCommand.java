@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Add good in basket command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -27,21 +28,17 @@ public class AddGoodInBasketCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            if (request.getSession().getAttribute("role").equals("guest")) {
-                request.getSession().setAttribute("authorizationInformation", true);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=authorization_page");
-            }
-
-            User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
-            Thread.currentThread().setName(user.getId() + user.getLogin());
-            boolean addingResult = userService.addGoodInBasket(String.valueOf(user.getId()),
-                    request.getParameter("goodId"));
-            request.getSession().setAttribute("basketAddingResult", addingResult);
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageFinder.findLastPage(request));
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+    public CommandResult execute(HttpServletRequest request) {
+        if (request.getSession().getAttribute("role").equals("guest")) {
+            request.getSession().setAttribute("authorizationInformation", true);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=authorization_page");
         }
+
+        User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+        Thread.currentThread().setName(user.getId() + user.getLogin());
+        boolean addingResult = userService.addGoodInBasket(String.valueOf(user.getId()),
+                request.getParameter("goodId"));
+        request.getSession().setAttribute("basketAddingResult", addingResult);
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, PageFinder.findLastPage(request));
     }
 }

@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Change order status command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
 public class ChangeOrderStatusCommand implements Command {
-    private static final String INCORRECT_CHANGES_IN_ORDER = "Order was updated incorrect!";
     private final OrderService orderService;
 
     /**
@@ -29,15 +29,10 @@ public class ChangeOrderStatusCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            Order order = orderService.findById(request.getParameter("orderId"));
-            order.setStatus(OrderStatus.findStatus(request.getParameter("status")));
-            request.getSession().setAttribute("isOrderUpdated", orderService.updateOrder(order));
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=manage_orders");
-        } catch (ServiceException | OrderStatusException e) {
-            request.getSession().setAttribute("errorMessage", INCORRECT_CHANGES_IN_ORDER);
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        Order order = orderService.findById(request.getParameter("orderId"));
+        order.setStatus(OrderStatus.findStatus(request.getParameter("status")));
+        request.getSession().setAttribute("isOrderUpdated", orderService.updateOrder(order));
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=manage_orders");
     }
 }

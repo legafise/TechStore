@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Replenishment page forward command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -15,10 +16,11 @@ public class ReplenishmentPageForwardCommand implements Command {
     private static final String NO_ACCESS_MESSAGE = "No access";
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         if (request.getSession().getAttribute("role") == null) {
             throw new CommandException(NO_ACCESS_MESSAGE);
         }
+
         return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/replenishment_page.jsp");
     }
 }

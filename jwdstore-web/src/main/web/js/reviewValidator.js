@@ -9,7 +9,7 @@ window.onload = function () {
 };
 
 function isValidReviewContent() {
-    return $("#review-content").val().length > 2 && $("#review-content").val().length < 400;
+    return $("#review-content").val().length > 2 && $("#review-content").val().length <= 600;
 }
 
 function showRange() {

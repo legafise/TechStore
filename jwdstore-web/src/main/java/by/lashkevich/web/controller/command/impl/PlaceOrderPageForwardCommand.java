@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class PlaceOrderPageForwardCommand implements Command {
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/place_order_page.jsp");
     }
 }

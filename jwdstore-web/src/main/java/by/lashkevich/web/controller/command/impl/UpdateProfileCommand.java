@@ -32,7 +32,7 @@ public class UpdateProfileCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         try {
             if (!validateUserData(request)) {
                 request.getSession().setAttribute("isUserUpdated", false);
@@ -62,7 +62,7 @@ public class UpdateProfileCommand implements Command {
             request.getSession().setAttribute("isUserUpdated", userService.updateUser(user));
             return new CommandResult(CommandResult.ResponseType.REDIRECT,
                     "/controller?command=profile");
-        } catch (ServiceException | IOException | ServletException e) {
+        } catch (IOException | ServletException e) {
             throw new CommandException(INVALID_USER_DATA, e);
         }
     }

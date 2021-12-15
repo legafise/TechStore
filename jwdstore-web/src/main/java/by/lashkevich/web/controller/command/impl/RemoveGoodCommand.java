@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Remove good command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -30,17 +31,13 @@ public class RemoveGoodCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
-            Thread.currentThread().setName(user.getId() + user.getLogin());
-            boolean isGoodRemoved = goodService.removeGoodById(request.getParameter("goodId"));
-            request.getSession().setAttribute("isGoodRemoved", isGoodRemoved);
-            return isGoodRemoved ? new CommandResult(CommandResult.ResponseType.REDIRECT,
-                    "/controller?command=catalog") : new CommandResult(CommandResult.ResponseType.REDIRECT,
-                    PageFinder.findLastPage(request));
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+        Thread.currentThread().setName(user.getId() + user.getLogin());
+        boolean isGoodRemoved = goodService.removeGoodById(request.getParameter("goodId"));
+        request.getSession().setAttribute("isGoodRemoved", isGoodRemoved);
+        return isGoodRemoved ? new CommandResult(CommandResult.ResponseType.REDIRECT,
+                "/controller?command=catalog") : new CommandResult(CommandResult.ResponseType.REDIRECT,
+                PageFinder.findLastPage(request));
     }
 }

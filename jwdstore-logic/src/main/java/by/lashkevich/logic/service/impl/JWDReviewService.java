@@ -1,6 +1,5 @@
 package by.lashkevich.logic.service.impl;
 
-import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.DaoFactory;
 import by.lashkevich.logic.dao.ReviewDao;
 import by.lashkevich.logic.dao.transaction.Transaction;
@@ -13,18 +12,18 @@ import by.lashkevich.logic.service.validator.ReviewValidator;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
  * The type Jwd review service.
+ *
  * @author Roman Lashkevich
  * @see ReviewService
  */
 public class JWDReviewService implements ReviewService {
     private static final String NONEXISTENT_REVIEW_ID_MESSAGE = "Nonexistent review id was received";
-    private static final String INVALID_REVIEW_MESSAGE = "Invalid review was received";
-    private final Predicate<Review> reviewValidator;
+    private static final String INVALID_REVIEW_MESSAGE = "Invalid review";
+    private final ReviewValidator reviewValidator;
     private final TransactionManager transactionManager;
     private ReviewDao reviewDao;
 
@@ -39,35 +38,27 @@ public class JWDReviewService implements ReviewService {
     }
 
     @Override
-    public List<Review> findAllReviews() throws ServiceException {
-        try {
-            return reviewDao.findAll();
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
+    public List<Review> findAllReviews() {
+        return reviewDao.findAll();
     }
 
     @Override
-    public Review findReviewById(String id) throws ServiceException {
-        try {
-            Optional<Review> reviewOptional = reviewDao.findById(Long.parseLong(id));
+    public Review findReviewById(String id) {
+        Optional<Review> reviewOptional = reviewDao.findById(Long.parseLong(id));
 
-            if (reviewOptional.isPresent()) {
-                return reviewOptional.get();
-            }
-
-            throw new ServiceException(NONEXISTENT_REVIEW_ID_MESSAGE);
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e.getMessage());
+        if (reviewOptional.isPresent()) {
+            return reviewOptional.get();
         }
+
+        throw new ServiceException(NONEXISTENT_REVIEW_ID_MESSAGE);
     }
 
     @Override
-    public boolean addReview(Review review, String goodId) throws ServiceException {
+    public boolean addReview(Review review, String goodId) {
         Transaction transaction = transactionManager.createTransaction();
         try {
             if (isCreatedReview(String.valueOf(review.getAuthor().getId()), goodId)
-                    && reviewValidator.test(review) && reviewDao.add(review)) {
+                    && reviewValidator.validate(review) && reviewDao.add(review)) {
                 Long reviewId = findCurrentReviewId(review);
                 if (reviewDao.connectReviewToGood(reviewId, Long.parseLong(goodId))) {
                     transactionManager.commit(transaction);
@@ -79,16 +70,13 @@ public class JWDReviewService implements ReviewService {
             }
 
             throw new ServiceException(INVALID_REVIEW_MESSAGE);
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e);
         } finally {
             transactionManager.closeTransaction(transaction);
         }
     }
 
     @Override
-    public boolean removeReviewById(String id) throws ServiceException {
+    public boolean removeReviewById(String id) {
         Transaction transaction = transactionManager.createTransaction();
         try {
             Long reviewId = Long.valueOf(id);
@@ -99,33 +87,22 @@ public class JWDReviewService implements ReviewService {
 
             transactionManager.rollback(transaction);
             return false;
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e.getMessage());
         } finally {
             transactionManager.closeTransaction(transaction);
         }
     }
 
     @Override
-    public boolean updateReview(Review review) throws ServiceException {
-        try {
-            if (reviewValidator.test(review) && review.getId() != 0) {
-                return reviewDao.update(review);
-            }
-
-            throw new ServiceException(INVALID_REVIEW_MESSAGE);
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
+    public boolean updateReview(Review review) {
+        if (reviewValidator.validate(review) && review.getId() != 0) {
+            return reviewDao.update(review);
         }
+
+        throw new ServiceException(INVALID_REVIEW_MESSAGE);
     }
 
     public boolean isCreatedReview(String userId, String goodId) {
-        try {
-            return !reviewDao.findReviewByUserAndGoodId(Long.parseLong(userId), Long.parseLong(goodId)).isPresent();
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e);
-        }
+        return !reviewDao.findReviewByUserAndGoodId(Long.parseLong(userId), Long.parseLong(goodId)).isPresent();
     }
 
     private Long findCurrentReviewId(Review review) {

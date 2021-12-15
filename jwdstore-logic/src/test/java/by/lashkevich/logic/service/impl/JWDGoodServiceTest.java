@@ -31,8 +31,8 @@ class JWDGoodServiceTest {
         goodService = new JWDGoodService();
         goodDao = mock(GoodDao.class);
         goodService.setGoodDao(goodDao);
-        firstTestType = new GoodType(1, "Phone");
-        secondTestType = new GoodType(2, "Console");
+        firstTestType = new GoodType((short) 1, "Phone");
+        secondTestType = new GoodType((short) 2, "Console");
         firstTestGood = new Good(1,"Iphone", new BigDecimal("1500"), "Iphone",
                 firstTestType, "default.jpg");
         secondTestGood = new Good(2, "Play Station 5", new BigDecimal("2000"),
@@ -66,7 +66,7 @@ class JWDGoodServiceTest {
 
     @Test
     void findTypeByIdTest() {
-        when(goodDao.findTypeById(1)).thenReturn(firstTestType);
+        when(goodDao.findTypeById(1)).thenReturn(Optional.of(firstTestType));
         Assert.assertEquals(goodService.findTypeById("1"), firstTestType);
     }
 
@@ -77,9 +77,9 @@ class JWDGoodServiceTest {
 
     @Test
     void isBoughtGoodTest() {
-        Map<Good, Integer> goods = new HashMap<>();
-        goods.put(firstTestGood, 1);
-        goods.put(secondTestGood, 1);
+        Map<Good, Short> goods = new HashMap<>();
+        goods.put(firstTestGood, (short) 1);
+        goods.put(secondTestGood, (short) 1);
         User customer = new User(1, "Roman", "Lash","legafise", "12345678",
                 "lash@ya.ru", LocalDate.now(), "default.jpg", new BigDecimal("50.34"), Role.USER);
         Order order = new Order(1, OrderStatus.COMPLETED, "Minsk", goods, new BigDecimal("3500"),
@@ -94,7 +94,7 @@ class JWDGoodServiceTest {
     void addGoodTest() {
         goodService.setGoodValidator(goodValidator);
         when(goodDao.add(firstTestGood)).thenReturn(true);
-        when(goodValidator.test(firstTestGood)).thenReturn(true);
+        when(goodValidator.validate(firstTestGood)).thenReturn(true);
         Assert.assertTrue(goodService.addGood(firstTestGood));
     }
 
@@ -103,7 +103,7 @@ class JWDGoodServiceTest {
         firstTestGood.setName("Iphone12");
         goodService.setGoodValidator(goodValidator);
         when(goodDao.update(firstTestGood)).thenReturn(true);
-        when(goodValidator.test(firstTestGood)).thenReturn(true);
+        when(goodValidator.validate(firstTestGood)).thenReturn(true);
         Assert.assertTrue(goodService.updateGood(firstTestGood));
     }
 }

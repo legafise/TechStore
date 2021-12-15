@@ -1,6 +1,6 @@
 package by.lashkevich.logic.entity;
 
-public class OrderStatusException extends Exception {
+public class OrderStatusException extends JWDException {
     public OrderStatusException() {
         super();
     }

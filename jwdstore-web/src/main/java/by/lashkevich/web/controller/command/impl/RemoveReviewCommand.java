@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Remove review command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -30,15 +31,20 @@ public class RemoveReviewCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            User author = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
-            Thread.currentThread().setName(author.getId() + author.getLogin());
+    public CommandResult execute(HttpServletRequest request) {
+        String role = String.valueOf(request.getSession().getAttribute("role"));
+        User author = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+        Thread.currentThread().setName(author.getId() + author.getLogin());
+        if (role.equals("admin") || role.equals("moder")
+                || reviewService.findReviewById(request.getParameter("reviewId"))
+                .getAuthor().getId() == Long.parseLong(String.valueOf(request
+                .getSession().getAttribute("userId")))) {
             request.getSession().setAttribute("isReviewRemoved",
                     reviewService.removeReviewById(request.getParameter("reviewId")));
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, PageFinder.findLastPage(request));
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+        } else {
+            request.getSession().setAttribute("isReviewRemoved", false);
         }
+
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, PageFinder.findLastPage(request));
     }
 }

@@ -81,7 +81,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'Roman','Lash','legafise','12340987','tapoc04@yandex.ru','default.jpg','2004-02-12',126,3),(5,'Vasya','Pupkin','PupVasi','12345678','vasyapup@yandex.ru','default.jpg','2003-05-16',65,3),(6,'Gleb','Kirienko','SirPakun','zim','floppa@mail.ru','default.jpg','2003-07-31',243,3);
+INSERT INTO `users` VALUES (2,'Roman','Lash','legafise','$2a$10$tgC4z2qj9inF/S0Gfc.M9.rn82Hm.Z.tLOHDjCpuIkKIFuSE9Sc8S','tapoc04@yandex.ru','default.jpg','2004-02-12',126,3),(5,'Vasya','Pupkin','PupVasi','$10$Koi97Y3tMMYsxY8QO6RG5eDYtLJjjPG.8Tsng62boNTk3JEClc0gS','vasyapup@yandex.ru','default.jpg','2003-05-16',65,3),(6,'Gleb','Kirienko','SirPakun','$10$/Jh.JcD1GJhwyC1jktwJfOE.AjDNfxAVkNjo6JZAzj3EzbxnS00me','floppa@mail.ru','default.jpg','2003-07-31',243,3);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

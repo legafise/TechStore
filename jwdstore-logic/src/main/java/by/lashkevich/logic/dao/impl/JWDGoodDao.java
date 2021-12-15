@@ -8,9 +8,7 @@ import by.lashkevich.logic.entity.Good;
 import by.lashkevich.logic.entity.GoodType;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The type Jwd good dao.
@@ -19,18 +17,18 @@ import java.util.Optional;
  */
 public class JWDGoodDao implements GoodDao {
     private static final String FIND_ALL_GOODS_SQL = "SELECT goods.id AS good_id, goods.name AS good_name," +
-            " goods.price AS good_price, goods.description AS good_description, goods.picture AS good_picture," +
-            " goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id AS review_id, reviews.rate AS review_rate," +
-            " reviews.content AS review_content, users.id AS review_user_id, users.name AS review_user_name, users.surname" +
+            " goods.price AS good_price, goods.description, goods.picture," +
+            " goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id AS review_id, reviews.rate," +
+            " reviews.content, users.id AS review_user_id, users.name AS review_user_name, users.surname" +
             " AS review_user_surname,users.login AS review_user_login, users.password AS review_user_password, users.email AS review_user_email," +
             " users.profile_picture AS review_user_profile_picture, users.birth_date AS review_user_birth_date,users.balance AS" +
             " review_user_balance, users.role AS review_user_role FROM goods LEFT JOIN goods_types ON goods.type_id = goods_types.id" +
             " LEFT JOIN goods_reviews ON goods.id = goods_reviews.good_id LEFT JOIN reviews ON" +
             " goods_reviews.review_id = reviews.id LEFT JOIN users ON users.id = reviews.user_id ORDER BY goods.id";
     private static final String FIND_GOOD_BY_ID_SQL = "SELECT goods.id AS good_id, goods.name AS good_name," +
-            " goods.price AS good_price, goods.description AS good_description, goods.picture AS good_picture," +
-            " goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id AS review_id, reviews.rate AS review_rate," +
-            " reviews.content AS review_content, users.id AS review_user_id, users.name AS review_user_name, users.surname" +
+            " goods.price AS good_price, goods.description, goods.picture," +
+            " goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id AS review_id, reviews.rate," +
+            " reviews.content, users.id AS review_user_id, users.name AS review_user_name, users.surname" +
             " AS review_user_surname,users.login AS review_user_login, users.password AS review_user_password, users.email AS review_user_email," +
             " users.profile_picture AS review_user_profile_picture, users.birth_date AS review_user_birth_date,users.balance AS" +
             " review_user_balance, users.role AS review_user_role FROM goods LEFT JOIN goods_types ON goods.type_id = goods_types.id" +
@@ -55,7 +53,7 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
-    public List<Good> findAll() throws DaoException {
+    public List<Good> findAll()  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_GOODS_SQL);
@@ -72,7 +70,7 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
-    public Optional<Good> findById(Long id) throws DaoException {
+    public Optional<Good> findById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_GOOD_BY_ID_SQL)) {
             statement.setLong(1, id);
@@ -86,7 +84,7 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
-    public boolean add(Good good) throws DaoException {
+    public boolean add(Good good)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_GOOD_SQL)) {
             fillGoodData(good, statement);
@@ -97,7 +95,7 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
-    public boolean removeById(Long id) throws DaoException {
+    public boolean removeById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(REMOVE_GOOD_BY_ID_SQL)) {
             statement.setLong(1, id);
@@ -126,7 +124,7 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
-    public boolean update(Good good) throws DaoException {
+    public boolean update(Good good)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_GOOD_SQL)) {
             statement.setLong(6, good.getId());
@@ -139,7 +137,7 @@ public class JWDGoodDao implements GoodDao {
     }
 
     @Override
-    public GoodType findTypeById(int typeId) throws DaoException {
+    public Optional<GoodType> findTypeById(int typeId)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_TYPE_BY_ID_SQL)) {
             statement.setInt(1, typeId);
@@ -150,13 +148,13 @@ public class JWDGoodDao implements GoodDao {
                 goodType = daoMapper.mapGoodType(resultSet);
             }
 
-            return goodType;
+            return goodType.getName() == null ? Optional.empty() : Optional.of(goodType);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
     }
 
-    private void fillGoodData(Good good, PreparedStatement statement) throws SQLException, DaoException {
+    private void fillGoodData(Good good, PreparedStatement statement) throws SQLException {
         statement.setString(1, good.getName());
         statement.setBigDecimal(2, good.getPrice());
         statement.setInt(3, good.getType().getId());

@@ -1,38 +1,20 @@
 package by.lashkevich.logic.dao.reader;
 
-import by.lashkevich.logic.dao.DaoException;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * The interface Properties reader.
- * @author Roman Lashkevich
- */
-public interface PropertiesReader {
-    /**
-     * Read properties properties.
-     *
-     * @return the properties
-     * @throws PropertiesReaderException the properties reader exception
-     */
-    Properties readProperties() throws PropertiesReaderException;
+public final class PropertiesReader {
+    private PropertiesReader() {
+    }
 
-    /**
-     * Read properties properties.
-     *
-     * @param path the path
-     * @return the properties
-     * @throws PropertiesReaderException the properties reader exception
-     */
-    default Properties readProperties(String path) throws PropertiesReaderException {
+    public static Properties readProperties(String propertiesFilePath) throws PropertiesReaderException {
         Properties properties = new Properties();
         try {
-            FileInputStream fileInputStream = new FileInputStream(path);
+            FileInputStream fileInputStream = new FileInputStream(propertiesFilePath);
             properties.load(fileInputStream);
         } catch (IOException e) {
-            throw new PropertiesReaderException(e.getMessage());
+            throw new PropertiesReaderException(e);
         }
 
         return properties;

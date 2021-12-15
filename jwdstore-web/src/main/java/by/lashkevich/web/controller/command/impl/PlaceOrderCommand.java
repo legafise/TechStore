@@ -19,6 +19,7 @@ import java.util.Map;
 
 /**
  * The type Place order command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -37,44 +38,40 @@ public class PlaceOrderCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            String address = request.getParameter("address");
+    public CommandResult execute(HttpServletRequest request) {
+        String address = request.getParameter("address");
 
-            if (address == null || address.isEmpty() || address.length() < 7) {
-                request.getSession().setAttribute("isInvalidAddress", true);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=place_order_page");
-            }
-
-            Order order = new Order();
-            Map<Good, Integer> goods = (Map<Good, Integer>) request.getSession().getAttribute("goods");
-            request.getSession().removeAttribute("goods");
-            order.setStatus(OrderStatus.EXECUTING);
-            order.setGoods(goods);
-            order.setAddress(address);
-            order.setPrice(new BigDecimal(String.valueOf(request.getSession().getAttribute("price"))));
-            request.getSession().removeAttribute("price");
-            order.setDate(LocalDate.now(Clock.systemDefaultZone()));
-            order.setCustomer(userService.findUserById(String.valueOf(request
-                    .getSession().getAttribute("userId"))));
-            boolean result = orderService.placeOrder(order);
-            request.getSession().setAttribute("placingOrderResult", result);
-            request.getSession().setAttribute("balance", userService.findUserById(String.valueOf(request
-                    .getSession().getAttribute("userId"))).getBalance());
-
-            if (result) {
-                String orderButtonName = (String) request.getSession().getAttribute("orderButtonName");
-                String userId = String.valueOf(request.getSession().getAttribute("userId"));
-                if (orderButtonName != null && orderButtonName.equals(PLACE_ORDER_BUTTON)) {
-                    userService.removeBasketByUserId(userId);
-                } else if (orderButtonName != null && orderButtonName.equals(BUY_BUTTON)) {
-                    userService.removeGoodFromBasket(userId, String.valueOf(goods.keySet().iterator().next().getId()));
-                }
-            }
-
-            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=orders_page");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+        if (address == null || address.isEmpty() || address.length() < 7) {
+            request.getSession().setAttribute("isInvalidAddress", true);
+            return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=place_order_page");
         }
+
+        Order order = new Order();
+        Map<Good, Short> goods = (Map<Good, Short>) request.getSession().getAttribute("goods");
+        request.getSession().removeAttribute("goods");
+        order.setStatus(OrderStatus.EXECUTING);
+        order.setGoods(goods);
+        order.setAddress(address);
+        order.setPrice(new BigDecimal(String.valueOf(request.getSession().getAttribute("price"))));
+        request.getSession().removeAttribute("price");
+        order.setDate(LocalDate.now(Clock.systemDefaultZone()));
+        order.setCustomer(userService.findUserById(String.valueOf(request
+                .getSession().getAttribute("userId"))));
+        boolean result = orderService.placeOrder(order);
+        request.getSession().setAttribute("placingOrderResult", result);
+        request.getSession().setAttribute("balance", userService.findUserById(String.valueOf(request
+                .getSession().getAttribute("userId"))).getBalance());
+
+        if (result) {
+            String orderButtonName = (String) request.getSession().getAttribute("orderButtonName");
+            String userId = String.valueOf(request.getSession().getAttribute("userId"));
+            if (orderButtonName != null && orderButtonName.equals(PLACE_ORDER_BUTTON)) {
+                userService.removeBasketByUserId(userId);
+            } else if (orderButtonName != null && orderButtonName.equals(BUY_BUTTON)) {
+                userService.removeGoodFromBasket(userId, String.valueOf(goods.keySet().iterator().next().getId()));
+            }
+        }
+
+        return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=orders_page");
     }
 }

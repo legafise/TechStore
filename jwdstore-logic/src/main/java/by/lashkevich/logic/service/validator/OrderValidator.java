@@ -5,15 +5,13 @@ import by.lashkevich.logic.entity.Order;
 import by.lashkevich.logic.entity.User;
 
 import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  * The type Order validator.
  * @author Roman Lashkevich
  */
-public class OrderValidator implements Predicate<Order> {
-    @Override
-    public boolean test(Order order) {
+public class OrderValidator {
+    public boolean validate(Order order) {
         return order.getStatus() != null && validateAddress(order.getAddress())
                 && order.getPrice() != null && order.getDate() != null
                 && validateGoods(order.getGoods()) && validateCustomer(order.getCustomer());
@@ -27,7 +25,7 @@ public class OrderValidator implements Predicate<Order> {
         return customer != null && customer.getId() != 0;
     }
 
-    private boolean validateGoods(Map<Good, Integer> goods) {
+    private boolean validateGoods(Map<Good, Short> goods) {
         return goods != null && !goods.keySet().isEmpty()
                 && goods.keySet().stream()
                 .noneMatch(currentGood -> currentGood.getId() == 0)

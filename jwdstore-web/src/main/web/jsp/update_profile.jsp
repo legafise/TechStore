@@ -10,7 +10,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Изменение профиля</title>
+    <title><fmt:message key="profile.changing"/> </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <c:import url="header.jsp"/>
@@ -21,7 +21,7 @@
                 <div class="col-xl-4">
                     <div class="card text-center registration-form-idents">
                         <div class="card-header authorization bold">
-                            Изменение профиля
+                            <fmt:message key="profile.changing"/>
                         </div>
                         <div class="card-body authorization">
                             <form action="${updateProfileCommand}" method="post" class="reg-inputs"
@@ -61,7 +61,7 @@
                                 </div>
                                 <br/>
                                 <button type="submit" class="btn btn-secondary authorization authorization-button ">
-                                    Изменить
+                                    <fmt:message key="change"/>
                                 </button>
                             </form>
                         </div>

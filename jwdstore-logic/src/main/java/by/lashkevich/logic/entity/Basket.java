@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Roman Lashkevich
  */
 public class Basket implements Entity {
-    private Map<Good, Integer> goods;
+    private Map<Good, Short> goods;
     private User owner;
 
     /**
@@ -25,7 +25,7 @@ public class Basket implements Entity {
      * @param goods the goods
      * @param owner the owner
      */
-    public Basket(Map<Good, Integer> goods, User owner) {
+    public Basket(Map<Good, Short> goods, User owner) {
         this.goods = goods;
         this.owner = owner;
     }
@@ -35,7 +35,7 @@ public class Basket implements Entity {
      *
      * @return the goods
      */
-    public Map<Good, Integer> getGoods() {
+    public Map<Good, Short> getGoods() {
         return goods;
     }
 
@@ -44,7 +44,7 @@ public class Basket implements Entity {
      *
      * @param goods the goods
      */
-    public void setGoods(Map<Good, Integer> goods) {
+    public void setGoods(Map<Good, Short> goods) {
         this.goods = goods;
     }
 

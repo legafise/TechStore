@@ -76,5 +76,5 @@ public interface UserDao extends BaseDao<Long, User> {
      * @return the boolean
      * @throws DaoException the dao exception
      */
-    boolean changeGoodQuantity(Long userId, Long goodId, Integer goodQuantity) throws DaoException;
+    boolean changeGoodQuantity(Long userId, Long goodId, Short goodQuantity) throws DaoException;
 }

@@ -12,13 +12,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Управление пользователями</title>
+    <title><fmt:message key="user.management"/></title>
     <c:import url="header.jsp"/>
     <main>
         <c:if test="${isRoleUpdated == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Роль успешно обновлена!</strong>
+                    <strong><fmt:message key="positive.role.updating.message"/></strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -29,7 +29,7 @@
         <c:if test="${isUserBaned == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Пользователь был успешно заблокирован!</strong>
+                    <strong><fmt:message key="positive.ban.result.message"/></strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -40,7 +40,7 @@
         <c:if test="${isUserUnblocked == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Пользователь был успешно разблокирован!</strong>
+                    <strong><fmt:message key="positive.unblock.result.message"/></strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -62,11 +62,11 @@
             <%request.getSession().removeAttribute("isUserBaned");%>
         </c:if>
         <div class="container-fluid name">
-            <p class="h2 bold">Управление пользователями</p>
+            <p class="h2 bold"><fmt:message key="user.management"/> </p>
         </div>
         <c:if test="${empty userList}">
             <div class="container-fluid name">
-                <p class="h4 bold">Пользователи не найдены</p>
+                <p class="h4 bold"><fmt:message key="users.not.found"/> </p>
             </div>
         </c:if>
         <c:if test="${!empty userList}">
@@ -84,13 +84,13 @@
                                     <c:if test="${user.role.name != 'banned'}">
                                         <form action="${banUserCommand}" method="post">
                                             <input type="hidden" value="${user.id}" name="userId">
-                                            <button type="submit" class="btn ban-button">Заблокировать</button>
+                                            <button type="submit" class="btn ban-button"><fmt:message key="block"/> </button>
                                         </form>
                                     </c:if>
                                     <c:if test="${user.role.name == 'banned'}">
                                         <form action="${unblockUserCommand}" method="post">
                                             <input type="hidden" value="${user.id}" name="userId">
-                                            <button type="submit" class="btn unblock-button">Разблокировать</button>
+                                            <button type="submit" class="btn unblock-button"><fmt:message key="unblock"/> </button>
                                         </form>
                                     </c:if>
                                 </div>
@@ -101,13 +101,13 @@
                                         </c:if> <br/>
                                         <span class="bold">ID:</span> <c:out value="${user.id}"/>
                                         <br/><span class="bold">Email:</span> <c:out value="${user.email}"/>
-                                        <br/><span class="bold">Имя:</span> <c:out value="${user.name}"/> <c:out
+                                        <br/><span class="bold"><fmt:message key="name"/>:</span> <c:out value="${user.name}"/> <c:out
                                             value="${user.surname}"/>
-                                        <br/><span class="bold">Дата рождения:</span> <c:out value="${user.birthDate}"/>
+                                        <br/><span class="bold"><fmt:message key="birth.date"/>:</span> <c:out value="${user.birthDate}"/>
                                         <br/>
                                         <c:if test="${user.role.name != 'banned'}">
                                             <div class="row change-role-form">
-                                                <span class="status-message">Роль:</span>
+                                                <span class="status-message"><fmt:message key="role"/> :</span>
                                                 <div class="col-lg-1">
                                                     <select class="custom-select" name="roleNumber">
                                                         <c:forEach var="role" items="${roles}">

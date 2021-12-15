@@ -12,13 +12,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Оформление заказа</title>
+    <title><fmt:message key="ordering"/> </title>
     <c:import url="header.jsp"/>
     <main>
         <c:if test="${isInvalidAddress == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Введен неверный адрес!</strong> Повторите попытку!
+                    <strong><fmt:message key="invalid.address.message"/> </strong> <fmt:message key="try.again"/>!
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -27,20 +27,20 @@
             <%request.getSession().removeAttribute("isInvalidAddress");%>
         </c:if>
         <div class="container-fluid name">
-            <p class="h2 bold">Оформление заказа</p>
+            <p class="h2 bold"><fmt:message key="ordering"/> </p>
         </div>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3"></div>
                 <div class="col-lg-6">
                     <div class="card card-size place-order-card">
-                        <h4 align="center" class="card-header">Заполните необходимую информацию</h4>
+                        <h4 align="center" class="card-header"><fmt:message key="fill.reqired.information"/> </h4>
                         <div class="card-body order-card-indents">
                             <form method="post" action="${placeOrderCommand}" id="order-inputs">
-                                <h5 align="center">Адрес</h5>
-                                <input class="form-control" id="address" type="text" name="address" placeholder="Введите адрес"><br/>
+                                <h5 align="center"><fmt:message key="address"/> </h5>
+                                <input class="form-control" id="address" type="text" name="address" placeholder="<fmt:message key="enter.address"/> "><br/>
                                 <hr/>
-                                <h5 align="center">Заказываемые товары:</h5><br/>
+                                <h5 align="center"><fmt:message key="ordering.goods"/> :</h5><br/>
                                 <c:forEach var="goodEntry" items="${goods.entrySet()}">
                                     <div class="row">
                                         <div class="col-xl-3">
@@ -61,7 +61,7 @@
                                 <input type="hidden" value="${price}" name="price">
                                 <h5 align="center"><fmt:message key="order.price"/>  <c:out value="${price}"/> <fmt:message
                                         key="currency.sign"/></h5>
-                                <button type="submit" id="place-order-button" disabled class="btn basket-buy-button place-order-button">Оформить заказ
+                                <button type="submit" id="place-order-button" disabled class="btn basket-buy-button place-order-button"><fmt:message key="place.order"/>
                                 </button>
                             </form>
                         </div>

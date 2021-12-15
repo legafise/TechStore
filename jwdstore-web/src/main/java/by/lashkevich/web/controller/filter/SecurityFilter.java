@@ -18,7 +18,6 @@ import java.io.IOException;
 public class SecurityFilter implements Filter {
     private static final String SESSION_ROLE_PARAMETER = "role";
     private static final String GUEST_ROLE = "guest";
-    private final UserService userService = (UserService) ServiceFactory.USER_SERVICE.getService();;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -30,16 +29,7 @@ public class SecurityFilter implements Filter {
         HttpSession session = request.getSession();
 
         if (session.getAttribute(SESSION_ROLE_PARAMETER) == null) {
-            session.setAttribute("role", GUEST_ROLE);
-        }
-
-        String currentSessionRole = (String) session.getAttribute(SESSION_ROLE_PARAMETER);
-        if (!currentSessionRole.equals(GUEST_ROLE)) {
-            Role realUserRole = userService.findUserById(String.valueOf(request.getSession()
-                    .getAttribute("userId"))).getRole();
-            if (realUserRole != Role.findRoleByName(currentSessionRole)) {
-                request.getSession().setAttribute("role", realUserRole.getName());
-            }
+            session.setAttribute(SESSION_ROLE_PARAMETER, GUEST_ROLE);
         }
 
         filterChain.doFilter(servletRequest, servletResponse);

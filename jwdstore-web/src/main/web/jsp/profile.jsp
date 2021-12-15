@@ -16,7 +16,7 @@
         <c:if test="${isUserUpdated == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Данные были успешно обновлены!</strong>
+                    <strong><fmt:message key="data.was.updated.successfully"/> </strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -27,7 +27,7 @@
         <c:if test="${isUserUpdated == false}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Данные не были обновлены!</strong> Пользователь с такой электронной почтой уже существует
+                    <strong><fmt:message key="data.was.not.updated"/> </strong> <fmt:message key="user.with.such.data.is.exist"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -65,7 +65,7 @@
                                 <div class="container-fluid">
                                     <a href="${updateProfilePageCommand}">
                                         <button type="submit" class="btn btn-outline-secondary">
-                                            Изменить
+                                            <fmt:message key="change"/>
                                         </button>
                                     </a>
                                 </div>

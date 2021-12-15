@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Profile page forward command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -26,14 +27,10 @@ public class ProfilePageForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
-            request.setAttribute("user", user);
-            request.setAttribute("currentPage", "profile");
-            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/profile.jsp");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        User user = userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")));
+        request.setAttribute("user", user);
+        request.setAttribute("currentPage", "profile");
+        return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/profile.jsp");
     }
 }

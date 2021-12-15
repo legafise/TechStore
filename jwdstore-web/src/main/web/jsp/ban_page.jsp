@@ -17,10 +17,10 @@
                 <div class="col-xl-4">
                     <div class="card text-center registration-form-idents">
                         <div class="card-header authorization bold">
-                            Вы были заблокированы!
+                            <fmt:message key="account.was.blocked"/>
                         </div>
                         <div class="card-body authorization">
-                            По всем вопросам обращайтесь в службу поддержки <br/>
+                            <fmt:message key="ban.info"/> <br/>
                             techstore.support@gmail.com
                         </div>
                     </div>

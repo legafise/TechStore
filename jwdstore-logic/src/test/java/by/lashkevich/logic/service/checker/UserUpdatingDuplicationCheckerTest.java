@@ -38,7 +38,7 @@ class UserUpdatingDuplicationCheckerTest {
         when(userDao.findByEmail("kirienko@ya.ru")).thenReturn(Optional.empty());
         when(userDao.findByLogin("legafise")).thenReturn(Optional.of(firstTestUser));
         firstTestUser.setEmail("kirienko@ya.ru");
-        Assert.assertTrue(duplicationChecker.test(firstTestUser));
+        Assert.assertTrue(duplicationChecker.check(firstTestUser));
     }
 
     @Test
@@ -46,7 +46,7 @@ class UserUpdatingDuplicationCheckerTest {
         when(userDao.findByEmail("kirienko@ya.ru")).thenReturn(Optional.of(secondTestUser));
         when(userDao.findByLogin("legafise")).thenReturn(Optional.of(firstTestUser));
         firstTestUser.setEmail("kirienko@ya.ru");
-        Assert.assertFalse(duplicationChecker.test(firstTestUser));
+        Assert.assertFalse(duplicationChecker.check(firstTestUser));
     }
 
     @Test
@@ -54,7 +54,7 @@ class UserUpdatingDuplicationCheckerTest {
         when(userDao.findByEmail("lash@ya.ru")).thenReturn(Optional.of(firstTestUser));
         when(userDao.findByLogin("legafise")).thenReturn(Optional.empty());
         firstTestUser.setLogin("legafise");
-        Assert.assertTrue(duplicationChecker.test(firstTestUser));
+        Assert.assertTrue(duplicationChecker.check(firstTestUser));
     }
 
     @Test
@@ -62,6 +62,6 @@ class UserUpdatingDuplicationCheckerTest {
         when(userDao.findByEmail("lash@ya.ru")).thenReturn(Optional.of(firstTestUser));
         when(userDao.findByLogin("legafise")).thenReturn(Optional.of(secondTestUser));
         firstTestUser.setLogin("legafise");
-        Assert.assertFalse(duplicationChecker.test(firstTestUser));
+        Assert.assertFalse(duplicationChecker.check(firstTestUser));
     }
 }

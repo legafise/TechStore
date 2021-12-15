@@ -27,7 +27,7 @@ public class UserListPageForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         request.setAttribute("currentPage", "userList");
         request.setAttribute("userList", userService.findAllUsers().stream()
                 .filter(user -> user.getId() != Long.parseLong(String.valueOf(request.getSession()

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class LogOutCommand implements Command {
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         request.getSession().setAttribute("role", "guest");
         request.getSession().removeAttribute("userId");
         request.getSession().setAttribute("logOutResult", true);

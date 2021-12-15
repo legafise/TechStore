@@ -1,25 +1,37 @@
 package by.lashkevich.logic.service.validator;
 
 import by.lashkevich.logic.entity.User;
+import by.lashkevich.logic.service.checker.FileFormatChecker;
 
 import java.time.LocalDate;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
  * The type User validator.
  * @author Roman Lashkevich
  */
-public class UserValidator implements Predicate<User> {
+public class UserValidator {
+    private FileFormatChecker formatChecker;
     private static final String EMAIL_PATTERN = "^([а-яa-z0-9_-]+\\.)*[а-яa-z0-9_-]+@[а-яa-z0-9_-]" +
             "+(\\.[а-яa-z0-9_-]+)*\\.[а-яa-z]{2,6}$";
 
-    @Override
-    public boolean test(User user) {
+    public UserValidator() {
+        formatChecker = new FileFormatChecker();
+    }
+
+    public void setFormatChecker(FileFormatChecker formatChecker) {
+        this.formatChecker = formatChecker;
+    }
+
+    public boolean validate(User user) {
         return user != null && validateName(user.getName()) && validateSurname(user.getSurname())
                 && validateLogin(user.getLogin()) && validatePassword(user.getPassword())
                 && validateBirthDate(user.getBirthDate()) && validateEmail(user.getEmail())
-                && user.getProfilePictureName() != null && user.getRole() != null;
+                && user.getRole() != null && validateProfilePicture(user.getProfilePictureName());
+    }
+
+    private boolean validateProfilePicture(String profilePictureName) {
+        return profilePictureName != null && formatChecker.checkImgFormat(profilePictureName);
     }
 
     private boolean validateBirthDate(LocalDate birthDate) {

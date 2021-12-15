@@ -4,6 +4,7 @@
 
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="languages.keywords"/>
+<c:url var="catalogURL" value="/controller?command=catalog"/>
 
 <!DOCTYPE HTML>
 <html>

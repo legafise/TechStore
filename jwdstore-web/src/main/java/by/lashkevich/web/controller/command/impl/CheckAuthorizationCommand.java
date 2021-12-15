@@ -15,7 +15,7 @@ public class CheckAuthorizationCommand implements Command {
     private static final String YOU_CANT_DO_IT_NOW_MESSAGE = "You can't do it now";
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         CommandResult commandResult = new CommandResult();
         Boolean authorizationResult = (Boolean) request.getSession().getAttribute("authorizationResult");
 

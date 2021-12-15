@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BanPageCommand implements Command {
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/ban_page.jsp");
     }
 }

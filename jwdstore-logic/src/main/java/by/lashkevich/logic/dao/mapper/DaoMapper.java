@@ -13,20 +13,20 @@ import java.util.Optional;
 public class DaoMapper {
     private static final String GOOD_ID = "good_id";
     private static final String ORDER_ID = "order_id";
-    private static final String ORDER_STATUS = "order_status";
+    private static final String ORDER_STATUS = "status";
     private static final String REVIEW_ID = "review_id";
-    private static final String REVIEW_CONTENT = "review_content";
-    private static final String REVIEW_RATE = "review_rate";
+    private static final String REVIEW_CONTENT = "content";
+    private static final String REVIEW_RATE = "rate";
     private static final String GOOD_NAME = "good_name";
     private static final String USER_NAME = "user_name";
-    private static final String USER_SURNAME = "user_surname";
-    private static final String USER_LOGIN = "user_login";
-    private static final String USER_PASSWORD = "user_password";
-    private static final String USER_EMAIL = "user_email";
-    private static final String USER_BIRTH_DATE = "user_birth_date";
-    private static final String USER_PROFILE_PICTURE = "user_profile_picture";
-    private static final String USER_BALANCE = "user_balance";
-    private static final String USER_ROLE = "user_role";
+    private static final String USER_SURNAME = "surname";
+    private static final String USER_LOGIN = "login";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_EMAIL = "email";
+    private static final String USER_BIRTH_DATE = "birth_date";
+    private static final String USER_PROFILE_PICTURE = "profile_picture";
+    private static final String USER_BALANCE = "balance";
+    private static final String USER_ROLE = "role";
     private static final String USER_ID = "user_id";
     private static final String REVIEW_USER_NAME = "review_user_name";
     private static final String REVIEW_USER_ID = "review_user_id";
@@ -40,13 +40,13 @@ public class DaoMapper {
     private static final String REVIEW_USER_ROLE = "review_user_role";
     private static final String GOOD_PRICE = "good_price";
     private static final String ORDER_PRICE = "order_price";
-    private static final String ORDER_DATE = "order_date";
-    private static final String ORDER_ADDRESS = "order_address";
-    private static final String GOOD_DESCRIPTION = "good_description";
+    private static final String ORDER_DATE = "date";
+    private static final String ORDER_ADDRESS = "address";
+    private static final String GOOD_DESCRIPTION = "description";
     private static final String GOOD_TYPE = "good_type_name";
     private static final String GOOD_TYPE_ID = "good_type_id";
-    private static final String GOOD_PICTURE = "good_picture";
-    private static final String GOOD_QUANTITY = "good_quantity";
+    private static final String GOOD_PICTURE = "picture";
+    private static final String GOOD_QUANTITY = "quantity";
 
     /**
      * Map user user.
@@ -162,7 +162,7 @@ public class DaoMapper {
             }
 
             if (resultSet.getInt(ORDER_ID) == order.getId()) {
-                int quantity = resultSet.getInt(GOOD_QUANTITY);
+                short quantity = resultSet.getShort(GOOD_QUANTITY);
                 order.getGoods().put(mapOrderedGood(resultSet, resultSet.getLong(ORDER_ID)), quantity);
             }
         }
@@ -197,7 +197,7 @@ public class DaoMapper {
         basket.setOwner(mapUser(resultSet));
 
         while (!resultSet.isAfterLast()) {
-            basket.getGoods().put(mapGoodInBasket(resultSet), resultSet.getInt(GOOD_QUANTITY));
+            basket.getGoods().put(mapGoodInBasket(resultSet), resultSet.getShort(GOOD_QUANTITY));
             resultSet.next();
         }
 
@@ -222,7 +222,7 @@ public class DaoMapper {
      */
     public GoodType mapGoodType(ResultSet resultSet) throws SQLException {
         GoodType goodType = new GoodType();
-        goodType.setId(resultSet.getInt(GOOD_TYPE_ID));
+        goodType.setId(resultSet.getShort(GOOD_TYPE_ID));
         goodType.setName(resultSet.getString(GOOD_TYPE));
         return goodType;
     }

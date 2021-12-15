@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Update profile page forward command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -25,13 +26,9 @@ public class UpdateProfilePageForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            request.setAttribute("user", userService
-                    .findUserById(String.valueOf(request.getSession().getAttribute("userId"))));
-            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/update_profile.jsp");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        request.setAttribute("user", userService
+                .findUserById(String.valueOf(request.getSession().getAttribute("userId"))));
+        return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/update_profile.jsp");
     }
 }

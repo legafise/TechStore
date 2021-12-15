@@ -47,17 +47,17 @@ class JWDUserServiceTest {
         secondTestUser = new User(2, "Gleb", "Kirienko", "SirPakun", "ZimFloppa",
                 "pakun@gmail.com", LocalDate.now(), "default.jpg", new BigDecimal("150.34"), Role.USER);
 
-        GoodType firstTestType = new GoodType(1, "Phone");
-        GoodType secondTestType = new GoodType(2, "Console");
+        GoodType firstTestType = new GoodType((short) 1, "Phone");
+        GoodType secondTestType = new GoodType((short) 2, "Console");
 
         Good firstTestGood = new Good(1, "Iphone", new BigDecimal("1500"), "Iphone",
                 firstTestType, "default.jpg");
         Good secondTestGood = new Good(2, "Play Station 5", new BigDecimal("2000"),
                 "Play Station 5", secondTestType, "default.jpg");
 
-        Map<Good, Integer> goods = new HashMap<>();
-        goods.put(firstTestGood, 1);
-        goods.put(secondTestGood, 1);
+        Map<Good, Short> goods = new HashMap<>();
+        goods.put(firstTestGood, (short) 1);
+        goods.put(secondTestGood, (short) 1);
 
         testBasket = new Basket(goods, secondTestUser);
     }
@@ -83,8 +83,8 @@ class JWDUserServiceTest {
     @Test
     void addUserTest() {
         when(userDao.add(firstTestUser)).thenReturn(true);
-        when(userValidator.test(firstTestUser)).thenReturn(true);
-        when(addingDuplicationChecker.test(firstTestUser)).thenReturn(true);
+        when(userValidator.validate(firstTestUser)).thenReturn(true);
+        when(addingDuplicationChecker.check(firstTestUser)).thenReturn(true);
         Assert.assertTrue(userService.addUser(firstTestUser));
     }
 
@@ -101,8 +101,8 @@ class JWDUserServiceTest {
 
     @Test
     void updateUserTest() {
-        when(userValidator.test(firstTestUser)).thenReturn(true);
-        when(userUpdatingDuplicationChecker.test(firstTestUser)).thenReturn(true);
+        when(userValidator.validate(firstTestUser)).thenReturn(true);
+        when(userUpdatingDuplicationChecker.check(firstTestUser)).thenReturn(true);
         when(userDao.update(firstTestUser)).thenReturn(true);
         Assert.assertTrue(userService.updateUser(firstTestUser));
     }
@@ -110,8 +110,8 @@ class JWDUserServiceTest {
     @Test
     void updateUserWithInvalidIdTest() {
         firstTestUser.setId(0);
-        when(userValidator.test(firstTestUser)).thenReturn(true);
-        when(userUpdatingDuplicationChecker.test(firstTestUser)).thenReturn(true);
+        when(userValidator.validate(firstTestUser)).thenReturn(true);
+        when(userUpdatingDuplicationChecker.check(firstTestUser)).thenReturn(true);
         when(userDao.update(firstTestUser)).thenReturn(true);
         Assert.assertThrows(ServiceException.class, () -> userService.updateUser(firstTestUser));
     }

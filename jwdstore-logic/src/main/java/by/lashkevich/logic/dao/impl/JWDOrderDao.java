@@ -18,49 +18,49 @@ import java.util.Optional;
  * @see OrderDao
  */
 public class JWDOrderDao implements OrderDao {
-    private static final String FIND_ALL_ORDERS_SQL = "SELECT orders.id AS order_id, orders.status AS order_status, orders.price AS order_price, orders.address AS" +
-            " order_address, orders.date AS order_date, users_from_orders.id AS user_id, users_from_orders.name AS user_name, users_from_orders.surname AS" +
-            " user_surname, users_from_orders.login AS user_login, users_from_orders.password AS user_password, users_from_orders.email AS user_email," +
-            " users_from_orders.profile_picture AS user_profile_picture, users_from_orders.birth_date AS user_birth_date, users_from_orders.balance AS" +
-            " user_balance, users_from_orders.role AS user_role, goods.id AS good_id, goods.name AS good_name, goods.price AS" +
-            " good_price, goods.description AS good_description,goods.picture AS good_picture, goods_types.name AS" +
-            " good_type_name, goods_types.id AS good_type_id,ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
-            " review_rate, reviews.content AS review_content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
-            " review_user_surname, users_from_reviews.login AS review_user_login, users_from_reviews.password AS review_user_password, users_from_reviews.email AS review_user_email," +
-            " users_from_reviews.profile_picture AS review_user_profile_picture, users_from_reviews.birth_date AS review_user_birth_date, users_from_reviews.balance AS" +
-            " review_user_balance, users_from_reviews.role AS review_user_role, ordered_goods.quantity AS good_quantity FROM orders LEFT JOIN users AS users_from_orders ON" +
+    private static final String FIND_ALL_ORDERS_SQL = "SELECT orders.id AS order_id, orders.status, orders.price AS order_price," +
+            " orders.address, orders.date, users_from_orders.id AS user_id, users_from_orders.name AS user_name, users_from_orders.surname," +
+            " users_from_orders.login, users_from_orders.password, users_from_orders.email," +
+            " users_from_orders.profile_picture, users_from_orders.birth_date, users_from_orders.balance," +
+            " users_from_orders.role, goods.id AS good_id, goods.name AS good_name, goods.price AS" +
+            " good_price, goods.description, goods.picture, goods_types.name AS good_type_name, goods_types.id AS" +
+            " good_type_id, ordered_goods.quantity, reviews.id AS review_id, reviews.rate, reviews.content, users_from_reviews.id" +
+            " AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
+            " review_user_surname, users_from_reviews.login AS review_user_login, users_from_reviews.password AS" +
+            " review_user_password, users_from_reviews.email AS review_user_email," +
+            " users_from_reviews.profile_picture AS review_user_profile_picture, users_from_reviews.birth_date AS" +
+            " review_user_birth_date, users_from_reviews.balance AS review_user_balance, users_from_reviews.role AS" +
+            " review_user_role, ordered_goods.quantity AS good_quantity FROM orders LEFT JOIN users AS users_from_orders ON" +
             " users_from_orders.id = orders.user_id LEFT JOIN ordered_goods ON ordered_goods.order_id = orders.id LEFT JOIN goods" +
             " ON ordered_goods.good_id = goods.id LEFT JOIN goods_types ON goods.type_id = goods_types.id LEFT JOIN" +
             " goods_reviews ON goods_reviews.good_id = goods.id LEFT JOIN reviews ON goods_reviews.review_id = reviews.id" +
             " LEFT JOIN users AS users_from_reviews ON users_from_reviews.id = reviews.user_id" +
             " ORDER BY orders.id, goods.id";
-    private static final String FIND_ORDER_BY_ID_SQL = "SELECT orders.id AS order_id, orders.status AS order_status, orders.price AS order_price, orders.address AS" +
-            " order_address, orders.date AS order_date, users_from_orders.id AS user_id, users_from_orders.name AS user_name, users_from_orders.surname AS" +
-            " user_surname, users_from_orders.login AS user_login, users_from_orders.password AS user_password, users_from_orders.email AS user_email," +
-            " users_from_orders.profile_picture AS user_profile_picture, users_from_orders.birth_date AS user_birth_date, users_from_orders.balance AS" +
-            " user_balance, users_from_orders.role AS user_role, goods.id AS good_id, goods.name AS good_name, goods.price AS" +
-            " good_price, goods.description AS good_description,goods.picture AS good_picture, goods_types.name AS" +
-            " good_type_name, goods_types.id AS good_type_id, ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
-            " review_rate, reviews.content AS review_content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
+    private static final String FIND_ORDER_BY_ID_SQL = "SELECT orders.id AS order_id, orders.status, orders.price AS order_price," +
+            " orders.address, orders.date, users_from_orders.id AS user_id, users_from_orders.name AS user_name, users_from_orders.surname," +
+            " users_from_orders.login, users_from_orders.password, users_from_orders.email, users_from_orders.profile_picture," +
+            " users_from_orders.birth_date, users_from_orders.balance, users_from_orders.role, goods.id AS good_id," +
+            " goods.name AS good_name, goods.price AS good_price, goods.description, goods.picture, goods_types.name AS" +
+            " good_type_name, goods_types.id AS good_type_id, ordered_goods.quantity, reviews.id AS review_id," +
+            " reviews.rate, reviews.content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
             " review_user_surname, users_from_reviews.login AS review_user_login, users_from_reviews.password AS review_user_password, users_from_reviews.email AS review_user_email," +
             " users_from_reviews.profile_picture AS review_user_profile_picture, users_from_reviews.birth_date AS review_user_birth_date, users_from_reviews.balance AS" +
-            " review_user_balance, users_from_reviews.role AS review_user_role, ordered_goods.quantity AS good_quantity FROM orders LEFT JOIN users AS users_from_orders ON" +
+            " review_user_balance, users_from_reviews.role AS review_user_role FROM orders LEFT JOIN users AS users_from_orders ON" +
             " users_from_orders.id = orders.user_id LEFT JOIN ordered_goods ON ordered_goods.order_id = orders.id LEFT JOIN goods" +
             " ON ordered_goods.good_id = goods.id LEFT JOIN goods_types ON goods.type_id = goods_types.id LEFT JOIN" +
             " goods_reviews ON goods_reviews.good_id = goods.id LEFT JOIN reviews ON goods_reviews.review_id = reviews.id" +
             " LEFT JOIN users AS users_from_reviews ON users_from_reviews.id = reviews.user_id WHERE orders.id = ?" +
             " ORDER BY orders.id, goods.id";
-    private static final String FIND_ORDERS_BY_USER_ID_SQL = "SELECT orders.id AS order_id, orders.status AS order_status, orders.price AS order_price, orders.address AS" +
-            " order_address, orders.date AS order_date, users_from_orders.id AS user_id, users_from_orders.name AS user_name, users_from_orders.surname AS" +
-            " user_surname, users_from_orders.login AS user_login, users_from_orders.password AS user_password, users_from_orders.email AS user_email," +
-            " users_from_orders.profile_picture AS user_profile_picture, users_from_orders.birth_date AS user_birth_date, users_from_orders.balance AS" +
-            " user_balance, users_from_orders.role AS user_role, goods.id AS good_id, goods.name AS good_name, goods.price AS" +
-            " good_price, goods.description AS good_description,goods.picture AS good_picture, goods_types.name AS" +
-            " good_type_name, goods_types.id AS good_type_id, ordered_goods.quantity AS good_quatity, reviews.id AS review_id, reviews.rate AS" +
-            " review_rate, reviews.content AS review_content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
+    private static final String FIND_ORDERS_BY_USER_ID_SQL = "SELECT orders.id AS order_id, orders.status, orders.price AS order_price," +
+            " orders.address, orders.date, users_from_orders.id AS user_id, users_from_orders.name AS user_name, users_from_orders.surname," +
+            " users_from_orders.login, users_from_orders.password, users_from_orders.email, users_from_orders.profile_picture," +
+            " users_from_orders.birth_date, users_from_orders.balance, users_from_orders.role, goods.id AS good_id," +
+            " goods.name AS good_name, goods.price AS good_price, goods.description, goods.picture, goods_types.name AS" +
+            " good_type_name, goods_types.id AS good_type_id, ordered_goods.quantity, reviews.id AS review_id," +
+            " reviews.rate, reviews.content, users_from_reviews.id AS review_user_id, users_from_reviews.name AS review_user_name, users_from_reviews.surname AS" +
             " review_user_surname, users_from_reviews.login AS review_user_login, users_from_reviews.password AS review_user_password, users_from_reviews.email AS review_user_email," +
             " users_from_reviews.profile_picture AS review_user_profile_picture, users_from_reviews.birth_date AS review_user_birth_date, users_from_reviews.balance AS" +
-            " review_user_balance, users_from_reviews.role AS review_user_role, ordered_goods.quantity AS good_quantity FROM orders RIGHT JOIN users AS users_from_orders ON" +
+            " review_user_balance, users_from_reviews.role AS review_user_role FROM orders RIGHT JOIN users AS users_from_orders ON" +
             " users_from_orders.id = orders.user_id LEFT JOIN ordered_goods ON ordered_goods.order_id = orders.id LEFT JOIN goods" +
             " ON ordered_goods.good_id = goods.id LEFT JOIN goods_types ON goods.type_id = goods_types.id LEFT JOIN" +
             " goods_reviews ON goods_reviews.good_id = goods.id LEFT JOIN reviews ON goods_reviews.review_id = reviews.id" +
@@ -85,7 +85,7 @@ public class JWDOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findAll() throws DaoException {
+    public List<Order> findAll()  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_ORDERS_SQL);
@@ -102,7 +102,7 @@ public class JWDOrderDao implements OrderDao {
     }
 
     @Override
-    public Optional<Order> findById(Long id) throws DaoException {
+    public Optional<Order> findById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ORDER_BY_ID_SQL);) {
             statement.setLong(1, id);
@@ -116,7 +116,7 @@ public class JWDOrderDao implements OrderDao {
     }
 
     @Override
-    public boolean add(Order order) throws DaoException {
+    public boolean add(Order order)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_ORDER_SQL)) {
             fillOrderData(order, statement);
@@ -128,7 +128,7 @@ public class JWDOrderDao implements OrderDao {
     }
 
     @Override
-    public boolean removeById(Long id) throws DaoException {
+    public boolean removeById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(REMOVE_ORDER_BY_ID_SQL)) {
             statement.setLong(1, id);
@@ -140,7 +140,7 @@ public class JWDOrderDao implements OrderDao {
     }
 
     @Override
-    public Optional<List<Order>> findOrdersByUserId(Long userId) throws DaoException {
+    public Optional<List<Order>> findOrdersByUserId(Long userId)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_BY_USER_ID_SQL)) {
             statement.setLong(1, userId);
@@ -163,7 +163,7 @@ public class JWDOrderDao implements OrderDao {
     }
 
     @Override
-    public boolean update(Order order) throws DaoException {
+    public boolean update(Order order)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SQL)) {
             statement.setLong(6, order.getId());

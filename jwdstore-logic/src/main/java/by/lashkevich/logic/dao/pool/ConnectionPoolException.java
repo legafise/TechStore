@@ -1,6 +1,8 @@
 package by.lashkevich.logic.dao.pool;
 
-public class ConnectionPoolException extends RuntimeException {
+import by.lashkevich.logic.entity.JWDException;
+
+public class ConnectionPoolException extends JWDException {
     public ConnectionPoolException() {
     }
 

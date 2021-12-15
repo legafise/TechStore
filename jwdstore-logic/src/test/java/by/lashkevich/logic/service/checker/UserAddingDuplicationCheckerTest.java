@@ -37,7 +37,7 @@ class UserAddingDuplicationCheckerTest {
     void checkUserForEmailDuplicationWithUniqueDataTest() {
         when(userDao.findByEmail("lash@ya.ru")).thenReturn(Optional.empty());
         when(userDao.findByLogin("legafise")).thenReturn(Optional.empty());
-        Assert.assertTrue(duplicationChecker.test(firstTestUser));
+        Assert.assertTrue(duplicationChecker.check(firstTestUser));
     }
 
     @Test
@@ -45,7 +45,7 @@ class UserAddingDuplicationCheckerTest {
         when(userDao.findByEmail("pakun@gmail.com")).thenReturn(Optional.of(secondTestUser));
         when(userDao.findByLogin("legafise")).thenReturn(Optional.empty());
         firstTestUser.setEmail("pakun@gmail.com");
-        Assert.assertFalse(duplicationChecker.test(firstTestUser));
+        Assert.assertFalse(duplicationChecker.check(firstTestUser));
     }
 
     @Test
@@ -53,6 +53,6 @@ class UserAddingDuplicationCheckerTest {
         when(userDao.findByEmail("lash@ya.ru")).thenReturn(Optional.empty());
         when(userDao.findByLogin("SirPakun")).thenReturn(Optional.of(secondTestUser));
         firstTestUser.setLogin("SirPakun");
-        Assert.assertFalse(duplicationChecker.test(firstTestUser));
+        Assert.assertFalse(duplicationChecker.check(firstTestUser));
     }
 }

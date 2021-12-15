@@ -10,13 +10,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Управление заказами</title>
+    <title><fmt:message key="order.management"/></title>
     <c:import url="header.jsp"/>
     <main>
         <c:if test="${isOrderUpdated == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Статус заказа успешно изменен!</strong>
+                    <strong><fmt:message key="status.was.changed"/> </strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -36,12 +36,12 @@
             <%request.getSession().removeAttribute("isOrderUpdated");%>
         </c:if>
         <div class="container-fluid name">
-            <p class="h2 bold">Управление заказами</p>
+            <p class="h2 bold"><fmt:message key="order.management"/></p>
         </div>
         <c:choose>
             <c:when test="${empty orders}">
                 <div class="container-fluid">
-                    <h5 class="basket-good-header">Активных заказов пока нет!</h5>
+                    <h5 class="basket-good-header"><fmt:message key="no.active.orders.yet"/></h5>
                 </div>
             </c:when>
             <c:when test="${!empty orders}">
@@ -49,10 +49,11 @@
                     <div class="container-fluid">
                         <div class="card order-card-size">
                             <div class="card-header order-info"><fmt:message key="order.number"/> ${order.id}
-                                <br/>Адрес доставки: <c:out value="${order.address}"/>
+                                <br/><fmt:message key="delivery.address"/> <c:out value="${order.address}"/>
                                 <br/><fmt:message key="order.price"/> <c:out value="${order.price}"/> <fmt:message
                                         key="currency.sign"/>
-                                <br/>Имя &#47; почта заказчика: <c:out value="${order.customer.name}"/> <c:out
+                                <br/><fmt:message key="name"/> &#47; <fmt:message key="customer.email"/> : <c:out
+                                        value="${order.customer.name}"/> <c:out
                                         value="${order.customer.surname}"/> &#47; <c:out
                                         value="${order.customer.email}"/>
                             </div>
@@ -92,7 +93,6 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
                     </div>
                 </c:forEach>
             </c:when>

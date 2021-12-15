@@ -1,6 +1,6 @@
 # Electronics store "TechStore"
 The system is an online electronics store. 
-The system has a catalog of goods that can be sorted according to different criteria. 
+The system has a catalog of goods. 
 The user can add goods to the basket and then place an order by pre-replenishing his balance. 
 The moderator manages orders by confirming and changing their status. 
 Moderators also add goods to the catalog and can change it.
@@ -11,24 +11,23 @@ The administrator has the rights of a moderator, and he can also manage user acc
 
 |Function|	ADMIN| 	MODER| 	USER|  GUEST|
 |---------|-------|-------|------|-----|
-change language |*|*|*|*|
-change user role(admin,moder,user) |*| | | |		
-view all users and their information |*|*| | |
-find user by login |*|*| | |
-bloc, unblock users |*|*| | |			
-view orders	|*|*|*| |
-view all orders |*|*| | |		
-change goods |*|*| | |		
-change order status |*|*| | |		
-add goods in catalog |*|*| | |	
-change account information |*|*|*| |	
-change all account information |*| | | |	
-create orders |*|*|*| |
-top up the balance |*|*|*| |
-send email to user |*|*| | |
-logout |*|*|*| |
-sing in	| | | |*|
-create new account | | | |*| <br/>	
+Change language |*|*|*|*|
+Change user role(admin,moder,user) |*| | | |		
+View all users and their information |*| | | |
+Change user roles |*| | | |	
+Bloc, unblock users |*| | | |			
+Create orders | | |*| |
+View orders	| | |*| |
+View all orders |*| | | |		
+Change goods |*|*| | |		
+Change order status |*|*| | |		
+Add goods in catalog |*|*| | |	
+Change account information |*|*|*| |	
+Top up the balance | | |*| |
+Logout |*|*|*| |
+Sign in	| | | |*|
+Leave reviews | | |*| |
+Create new account | | | |*| <br/>	
 # Order lifecycle
 1. Order creating.<br/>
    The user can put goods in the basket, then order from the balance. When you create an order, it has the status "The order is being processed".
@@ -36,6 +35,10 @@ create new account | | | |*| <br/>
    A moderator or administrator can see a list of orders.
    The moderator contacts the client to confirm the order and then changes its status to "The order is being executed". 
 3. Order is completed.<br/>
-   After the user has received the order, his status changes to "The order is completed".
+   After the user has received the order, his status changes to "The order is completed" and then user can leave reviews about received goods
+   # Accounts
+   * Administrator's account - email: techstore@gmail.com; password: Admin
+   
+   * Moderator's account -  email: techstore.suport@gmail.com; password: Moder
    # Database tables
-   ![](https://sun9-82.userapi.com/impg/xGI5g2-3eL8Aykdg187j7f1YE_staAsoRcjQCw/7tUrtZUKvcE.jpg?size=638x684&quality=96&sign=7f1b41dd54f2cf24967b123922678840&type=album)
+   ![](https://sun9-77.userapi.com/impf/uajMVpZFRgWZPz5lAik3ygysmugs9e222Aqhow/bQ_JRrsSfeM.jpg?size=640x684&quality=96&sign=032cf4558436a694917e52c76f9721ad&type=album)

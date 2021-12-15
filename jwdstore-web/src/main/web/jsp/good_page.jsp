@@ -21,7 +21,7 @@
         <c:if test="${basketAddingResult == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Товар добавлен в корзину!</strong>
+                    <strong><fmt:message key="good.added.to.basket"/> </strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -32,7 +32,7 @@
         <c:if test="${isGoodUpdated == true}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Товар изменен!</strong>
+                    <strong><fmt:message key="good.has.been.changed"/> </strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -56,7 +56,7 @@
          || basketAddingResult == false || isGoodUpdated == false}">
             <div class="container-fluid authorization-result">
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong><fmt:message key="something.went.wrong"/>!</strong> <fmt:message key="try.again"/>
+                    <strong><fmt:message key="something.went.wrong"/></strong> <fmt:message key="try.again"/>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -85,7 +85,7 @@
         <div class="container-fluid good-idents">
             <div class="row">
                 <div class="col-xl-4">
-                    <img src="${imgPath}goods_${good.imgName}" class="img-fluid img-indents" alt="iphone">
+                    <img src="${imgPath}goods_${good.imgName}" class="img-fluid img-indents" alt="${good.name}">
                     <p class="price"><fmt:message key="price"/>: ${good.price} <fmt:message key="currency.sign"/></p>
                     <div class="buttons-idents">
                         <c:choose>
@@ -108,13 +108,13 @@
                                 <form action="${updateGoodPageCommand}" method="post">
                                     <input type="hidden" name="goodId" value="${good.id}">
                                     <button type="submit" class="buy-button">
-                                        Изменить
+                                        <fmt:message key="change"/>
                                     </button>
                                 </form>
                                 <form method="post" action="${removeGoodCommand}">
                                     <input type="hidden" value="${good.id}" name="goodId">
                                     <button class="delete-button good-delete-button" type="submit">
-                                        Удалить
+                                        <fmt:message key="remove"/>
                                     </button>
                                 </form>
                             </c:when>
@@ -122,8 +122,8 @@
                     </div>
                 </div>
                 <div class="col-xl-6 description">
-                    <span class="bold"><fmt:message key="type"/> </span><c:out value="${good.type.name}"/> <br>
-                    <span class="bold"><fmt:message key="description"/> </span><c:out value="${good.description}"/>
+                    <span class="bold"><fmt:message key="type"/>: </span><c:out value="${good.type.name}"/> <br>
+                    <span class="bold"><fmt:message key="description"/>: </span><c:out value="${good.description}"/>
                 </div>
             </div>
         </div>
@@ -134,7 +134,7 @@
         <c:if test="${role == 'user'}">
             <c:if test="${isBoughtGood == false}">
                 <div class="container-fluid">
-                    <p class="h4" align="center">Чтобы оставить отзыв вам нужно приобрести товар!</p>
+                    <p class="h4" align="center"><fmt:message key="buy.good.to.leave.review"/> </p>
                 </div>
             </c:if>
             <c:if test="${isBoughtGood == true}">
@@ -145,7 +145,7 @@
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-10">
                                     <div class="container-fluid">
-                                        <p class="h4" align="center">Оставьте отзыв!</p>
+                                        <p class="h4" align="center"><fmt:message key="leave.review"/> </p>
                                     </div>
                                     <form action="${sendReviewCommand}" method="post" class="review-indents review-inputs"
                                           id="review-inputs">
@@ -153,7 +153,7 @@
                                             <div class="input-group">
                                                 <textarea name="reviewContent" id="review-content"
                                                           class="form-control review-area" aria-label="With textarea"
-                                                          placeholder="Оставьте свой отзыв!" maxlength="400"></textarea>
+                                                          placeholder="<fmt:message key="leave.your.review"/>" maxlength="400"></textarea>
                                             </div>
                                             <input type="hidden" value="${good.id}" name="goodId">
                                             <div class="card-footer">

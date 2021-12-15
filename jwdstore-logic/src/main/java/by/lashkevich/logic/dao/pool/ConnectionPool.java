@@ -1,8 +1,6 @@
 package by.lashkevich.logic.dao.pool;
 
-import by.lashkevich.logic.dao.reader.DataBasePropertiesReader;
-import by.lashkevich.logic.dao.reader.PropertiesReaderException;
-import by.lashkevich.logic.dao.reader.impl.ProdDataBasePropertiesReader;
+import by.lashkevich.logic.dao.reader.impl.DataBasePropertiesReader;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +9,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -19,13 +16,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Object that contains all created connections and manages them.
+ *
  * @author Roman Lashkevich
  */
 public class ConnectionPool {
     private static final AtomicBoolean IS_INSTANCE_CREATED = new AtomicBoolean(false);
     private static final String CONNECTION_IS_NULL_ENTER_MESSAGE = "Connection cannot be null";
     private static final String INCORRECT_CONNECTION_ENTER_MESSAGE = "Return connection does not exist";
-    private static final String CONNECTIONS_NOT_CREATED_ENTER_MESSAGE = "Connections not created";
     private static final Lock INSTANCE_LOCK = new ReentrantLock();
     private static final Lock CONNECTION_LOCK = new ReentrantLock();
     private static final Condition CONNECTION_CONDITION = CONNECTION_LOCK.newCondition();
@@ -38,7 +35,7 @@ public class ConnectionPool {
     private ConnectionPool() {
         freeConnections = new ArrayDeque<>();
         busyConnections = new ArrayDeque<>();
-        propertiesReader = new ProdDataBasePropertiesReader();
+        propertiesReader = new DataBasePropertiesReader();
         busyTransactionalConnections = new HashMap<>();
     }
 
@@ -98,7 +95,6 @@ public class ConnectionPool {
      */
     public void initializeConnectionPool(int connectionsNumber) throws ConnectionPoolException {
         try {
-            closeConnections();
             CONNECTION_LOCK.lock();
             Class.forName(propertiesReader.readDriverName());
 
@@ -106,7 +102,7 @@ public class ConnectionPool {
                 freeConnections.push(new ProxyConnection(DriverManager.getConnection(propertiesReader.readUrl(),
                         propertiesReader.readProperties())));
             }
-        } catch (ClassNotFoundException | SQLException | PropertiesReaderException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             throw new ConnectionPoolException(e);
         } finally {
             CONNECTION_LOCK.unlock();
@@ -163,9 +159,7 @@ public class ConnectionPool {
             if (!busyTransactionalConnections.containsKey(Thread.currentThread().getName())) {
                 if (busyConnections.remove(connection)) {
                     freeConnections.add(connection);
-                    if (!freeConnections.isEmpty()) {
-                        CONNECTION_CONDITION.signal();
-                    }
+                    CONNECTION_CONDITION.signal();
                 } else {
                     throw new ConnectionPoolException(INCORRECT_CONNECTION_ENTER_MESSAGE);
                 }
@@ -183,16 +177,25 @@ public class ConnectionPool {
     public void closeConnections() throws ConnectionPoolException {
         try {
             CONNECTION_LOCK.lock();
-            TimeUnit.SECONDS.sleep(1);
+            for (Connection connection : busyConnections) {
+                ProxyConnection proxyConnection = (ProxyConnection) connection;
+                proxyConnection.getConnection().close();
+            }
+
             for (Connection connection : freeConnections) {
                 ProxyConnection proxyConnection = (ProxyConnection) connection;
                 proxyConnection.getConnection().close();
-
-                freeConnections = new ArrayDeque<>();
-                busyConnections = new ArrayDeque<>();
-                busyTransactionalConnections = new HashMap<>();
             }
-        } catch (InterruptedException | SQLException e) {
+
+            for (Connection connection : busyTransactionalConnections.values()) {
+                ProxyConnection proxyConnection = (ProxyConnection) connection;
+                proxyConnection.getConnection().close();
+            }
+
+            freeConnections = new ArrayDeque<>();
+            busyConnections = new ArrayDeque<>();
+            busyTransactionalConnections = new HashMap<>();
+        } catch (SQLException e) {
             throw new ConnectionPoolException(e);
         } finally {
             CONNECTION_LOCK.unlock();
@@ -210,14 +213,13 @@ public class ConnectionPool {
     private Connection takeConnection() {
         try {
             CONNECTION_LOCK.lock();
-            if (!freeConnections.isEmpty() || !busyConnections.isEmpty()) {
-                if (freeConnections.isEmpty()) {
-                    CONNECTION_CONDITION.await();
-                }
-                return freeConnections.poll();
-            } else {
-                throw new ConnectionPoolException(CONNECTIONS_NOT_CREATED_ENTER_MESSAGE);
+            if (freeConnections.isEmpty()) {
+                CONNECTION_LOCK.unlock();
+                CONNECTION_CONDITION.await();
+                CONNECTION_LOCK.lock();
             }
+
+            return freeConnections.poll();
         } catch (InterruptedException e) {
             throw new ConnectionPoolException(e);
         } finally {

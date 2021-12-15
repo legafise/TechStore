@@ -1,6 +1,8 @@
 package by.lashkevich.logic.dao.reader;
 
-public class PropertiesReaderException extends Exception {
+import by.lashkevich.logic.entity.JWDException;
+
+public class PropertiesReaderException extends JWDException {
     public PropertiesReaderException() {
     }
 

@@ -12,7 +12,6 @@
     <modules>
         <module>jwdstore-logic</module>
         <module>jwdstore-web</module>
-        <module>jwdstore-resource</module>
     </modules>
 
     <properties>
@@ -22,9 +21,9 @@
         <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
         <mysql.connector.version>8.0.19</mysql.connector.version>
         <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+        <javax.servlet.version>2.0</javax.servlet.version>
         <jstl.version>1.2</jstl.version>
-        <jwdstore.logic.version>1.0-SNAPSHOT</jwdstore.logic.version>
-        <jwdstore.resource.version>1.0-SNAPSHOT</jwdstore.resource.version>
+        <jwdstore.version>1.0-SNAPSHOT</jwdstore.version>
         <bcrypt.version>0.4</bcrypt.version>
         <mockito.version>1.10.19</mockito.version>
     </properties>
@@ -86,19 +85,20 @@
             <dependency>
                 <groupId>by.lashkevich.jwdstore</groupId>
                 <artifactId>jwdstore-logic</artifactId>
-                <version>${jwdstore.logic.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>by.lashkevich.jwdstore</groupId>
-                <artifactId>jwdstore-resource</artifactId>
-                <version>${jwdstore.resource.version}</version>
+                <version>${jwdstore.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.mindrot</groupId>
                 <artifactId>jbcrypt</artifactId>
                 <version>${bcrypt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>jsp-api</artifactId>
+                <version>${javax.servlet.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

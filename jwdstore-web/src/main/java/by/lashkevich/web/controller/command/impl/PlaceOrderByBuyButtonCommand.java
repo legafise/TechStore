@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * The type Place order by buy button command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -29,36 +30,32 @@ public class PlaceOrderByBuyButtonCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            if (request.getSession().getAttribute("role").equals("guest")) {
-                request.getSession().setAttribute("authorizationInformation", true);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=authorization_page");
-            }
-
-            Map<Good, Integer> goods = new HashMap<>();
-            Good good = goodService.findGoodById(request.getParameter("goodId"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            goods.put(good, quantity);
-            BigDecimal price = good.getPrice().multiply(new BigDecimal(quantity));
-
-            if (userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")))
-                    .getBalance().compareTo(price) < 0) {
-                request.getSession().setAttribute("isInvalidBalance", true);
-                return new CommandResult(CommandResult.ResponseType.REDIRECT,
-                        "/controller?command=replenishment_page");
-            }
-
-            request.setAttribute("goods", goods);
-            request.setAttribute("price", price);
-
-            if (quantity > 1) {
-                request.getSession().setAttribute("orderButtonName", "buyButton");
-            }
-
-            return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=place_order_page");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+    public CommandResult execute(HttpServletRequest request) {
+        if (request.getSession().getAttribute("role").equals("guest")) {
+            request.getSession().setAttribute("authorizationInformation", true);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT, "/controller?command=authorization_page");
         }
+
+        Map<Good, Short> goods = new HashMap<>();
+        Good good = goodService.findGoodById(request.getParameter("goodId"));
+        short quantity = Short.parseShort(request.getParameter("quantity"));
+        goods.put(good, quantity);
+        BigDecimal price = good.getPrice().multiply(new BigDecimal(quantity));
+
+        if (userService.findUserById(String.valueOf(request.getSession().getAttribute("userId")))
+                .getBalance().compareTo(price) < 0) {
+            request.getSession().setAttribute("isInvalidBalance", true);
+            return new CommandResult(CommandResult.ResponseType.REDIRECT,
+                    "/controller?command=replenishment_page");
+        }
+
+        request.setAttribute("goods", goods);
+        request.setAttribute("price", price);
+
+        if (quantity > 1) {
+            request.getSession().setAttribute("orderButtonName", "buyButton");
+        }
+
+        return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=place_order_page");
     }
 }

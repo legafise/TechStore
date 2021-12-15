@@ -4,13 +4,11 @@ import by.lashkevich.logic.dao.DaoFactory;
 import by.lashkevich.logic.dao.UserDao;
 import by.lashkevich.logic.entity.User;
 
-import java.util.function.Predicate;
-
 /**
  * The type User adding duplication checker.
  * @author Roman Lashkevich
  */
-public class UserAddingDuplicationChecker implements Predicate<User> {
+public class UserAddingDuplicationChecker {
     private UserDao userDao;
 
     public void setUserDao(UserDao userDao) {
@@ -24,8 +22,7 @@ public class UserAddingDuplicationChecker implements Predicate<User> {
         userDao = (UserDao) DaoFactory.USER_DAO.getDao();
     }
 
-    @Override
-    public boolean test(User user) {
+    public boolean check(User user) {
         return !userDao.findByEmail(user.getEmail()).isPresent()
                 && !userDao.findByLogin(user.getLogin()).isPresent();
     }

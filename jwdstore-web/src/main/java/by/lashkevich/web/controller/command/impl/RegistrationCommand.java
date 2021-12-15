@@ -1,5 +1,6 @@
 package by.lashkevich.web.controller.command.impl;
 
+import by.lashkevich.logic.entity.Role;
 import by.lashkevich.logic.entity.User;
 import by.lashkevich.logic.service.ServiceFactory;
 import by.lashkevich.logic.service.UserService;
@@ -34,7 +35,7 @@ public class RegistrationCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         try {
             if (!validateUserData(request)) {
                 request.getSession().setAttribute("registrationResult", false);
@@ -87,7 +88,8 @@ public class RegistrationCommand implements Command {
         user.setName(request.getParameter("name"));
         user.setSurname(request.getParameter("surname"));
         user.setEmail(request.getParameter("email"));
-        user.setPassword(BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt()));
+        user.setPassword(request.getParameter("password"));
+        user.setRole(Role.USER);
         user.setBirthDate(LocalDate.parse(request.getParameter("birthDate")));
         return user;
     }

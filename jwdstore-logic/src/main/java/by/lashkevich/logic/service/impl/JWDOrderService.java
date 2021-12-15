@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 /**
  * The type Jwd order service.
+ *
  * @author Roman Lashkevich
  * @see OrderService
  */
@@ -31,7 +32,7 @@ public class JWDOrderService implements OrderService {
     private static final BigDecimal MIN_REMAINS = new BigDecimal("0.0");
     private final UserDao userDao;
     private final TransactionManager transactionManager;
-    private Predicate<Order> orderValidator;
+    private OrderValidator orderValidator;
     private OrderDao orderDao;
 
     public JWDOrderService() {
@@ -45,39 +46,31 @@ public class JWDOrderService implements OrderService {
         this.orderDao = orderDao;
     }
 
-    public void setOrderValidator(Predicate<Order> orderValidator) {
+    public void setOrderValidator(OrderValidator orderValidator) {
         this.orderValidator = orderValidator;
     }
 
     @Override
-    public List<Order> findAllOrders() throws ServiceException {
-        try {
-            return orderDao.findAll();
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
+    public List<Order> findAllOrders() {
+        return orderDao.findAll();
     }
 
     @Override
-    public Order findById(String id) throws ServiceException {
-        try {
-            Optional<Order> orderOptional = orderDao.findById(Long.parseLong(id));
+    public Order findById(String id) {
+        Optional<Order> orderOptional = orderDao.findById(Long.parseLong(id));
 
-            if (orderOptional.isPresent()) {
-                return orderOptional.get();
-            }
-
-            throw new ServiceException(NONEXISTENT_ORDER_ID_MESSAGE);
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e.getMessage());
+        if (orderOptional.isPresent()) {
+            return orderOptional.get();
         }
+
+        throw new ServiceException(NONEXISTENT_ORDER_ID_MESSAGE);
     }
 
     @Override
-    public boolean addOrder(Order order) throws ServiceException {
+    public boolean addOrder(Order order) {
         Transaction transaction = transactionManager.createTransaction();
         try {
-            if (orderValidator.test(order) && orderDao.add(order)) {
+            if (orderValidator.validate(order) && orderDao.add(order)) {
                 Long orderId = findCurrentOrderId(order);
                 if (order.getGoods().entrySet().stream()
                         .allMatch(entry -> orderDao.connectOrderToGood(orderId,
@@ -91,9 +84,6 @@ public class JWDOrderService implements OrderService {
             }
 
             throw new ServiceException(INVALID_ORDER_MESSAGE);
-        } catch (DaoException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e);
         } finally {
             transactionManager.closeTransaction(transaction);
         }
@@ -111,7 +101,7 @@ public class JWDOrderService implements OrderService {
     }
 
     @Override
-    public boolean removeOrderById(String id) throws ServiceException {
+    public boolean removeOrderById(String id) {
         Transaction transaction = transactionManager.createTransaction();
         try {
             Long orderId = Long.valueOf(id);
@@ -120,34 +110,23 @@ public class JWDOrderService implements OrderService {
             }
 
             return false;
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e.getMessage());
         } finally {
             transactionManager.closeTransaction(transaction);
         }
     }
 
     @Override
-    public boolean updateOrder(Order order) throws ServiceException {
-        try {
-            if (orderValidator.test(order) && order.getId() != 0) {
-                return orderDao.update(order);
-            }
-
-            throw new ServiceException(INVALID_ORDER_MESSAGE);
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
+    public boolean updateOrder(Order order) {
+        if (orderValidator.validate(order) && order.getId() != 0) {
+            return orderDao.update(order);
         }
+
+        throw new ServiceException(INVALID_ORDER_MESSAGE);
     }
 
     @Override
-    public Optional<List<Order>> findOrdersByUserId(String userId) throws DaoException {
-        try {
-            return orderDao.findOrdersByUserId(Long.parseLong(userId));
-        } catch (DaoException | NumberFormatException e) {
-            throw new ServiceException(e.getMessage());
-        }
+    public Optional<List<Order>> findOrdersByUserId(String userId) {
+        return orderDao.findOrdersByUserId(Long.parseLong(userId));
     }
 
     @Override
@@ -170,9 +149,6 @@ public class JWDOrderService implements OrderService {
 
             transactionManager.rollback(transaction);
             return false;
-        } catch (DaoException | NumberFormatException e) {
-            transactionManager.rollback(transaction);
-            throw new ServiceException(e.getMessage());
         } finally {
             transactionManager.closeTransaction(transaction);
         }

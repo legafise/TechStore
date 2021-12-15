@@ -17,7 +17,7 @@ public class Order implements Entity {
     private BigDecimal price;
     private LocalDate date;
     private User customer;
-    private Map<Good, Integer> goods;
+    private Map<Good, Short> goods;
 
     /**
      * Instantiates a new Order.
@@ -37,7 +37,7 @@ public class Order implements Entity {
      * @param date     the date
      * @param customer the customer
      */
-    public Order(long id, OrderStatus status, String address, Map<Good, Integer> goods,
+    public Order(long id, OrderStatus status, String address, Map<Good, Short> goods,
                  BigDecimal price, LocalDate date, User customer) {
         this.id = id;
         this.status = status;
@@ -58,7 +58,7 @@ public class Order implements Entity {
      * @param date     the date
      * @param customer the customer
      */
-    public Order(OrderStatus status, String address, Map<Good, Integer> goods, BigDecimal price,
+    public Order(OrderStatus status, String address, Map<Good, Short> goods, BigDecimal price,
                  LocalDate date, User customer) {
         this.status = status;
         this.address = address;
@@ -165,7 +165,7 @@ public class Order implements Entity {
      *
      * @return the goods
      */
-    public Map<Good, Integer> getGoods() {
+    public Map<Good, Short> getGoods() {
         return goods;
     }
 
@@ -174,7 +174,7 @@ public class Order implements Entity {
      *
      * @param goods the goods
      */
-    public void setGoods(Map<Good, Integer> goods) {
+    public void setGoods(Map<Good, Short> goods) {
         this.goods = goods;
     }
 

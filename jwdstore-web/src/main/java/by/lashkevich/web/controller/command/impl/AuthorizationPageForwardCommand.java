@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class AuthorizationPageForwardCommand implements Command {
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
+    public CommandResult execute(HttpServletRequest request) {
         request.setAttribute("currentPage", "sing_in");
         return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/authorization.jsp");
     }

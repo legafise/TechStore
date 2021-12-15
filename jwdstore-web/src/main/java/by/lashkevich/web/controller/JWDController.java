@@ -1,7 +1,14 @@
 package by.lashkevich.web.controller;
 
+import by.lashkevich.logic.dao.DaoException;
 import by.lashkevich.logic.dao.pool.ConnectionPool;
 import by.lashkevich.logic.dao.pool.ConnectionPoolException;
+import by.lashkevich.logic.dao.reader.PropertiesReader;
+import by.lashkevich.logic.dao.reader.PropertiesReaderException;
+import by.lashkevich.logic.dao.transaction.Transaction;
+import by.lashkevich.logic.dao.transaction.TransactionManager;
+import by.lashkevich.logic.entity.JWDException;
+import by.lashkevich.logic.service.ServiceException;
 import by.lashkevich.web.controller.command.Command;
 import by.lashkevich.web.controller.command.CommandException;
 import by.lashkevich.web.controller.command.CommandFactory;
@@ -17,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Class that controls all requests and executes command
+ * Class that manages all requests and executes commands
  * @author Roman Lashkevich
  */
 @MultipartConfig(location = "C:\\IdeaProjects\\JWDStore\\jwdstore-web\\target\\jwdstore-web-1.0-SNAPSHOT\\download")
@@ -78,8 +85,9 @@ public class JWDController extends HttpServlet {
             } else {
                 resp.sendRedirect(req.getContextPath() + commandResult.getPage());
             }
-        } catch (ServletException | IOException | CommandException e) {
+        } catch (ServletException | NumberFormatException | IOException | JWDException e) {
             LOGGER.error(e);
+            TransactionManager.getInstance().rollbackIfPresent();
             req.getSession().setAttribute("errorMessage", e.getMessage());
             resp.sendRedirect(req.getContextPath() + "/controller?command=error");
         }

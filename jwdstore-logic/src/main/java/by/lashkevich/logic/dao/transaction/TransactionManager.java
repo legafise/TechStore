@@ -77,12 +77,12 @@ public class TransactionManager {
      * @param transaction the transaction
      */
     public void closeTransaction(Transaction transaction) {
-        Integer transactionUsedNumber = TransactionManager.TRANSACTION_USERS.get(Thread.currentThread().getName());
+        Integer transactionUsedNumber = TRANSACTION_USERS.get(Thread.currentThread().getName());
         if (transactionUsedNumber == 1) {
-            TransactionManager.TRANSACTION_USERS.remove(Thread.currentThread().getName());
+            TRANSACTION_USERS.remove(Thread.currentThread().getName());
             transaction.closeTransaction();
         } else {
-            TransactionManager.TRANSACTION_USERS.put(Thread.currentThread().getName(), transactionUsedNumber - 1);
+            TRANSACTION_USERS.put(Thread.currentThread().getName(), transactionUsedNumber - 1);
         }
     }
 
@@ -92,7 +92,7 @@ public class TransactionManager {
      * @param transaction the transaction
      */
     public void rollback(Transaction transaction) {
-        if (TransactionManager.TRANSACTION_USERS.get(Thread.currentThread().getName()) == 1) {
+        if (TRANSACTION_USERS.get(Thread.currentThread().getName()) == 1) {
             transaction.rollback();
         }
     }
@@ -103,8 +103,20 @@ public class TransactionManager {
      * @param transaction the transaction
      */
     public void commit(Transaction transaction) {
-        if (TransactionManager.TRANSACTION_USERS.get(Thread.currentThread().getName()) == 1) {
+        if (TRANSACTION_USERS.get(Thread.currentThread().getName()) == 1) {
             transaction.commit();
+        }
+    }
+
+    /**
+     * Rollback if present.
+     */
+    public void rollbackIfPresent() {
+        if (TRANSACTION_USERS.containsKey(Thread.currentThread().getName())) {
+            Transaction transaction = new JWDTransaction(ConnectionPool.getInstance().acquireConnection());
+            transaction.rollback();
+            transaction.closeTransaction();
+            TRANSACTION_USERS.remove(Thread.currentThread().getName());
         }
     }
 }

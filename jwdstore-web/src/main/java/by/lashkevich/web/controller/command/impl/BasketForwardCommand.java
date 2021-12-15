@@ -13,6 +13,7 @@ import java.util.Optional;
 
 /**
  * The type Basket forward command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -27,27 +28,23 @@ public class BasketForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            if (request.getSession().getAttribute("role").equals("guest")) {
-                request.getSession().setAttribute("authorizationInformation", true);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=authorization_page");
-            }
-
-            Optional<Basket> basketOptional = userService.findBasketByUserId(String.valueOf(request
-                    .getSession().getAttribute("userId")));
-
-            if (!basketOptional.isPresent()) {
-                request.setAttribute("isBasketEmpty", true);
-                return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/basket.jsp");
-            }
-
-            request.setAttribute("isBasketEmpty", false);
-            request.setAttribute("basketGoods", basketOptional.get().getGoods().entrySet());
-            request.setAttribute("currentPage", "basket");
-            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/basket.jsp");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
+    public CommandResult execute(HttpServletRequest request) {
+        if (request.getSession().getAttribute("role").equals("guest")) {
+            request.getSession().setAttribute("authorizationInformation", true);
+            return new CommandResult(CommandResult.ResponseType.FORWARD, "/controller?command=authorization_page");
         }
+
+        Optional<Basket> basketOptional = userService.findBasketByUserId(String.valueOf(request
+                .getSession().getAttribute("userId")));
+
+        if (!basketOptional.isPresent()) {
+            request.setAttribute("isBasketEmpty", true);
+            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/basket.jsp");
+        }
+
+        request.setAttribute("isBasketEmpty", false);
+        request.setAttribute("basketGoods", basketOptional.get().getGoods().entrySet());
+        request.setAttribute("currentPage", "basket");
+        return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/basket.jsp");
     }
 }

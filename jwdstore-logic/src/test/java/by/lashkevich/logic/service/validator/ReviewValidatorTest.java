@@ -26,29 +26,29 @@ class ReviewValidatorTest {
 
     @Test
     void validateRightReviewTest() {
-        Assert.assertTrue(reviewValidator.test(testReview));
+        Assert.assertTrue(reviewValidator.validate(testReview));
     }
 
     @Test
     void validateNullReviewTest() {
-        Assert.assertFalse(reviewValidator.test(null));
+        Assert.assertFalse(reviewValidator.validate(null));
     }
 
     @Test
     void validateReviewWithNullAuthorTest() {
         testReview.setAuthor(null);
-        Assert.assertFalse(reviewValidator.test(testReview));
+        Assert.assertFalse(reviewValidator.validate(testReview));
     }
 
     @Test
     void validateReviewWithInvalidRateTest() {
         testReview.setRate((short) -1);
-        Assert.assertFalse(reviewValidator.test(testReview));
+        Assert.assertFalse(reviewValidator.validate(testReview));
     }
 
     @Test
     void validateReviewWithInvalidContentTest() {
         testReview.setContent("x");
-        Assert.assertFalse(reviewValidator.test(testReview));
+        Assert.assertFalse(reviewValidator.validate(testReview));
     }
 }

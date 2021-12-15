@@ -18,22 +18,19 @@ import java.util.Optional;
  * @see UserDao
  */
 public class JWDUserDao implements UserDao {
+    private static final String INVALID_GOOD_MESSAGE = "Invalid good";
     private static final String FIND_ALL_USERS_SQL = "SELECT users.id AS user_id, users.name AS user_name," +
-            " users.surname AS user_surname, users.login AS user_login, users.password AS user_password, users.email" +
-            " AS user_email, users.profile_picture AS user_profile_picture, users.birth_date AS user_birth_date," +
-            " users.balance AS user_balance, users.role AS user_role FROM users";
+            " users.surname, users.login, users.password, users.email, users.profile_picture, users.birth_date," +
+            " users.balance, users.role FROM users";
     private static final String FIND_USER_BY_ID_SQL = "SELECT users.id AS user_id, users.name AS user_name," +
-            " users.surname AS user_surname, users.login AS user_login, users.password AS user_password, users.email" +
-            " AS user_email, users.profile_picture AS user_profile_picture, users.birth_date AS user_birth_date," +
-            " users.balance AS user_balance, users.role AS user_role FROM users WHERE id = ?";
+            " users.surname, users.login, users.password, users.email, users.profile_picture, users.birth_date," +
+            " users.balance, users.role FROM users WHERE users.id = ?";
     private static final String FIND_USER_BY_EMAIL_SQL = "SELECT users.id AS user_id, users.name AS user_name," +
-            " users.surname AS user_surname, users.login AS user_login, users.password AS user_password, users.email" +
-            " AS user_email, users.profile_picture AS user_profile_picture, users.birth_date AS user_birth_date," +
-            " users.balance AS user_balance, users.role AS user_role FROM users WHERE email = ?";
+            " users.surname, users.login, users.password, users.email, users.profile_picture, users.birth_date," +
+            " users.balance, users.role FROM users WHERE users.email = ?";
     private static final String FIND_USER_BY_LOGIN_SQL = "SELECT users.id AS user_id, users.name AS user_name," +
-            " users.surname AS user_surname, users.login AS user_login, users.password AS user_password, users.email" +
-            " AS user_email, users.profile_picture AS user_profile_picture, users.birth_date AS user_birth_date," +
-            " users.balance AS user_balance, users.role AS user_role FROM users WHERE login = ?";
+            " users.surname, users.login, users.password, users.email, users.profile_picture, users.birth_date," +
+            " users.balance, users.role FROM users WHERE users.login = ?";
     private static final String REMOVE_USER_BY_ID_SQL = "DELETE FROM users WHERE id = ?";
     private static final String REMOVE_BASKET_BY_USER_ID_SQL = "DELETE FROM baskets WHERE user_id = ?";
     private static final String CREATE_USER_SQL = "INSERT INTO users (name, surname, login, password, email," +
@@ -43,17 +40,16 @@ public class JWDUserDao implements UserDao {
     private static final String ADD_GOOD_IN_BASKET_SQL = "INSERT INTO baskets (user_id, good_id) VALUES (?, ?)";
     private static final String REMOVE_GOOD_FROM_BASKET_SQL = "DELETE FROM baskets" +
             " WHERE baskets.user_id = ? AND baskets.good_id = ?";
-    private static final String FIND_BASKET_BY_USER_ID_SQL = "SELECT baskets_owners.id AS user_id, baskets_owners.name" +
-            " AS user_name, baskets_owners.surname AS user_surname, baskets_owners.login AS user_login," +
-            " baskets_owners.password AS user_password, baskets_owners.email AS user_email," +
-            " baskets_owners.profile_picture AS user_profile_picture, baskets_owners.birth_date AS user_birth_date," +
-            " baskets_owners.balance AS user_balance, baskets_owners.role AS user_role, baskets.good_id AS good_id," +
-            " baskets.quantity AS good_quantity, goods.name AS good_name, goods.price AS good_price, goods.description" +
-            " AS good_description, goods.picture AS good_picture, goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id" +
-            " AS review_id, reviews.rate AS review_rate, reviews.content AS review_content, users.id AS review_user_id," +
+    private static final String FIND_BASKET_BY_USER_ID_SQL = "SELECT baskets_owners.id AS user_id, baskets_owners.name AS user_name," +
+            " baskets_owners.surname, baskets_owners.login, baskets_owners.password, baskets_owners.email," +
+            " baskets_owners.profile_picture, baskets_owners.birth_date," +
+            " baskets_owners.balance, baskets_owners.role, baskets.good_id AS good_id," +
+            " baskets.quantity, goods.name AS good_name, goods.price AS good_price, goods.description, goods.picture," +
+            " goods_types.name AS good_type_name, goods_types.id AS good_type_id, reviews.id" +
+            " AS review_id, reviews.rate, reviews.content, users.id AS review_user_id," +
             " users.name AS review_user_name, users.surname AS review_user_surname, users.login AS review_user_login," +
             " users.password AS review_user_password, users.email AS review_user_email, users.profile_picture AS" +
-            " review_user_profile_picture, users.birth_date AS review_user_birth_date,users.balance AS" +
+            " review_user_profile_picture, users.birth_date AS review_user_birth_date, users.balance AS" +
             " review_user_balance, users.role AS review_user_role FROM users as baskets_owners LEFT JOIN baskets" +
             " ON baskets.user_id = baskets_owners.id LEFT JOIN goods ON baskets.good_id = goods.id LEFT JOIN" +
             " goods_types ON goods.type_id = goods_types.id LEFT JOIN goods_reviews ON goods.id =" +
@@ -71,7 +67,7 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public List<User> findAll() throws DaoException {
+    public List<User> findAll() {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(FIND_ALL_USERS_SQL);
@@ -88,7 +84,7 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> findById(Long id) throws DaoException {
+    public Optional<User> findById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_ID_SQL)) {
             statement.setLong(1, id);
@@ -106,7 +102,7 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public boolean add(User user) throws DaoException {
+    public boolean add(User user)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_USER_SQL)) {
             fillAddingUserData(user, statement);
@@ -118,7 +114,7 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public boolean removeById(Long id) throws DaoException {
+    public boolean removeById(Long id)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(REMOVE_USER_BY_ID_SQL)) {
             statement.setLong(1, id);
@@ -130,7 +126,7 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public boolean update(User user) throws DaoException {
+    public boolean update(User user)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER_SQL)) {
             statement.setLong(10, user.getId());
@@ -153,7 +149,7 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public Optional<Basket> findBasketByUserId(Long userId) throws DaoException {
+    public Optional<Basket> findBasketByUserId(Long userId)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BASKET_BY_USER_ID_SQL)) {
             statement.setLong(1, userId);
@@ -172,12 +168,12 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) throws DaoException {
+    public Optional<User> findByEmail(String email)  {
         return findUserByStringParameter(email, FIND_USER_BY_EMAIL_SQL);
     }
 
     @Override
-    public boolean clearBasketByUserId(Long userId) throws DaoException {
+    public boolean clearBasketByUserId(Long userId)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_BASKET_BY_USER_ID_SQL)) {
             preparedStatement.setLong(1, userId);
@@ -188,12 +184,12 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) throws DaoException {
+    public Optional<User> findByLogin(String login)  {
         return findUserByStringParameter(login, FIND_USER_BY_LOGIN_SQL);
     }
 
     @Override
-    public boolean addGoodInBasket(Long userId, Long goodId) throws DaoException {
+    public boolean addGoodInBasket(Long userId, Long goodId)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(ADD_GOOD_IN_BASKET_SQL)) {
             statement.setLong(1, userId);
@@ -201,12 +197,12 @@ public class JWDUserDao implements UserDao {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new DaoException(e);
+            throw new DaoException(INVALID_GOOD_MESSAGE ,e);
         }
     }
 
     @Override
-    public boolean removeGoodFromBasket(Long userId, Long goodId) throws DaoException {
+    public boolean removeGoodFromBasket(Long userId, Long goodId)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(REMOVE_GOOD_FROM_BASKET_SQL)) {
             statement.setLong(1, userId);
@@ -219,10 +215,10 @@ public class JWDUserDao implements UserDao {
     }
 
     @Override
-    public boolean changeGoodQuantity(Long userId, Long goodId, Integer goodQuantity) throws DaoException {
+    public boolean changeGoodQuantity(Long userId, Long goodId, Short goodQuantity)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(CHANGE_GOOD_QUANTITY_IN_BASKET_SQL)) {
-            statement.setInt(1, goodQuantity);
+            statement.setShort(1, goodQuantity);
             statement.setLong(2, userId);
             statement.setLong(3, goodId);
 
@@ -239,7 +235,7 @@ public class JWDUserDao implements UserDao {
 
     }
 
-    private Optional<User> findUserByStringParameter(String parameter, String findSQLScript) throws DaoException {
+    private Optional<User> findUserByStringParameter(String parameter, String findSQLScript)  {
         try (Connection connection = ConnectionPool.getInstance().acquireConnection();
              PreparedStatement statement = connection.prepareStatement(findSQLScript)) {
             statement.setString(1, parameter);

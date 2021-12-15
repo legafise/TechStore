@@ -4,6 +4,7 @@ import by.lashkevich.logic.entity.Good;
 import by.lashkevich.logic.entity.GoodType;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The interface Good dao.
@@ -24,5 +25,5 @@ public interface GoodDao extends BaseDao<Long, Good> {
      * @param typeId the type id
      * @return the good type
      */
-    GoodType findTypeById(int typeId);
+    Optional<GoodType> findTypeById(int typeId);
 }

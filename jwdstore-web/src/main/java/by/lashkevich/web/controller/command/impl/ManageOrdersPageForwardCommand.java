@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * The type Manage orders page forward command.
+ *
  * @author Roman Lashkevich
  * @see Command
  */
@@ -27,19 +28,15 @@ public class ManageOrdersPageForwardCommand implements Command {
     }
 
     @Override
-    public CommandResult execute(HttpServletRequest request) throws CommandException {
-        try {
-            request.setAttribute("currentPage", "orderList");
-            request.setAttribute("orders", orderService.findAllOrders().stream()
-                    .filter(order -> order.getStatus() == OrderStatus.IN_PROCESSING
-                            || order.getStatus() == OrderStatus.EXECUTING)
-                    .sorted((firstOrder, secondOrder) -> firstOrder.getStatus() == OrderStatus.IN_PROCESSING
-                            && secondOrder.getStatus() == OrderStatus.EXECUTING ? 1 : -1)
-                    .collect(Collectors.toList()));
-            request.setAttribute("statuses", OrderStatus.values());
-            return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/manage_orders.jsp");
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    public CommandResult execute(HttpServletRequest request) {
+        request.setAttribute("currentPage", "orderList");
+        request.setAttribute("orders", orderService.findAllOrders().stream()
+                .filter(order -> order.getStatus() == OrderStatus.IN_PROCESSING
+                        || order.getStatus() == OrderStatus.EXECUTING)
+                .sorted((firstOrder, secondOrder) -> firstOrder.getStatus() == OrderStatus.IN_PROCESSING
+                        && secondOrder.getStatus() == OrderStatus.EXECUTING ? 1 : -1)
+                .collect(Collectors.toList()));
+        request.setAttribute("statuses", OrderStatus.values());
+        return new CommandResult(CommandResult.ResponseType.FORWARD, "/jsp/manage_orders.jsp");
     }
 }
