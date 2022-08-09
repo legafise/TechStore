@@ -80,10 +80,10 @@ public class JWDUserService implements UserService {
 
     @Override
     public boolean addUser(User user) {
+        setStandardPicture(user);
         if (userValidator.validate(user)) {
             if (userAddingDuplicationChecker.check(user)) {
                 user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-                setStandardPicture(user);
                 return userDao.add(user);
             } else {
                 return false;

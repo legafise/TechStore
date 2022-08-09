@@ -118,7 +118,7 @@ function isValidPassword() {
 }
 
 function isValidEmail() {
-    let emailRegexp = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/
+    let emailRegexp = /^([A-Za-z0-9_-]+\.)*[A-Za-z0-9_-]+@[A-Za-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/
     return emailRegexp.test($("#email").val()) && $("#email").val().length <= 320;
 }
 
